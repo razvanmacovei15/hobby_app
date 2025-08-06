@@ -44,4 +44,9 @@ class Building extends Model
         return $this->hasMany(Staircase::class, 'staircase_id');
     }
 
+    public function floors(): HasMany
+    {
+        return $this->hasMany(Floor::class, 'floor_id');
+    }
+
 }
