@@ -34,9 +34,9 @@ class Building extends Model
         return $this->belongsTo(ConstructionSite::class, 'construction_site_id');
     }
 
-    public function address(): HasOne
+    public function address(): BelongsTo
     {
-        return $this->hasOne(Address::class, 'address_id');
+        return $this->belongsTo(Address::class, 'address_id');
     }
 
     public function staircases(): HasMany

@@ -21,6 +21,8 @@ class AddressFactory extends Factory
             'street' => $this->faker->streetName,
             'street_number' => $this->faker->buildingNumber,
             'city' => $this->faker->city,
+            'building' => $this->faker->name(),
+            'apartment_number' => $this->faker->randomNumber(nbDigits: 2),
             'state' => $this->faker->randomElement($this->states),
             'country' => 'Romania',
         ];
