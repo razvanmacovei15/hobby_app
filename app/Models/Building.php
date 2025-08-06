@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Enums\BuildingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -26,13 +29,19 @@ class Building extends Model
         'building_type' => BuildingType::class,
     ];
 
-    public function constructionSite()
+    public function constructionSite(): BelongsTo
     {
         return $this->belongsTo(ConstructionSite::class, 'construction_site_id');
     }
 
-    public function address(){
+    public function address(): HasOne
+    {
         return $this->hasOne(Address::class, 'address_id');
+    }
+
+    public function staircases(): HasMany
+    {
+        return $this->hasMany(Staircase::class, 'staircase_id');
     }
 
 }

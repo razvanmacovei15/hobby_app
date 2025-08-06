@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Building;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class StaircaseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'label' => $this->faker->randomLetter() . $this->faker->randomLetter() . $this->faker->randomNumber(),
+            'building_id' => Building::factory(),
         ];
     }
 }

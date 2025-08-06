@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('staircases', function (Blueprint $table) {
             $table->id();
+            $table->string('label');
+            $table->foreignId('building_id')->constrained('buildings')->cascadeOnDelete();
             $table->timestamps();
         });
     }
