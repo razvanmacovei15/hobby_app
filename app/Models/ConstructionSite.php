@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class ConstructionSite extends Model
 {
@@ -14,6 +15,7 @@ class ConstructionSite extends Model
         'name',
 
         'location_id',
+        'address_id',
         'site_director_id'
     ];
 
@@ -22,8 +24,17 @@ class ConstructionSite extends Model
         return $this->belongsTo(Location::class);
     }
 
+    public function address(){
+        return $this->hasOne(Address::class, 'address_id');
+    }
+
     public function siteDirector(){
         return $this->hasOne(User::class, 'site_director_id');
+    }
+
+    public function buildings()
+    {
+        return $this->hasMany(Building::class, 'building_id');
     }
 
 }

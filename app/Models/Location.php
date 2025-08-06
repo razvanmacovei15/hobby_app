@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Location extends Model
 {
@@ -12,14 +13,14 @@ class Location extends Model
 
     protected $fillable = [
         'name',
-        'address',
-        'city',
-        'state',
-        'country'
     ];
 
     public function constructionSites(){
         return $this->hasMany(ConstructionSite::class);
+    }
+
+    public function address(){
+        return $this->hasOne(Address::class, 'address_id');
     }
 
 }

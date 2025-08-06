@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('address_id')->constrained('addresses')->cascadeOnDelete();
+
+            // Basic address
+            $table->string('street');
+            $table->string('street_number')->nullable();
+            $table->string('city');
+            $table->string('state')->nullable();
+            $table->string('country')->default('Romania');
+
             $table->timestamps();
         });
     }
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('addresses');
     }
 };

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,10 +22,7 @@ class LocationFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'address' => $this->faker->streetAddress(),
-            'city' => $this->faker->city(),
-            'state' => $this->faker->randomElement($this->states),
-            'country' => 'Romania',
+            'address_id' => Address::factory(),
         ];
     }
 }

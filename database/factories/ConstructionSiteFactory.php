@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
+use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,8 +23,9 @@ class ConstructionSiteFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement($this->siteNames),
-            'location_id' => 1,
-            'site_director_id' => 1,
+            'address_id' => Address::factory(),
+            'location_id' => Location::factory(),
+            'site_director_id' => User::factory(),
         ];
     }
 }

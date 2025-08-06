@@ -16,6 +16,7 @@ class ConstructionSiteSeeder extends Seeder
         DB::table('construction_sites')->insert([
             [
                 'name' => 'Elite City',
+                'address_id' => 2,
                 'location_id' => 1,
                 'site_director_id' => 1,
                 'created_at' => now()->subDays(4),
