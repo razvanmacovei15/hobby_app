@@ -17,4 +17,9 @@ class Location extends Model
         'state',
         'country'
     ];
+
+    public function constructionSites(){
+        return $this->hasMany(ConstructionSite::class);
+    }
+
 }
