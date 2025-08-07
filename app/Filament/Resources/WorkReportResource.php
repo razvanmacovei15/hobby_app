@@ -100,6 +100,7 @@ class WorkReportResource extends Resource
                                     ->reactive()
                                     ->afterStateUpdated(fn ($state, callable $set) => $set('service_id', null)),
 
+
                                 Forms\Components\Select::make('service_id')
                                     ->label('Serviciu')
                                     ->options(function (callable $get) {
