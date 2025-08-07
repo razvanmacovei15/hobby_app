@@ -42,4 +42,9 @@ class Company extends Model
     {
         return $this->hasMany(Contract::class, 'executor_id');
     }
+
+    public function extraServices(): HasMany
+    {
+        return $this->hasMany(ContractExtraService::class);
+    }
 }

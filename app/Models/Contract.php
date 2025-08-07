@@ -35,4 +35,9 @@ class Contract extends Model
     {
         return $this->hasMany(ContractAnnex::class);
     }
+
+    public function extraServices(): HasMany
+    {
+        return $this->hasMany(ContractExtraService::class);
+    }
 }

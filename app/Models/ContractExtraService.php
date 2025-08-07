@@ -6,35 +6,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-class ContractService extends Model
+class ContractExtraService extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContractServiceFactory> */
+    /** @use HasFactory<\Database\Factories\ContractExtraServiceFactory> */
     use HasFactory;
-
     protected $fillable = [
-        'contract_annex_id',
-        'order',
+        'contract_id',
+        'company_id',
         'name',
         'unit_of_measure',
         'price_per_unit_of_measure',
+        'quantity',
+        'description',
+        'provided_at',
     ];
 
-    public function contractAnnex(): BelongsTo
+    public function contract(): BelongsTo
     {
-        return $this->belongsTo(ContractAnnex::class);
+        return $this->belongsTo(Contract::class);
     }
 
-    public function contract(): HasOneThrough
+    public function company(): BelongsTo
     {
-        return $this->hasOneThrough(Contract::class, ContractAnnex::class);
+        return $this->belongsTo(Company::class);
     }
 
     public function workReportEntry(): MorphMany
     {
         return $this->morphMany(WorkReportEntry::class, 'service');
     }
-
 
 }
