@@ -9,6 +9,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\IWorkReportEntryService;
+use App\Enums\ServiceType;
 
 class EntriesRelationManager extends RelationManager
 {
@@ -28,34 +30,42 @@ class EntriesRelationManager extends RelationManager
                     ])
                     ->required()
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('service_id', null)),
+                    ->afterStateUpdated(fn($state, callable $set) => $set('service_id', null)),
 
                 Forms\Components\Select::make('service_id')
                     ->label('Service')
+//                    ->relationship('service', 'service_id')
                     ->options(function (callable $get) {
                         $serviceType = $get('service_type');
+                        $companyId = $this->getOwnerRecord()->company_id;
 
-                        if (!$serviceType) {
+                        if (!$serviceType || !$companyId) {
                             return [];
                         }
 
-                        if ($serviceType === 'App\\Models\\ContractService') {
-                            return \App\Models\ContractService::all()->pluck('name', 'id');
+                        $workReportEntryService = app(IWorkReportEntryService::class);
+                        
+                        $enumServiceType = match($serviceType) {
+                            'App\\Models\\ContractService' => ServiceType::CONTRACT_SERVICE,
+                            'App\\Models\\ContractExtraService' => ServiceType::CONTRACT_EXTRA_SERVICE,
+                            default => null,
+                        };
+
+                        if (!$enumServiceType) {
+                            return [];
                         }
 
-                        if ($serviceType === 'App\\Models\\ContractExtraService') {
-                            return \App\Models\ContractExtraService::all()->pluck('name', 'id');
-                        }
-
-                        return [];
+                        $services = $workReportEntryService->getServices($enumServiceType, $companyId);
+                        
+                        return $services->pluck('name', 'id');
                     })
+//                    ->createOptionForm([
+//                        Forms\Components\TextInput::make('name')
+//                            ->required(),
+//                            ])
                     ->required()
-                    ->searchable(),
-
-                Forms\Components\TextInput::make('order')
-                    ->label('Order')
-                    ->numeric()
-                    ->required(),
+                    ->searchable()
+                    ->reactive(),
 
                 Forms\Components\TextInput::make('quantity')
                     ->label('Quantity')

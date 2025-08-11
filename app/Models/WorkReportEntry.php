@@ -31,4 +31,17 @@ class WorkReportEntry extends Model
     {
         return $this->morphTo();
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (WorkReportEntry $entry) {
+            if (is_null($entry->order)) {
+                $maxOrder = static::where('work_report_id', $entry->work_report_id)->max('order');
+                $entry->order = ($maxOrder ?? 0) + 1;
+            }
+        });
+    }
+
 }

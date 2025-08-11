@@ -7,7 +7,10 @@ use App\Filament\Resources\WorkReportResource\RelationManagers;
 use App\Models\WorkReport;
 use App\Service\BookingService;
 use App\Services\Implementations\UserService;
+use App\Services\Implementations\WorkReportEntryService;
 use App\Services\IUserService;
+use App\Services\IWorkReportEntryService;
+use App\Enums\ServiceType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,6 +33,7 @@ class WorkReportResource extends Resource
     protected static ?string $pluralModelLabel = 'Work Reports';
 
     protected IUserService $userService;
+    protected IWorkReportEntryService $workReportEntryService;
 
     public function __construct()
     {
@@ -85,17 +89,11 @@ class WorkReportResource extends Resource
                                     ->required(),
                             ]),
 
-//                        Forms\Components\TextInput::make('report_number')
-//                            ->label('Report No.')
-//                            ->numeric()
-//                            ->disabled()
-//                            ->helperText('Report number is generated automatically'),
-
-                        Forms\Components\Textarea::make('observations')
-                            ->label('Observations')
-                            ->columnSpan(2)
-                            ->rows(2)
-                            ->placeholder('Observations about the work performed...'),
+//                        Forms\Components\Textarea::make('observations')
+//                            ->label('Observations')
+//                            ->columnSpan(2)
+//                            ->rows(2)
+//                            ->placeholder('Observations about the work performed...'),
                     ])
                     ->columns(2),
 
@@ -117,23 +115,35 @@ class WorkReportResource extends Resource
 
                                 Forms\Components\Select::make('service_id')
                                     ->label('Service')
-                                    ->options(function (callable $get) {
+                                    ->relationship('service', 'name')
+                                    ->options(function (callable $get, $context) {
                                         $serviceType = $get('service_type');
+                                        $companyId = $get('../../company_id');
 
-                                        if (!$serviceType) {
+                                        if (!$serviceType || !$companyId) {
                                             return [];
                                         }
 
-                                        if ($serviceType === 'App\\Models\\ContractService') {
-                                            return \App\Models\ContractService::all()->pluck('name', 'id');
+                                        $workReportEntryService = app(IWorkReportEntryService::class);
+                                        
+                                        $enumServiceType = match($serviceType) {
+                                            'App\\Models\\ContractService' => ServiceType::CONTRACT_SERVICE,
+                                            'App\\Models\\ContractExtraService' => ServiceType::CONTRACT_EXTRA_SERVICE,
+                                            default => null,
+                                        };
+
+                                        if (!$enumServiceType) {
+                                            return [];
                                         }
 
-                                        if ($serviceType === 'App\\Models\\ContractExtraService') {
-                                            return \App\Models\ContractExtraService::all()->pluck('name', 'id');
-                                        }
-
-                                        return [];
+                                        $services = $workReportEntryService->getServices($enumServiceType, $companyId);
+                                        
+                                        return $services->pluck('name', 'id');
                                     })
+//                                    ->createOptionForm([
+//                                        Forms\Components\TextInput::make('name')
+//                                            ->required(),
+//                                        ])
                                     ->required()
                                     ->searchable()
                                     ->reactive(),
@@ -278,5 +288,6 @@ class WorkReportResource extends Resource
     private function initServices(): void
     {
         $this->userService = App::make(UserService::class);
+        $this->workReportEntryService = App::make(WorkReportEntryService::class);
     }
 }
