@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('work_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->foreignId('written_by')->constrained('users')->cascadeOnDelete();
             $table->string('report_month'); // e.g., july
             $table->integer('report_year'); // e.g., 2025

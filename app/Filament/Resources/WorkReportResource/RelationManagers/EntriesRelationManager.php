@@ -21,48 +21,48 @@ class EntriesRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('service_type')
-                    ->label('Tip Serviciu')
+                    ->label('Service Type')
                     ->options([
-                        'App\\Models\\ContractService' => 'Serviciu Contract',
-                        'App\\Models\\ContractExtraService' => 'Serviciu Extra',
+                        'App\\Models\\ContractService' => 'Contract Service',
+                        'App\\Models\\ContractExtraService' => 'Extra Service',
                     ])
                     ->required()
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $set) => $set('service_id', null)),
-                    
+
                 Forms\Components\Select::make('service_id')
-                    ->label('Serviciu')
+                    ->label('Service')
                     ->options(function (callable $get) {
                         $serviceType = $get('service_type');
-                        
+
                         if (!$serviceType) {
                             return [];
                         }
-                        
+
                         if ($serviceType === 'App\\Models\\ContractService') {
                             return \App\Models\ContractService::all()->pluck('name', 'id');
                         }
-                        
+
                         if ($serviceType === 'App\\Models\\ContractExtraService') {
                             return \App\Models\ContractExtraService::all()->pluck('name', 'id');
                         }
-                        
+
                         return [];
                     })
                     ->required()
                     ->searchable(),
-                    
+
                 Forms\Components\TextInput::make('order')
-                    ->label('Ordine')
+                    ->label('Order')
                     ->numeric()
                     ->required(),
-                    
+
                 Forms\Components\TextInput::make('quantity')
-                    ->label('Cantitate')
+                    ->label('Quantity')
                     ->numeric()
                     ->step(0.01)
                     ->required(),
-                    
+
                 Forms\Components\TextInput::make('total')
                     ->label('Total')
                     ->numeric()
@@ -77,26 +77,26 @@ class EntriesRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Ordine')
+                    ->label('Order')
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('service_type')
-                    ->label('Tip Serviciu')
+                    ->label('Service Type')
                     ->formatStateUsing(fn (string $state): string => match($state) {
-                        'App\\Models\\ContractService' => 'Serviciu Contract',
-                        'App\\Models\\ContractExtraService' => 'Serviciu Extra',
+                        'App\\Models\\ContractService' => 'Contract Service',
+                        'App\\Models\\ContractExtraService' => 'Extra Service',
                         default => $state,
                     }),
-                    
+
                 Tables\Columns\TextColumn::make('service.name')
-                    ->label('Serviciu')
+                    ->label('Service')
                     ->searchable(),
-                    
+
                 Tables\Columns\TextColumn::make('quantity')
-                    ->label('Cantitate')
+                    ->label('Quantity')
                     ->numeric()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('total')
                     ->label('Total')
                     ->money('RON')
@@ -104,10 +104,10 @@ class EntriesRelationManager extends RelationManager
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('service_type')
-                    ->label('Tip Serviciu')
+                    ->label('Service Type')
                     ->options([
-                        'App\\Models\\ContractService' => 'Serviciu Contract',
-                        'App\\Models\\ContractExtraService' => 'Serviciu Extra',
+                        'App\\Models\\ContractService' => 'Contract Service',
+                        'App\\Models\\ContractExtraService' => 'Extra Service',
                     ]),
             ])
             ->headerActions([
@@ -124,4 +124,4 @@ class EntriesRelationManager extends RelationManager
             ])
             ->defaultSort('order', 'asc');
     }
-} 
+}

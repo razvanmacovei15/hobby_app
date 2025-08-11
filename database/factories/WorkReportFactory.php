@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Contract;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,7 +27,7 @@ class WorkReportFactory extends Factory
         $reportMonth = $this->faker->randomElement($months);
         
         return [
-            'contract_id' => Contract::factory(),
+            'company_id' => Company::factory(),
             'written_by' => User::factory(),
             'report_month' => $reportMonth,
             'report_year' => $reportYear,

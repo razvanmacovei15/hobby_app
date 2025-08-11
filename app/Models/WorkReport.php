@@ -15,8 +15,7 @@ class WorkReport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'contract_id',
-
+        'company_id',
         'written_by',
         'report_month', // e.g., july
         'report_year', // e.g., 2025
@@ -24,11 +23,9 @@ class WorkReport extends Model
         'observations', // optional notes or remarks
     ];
 
-    // need some through methods here to get the executor from the contract_id and all the services from the contract annex in the contract with the contract_id
-
-    public function contract(): BelongsTo
+    public function company(): BelongsTo
     {
-        return $this->belongsTo(Contract::class);
+        return $this->belongsTo(Company::class);
     }
 
     public function writtenBy(): BelongsTo
@@ -41,24 +38,50 @@ class WorkReport extends Model
         return $this->hasMany(WorkReportEntry::class);
     }
 
-    public function executor(): HasOneThrough
+    // Get contracts where this company is the executor
+    public function contractsAsExecutor(): HasMany
     {
-        return $this->hasOneThrough(Company::class, Contract::class, 'id', 'id', 'contract_id', 'executor_id');
+        return $this->hasMany(Contract::class, 'executor_id', 'company_id');
     }
 
-    public function beneficiary(): HasOneThrough
+    // Get contracts where this company is the beneficiary
+    public function contractsAsBeneficiary(): HasMany
     {
-        return $this->hasOneThrough(Company::class, Contract::class, 'id', 'id', 'contract_id', 'beneficiary_id');
+        return $this->hasMany(Contract::class, 'beneficiary_id', 'company_id');
     }
 
+    // Get all contracts for this company (either as executor or beneficiary)
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'executor_id', 'company_id');
+    }
+
+    // Get contract services through contracts where this company is the executor
     public function contractServices(): HasManyThrough
     {
-        return $this->hasManyThrough(ContractService::class, ContractAnnex::class, 'contract_id', 'contract_annex_id', 'contract_id', 'id');
+        return $this->hasManyThrough(
+            ContractService::class,
+            ContractAnnex::class,
+            'contract_id', // Foreign key on contract_annexes table
+            'contract_annex_id', // Foreign key on contract_services table
+            'company_id', // Local key on work_reports table
+            'id' // Local key on contract_annexes table
+        )->whereHas('contract', function ($query) {
+            $query->where('executor_id', $this->company_id);
+        });
     }
 
+    // Get contract extra services through contracts where this company is the executor
     public function contractExtraServices(): HasManyThrough
     {
-        return $this->hasManyThrough(ContractExtraService::class, Contract::class, 'id', 'contract_id', 'contract_id', 'id');
+        return $this->hasManyThrough(
+            ContractExtraService::class,
+            Contract::class,
+            'executor_id', // Foreign key on contracts table
+            'contract_id', // Foreign key on contract_extra_services table
+            'company_id', // Local key on work_reports table
+            'id' // Local key on contracts table
+        );
     }
 
     protected static function boot()
@@ -70,6 +93,7 @@ class WorkReport extends Model
             $lastReport = static::where('report_year', $workReport->report_year)
                 ->orderBy('report_number', 'desc')
                 ->first();
+
             $workReport->report_number = $lastReport ? $lastReport->report_number + 1 : 1;
         });
     }
