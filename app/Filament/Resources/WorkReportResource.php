@@ -7,9 +7,9 @@ use App\Filament\Resources\WorkReportResource\RelationManagers;
 use App\Models\WorkReport;
 use App\Service\BookingService;
 use App\Services\Implementations\UserService;
-use App\Services\Implementations\WorkReportEntryService;
+use App\Services\Implementations\WorkReportService;
 use App\Services\IUserService;
-use App\Services\IWorkReportEntryService;
+use App\Services\IWorkReportService;
 use App\Enums\ServiceType;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -33,7 +33,7 @@ class WorkReportResource extends Resource
     protected static ?string $pluralModelLabel = 'Work Reports';
 
     protected IUserService $userService;
-    protected IWorkReportEntryService $workReportEntryService;
+    protected IWorkReportService $workReportEntryService;
 
     public function __construct()
     {
@@ -124,8 +124,8 @@ class WorkReportResource extends Resource
                                             return [];
                                         }
 
-                                        $workReportEntryService = app(IWorkReportEntryService::class);
-                                        
+                                        $workReportEntryService = app(IWorkReportService::class);
+
                                         $enumServiceType = match($serviceType) {
                                             'App\\Models\\ContractService' => ServiceType::CONTRACT_SERVICE,
                                             'App\\Models\\ContractExtraService' => ServiceType::CONTRACT_EXTRA_SERVICE,
@@ -137,7 +137,7 @@ class WorkReportResource extends Resource
                                         }
 
                                         $services = $workReportEntryService->getServices($enumServiceType, $companyId);
-                                        
+
                                         return $services->pluck('name', 'id');
                                     })
 //                                    ->createOptionForm([
@@ -288,6 +288,6 @@ class WorkReportResource extends Resource
     private function initServices(): void
     {
         $this->userService = App::make(UserService::class);
-        $this->workReportEntryService = App::make(WorkReportEntryService::class);
+        $this->workReportEntryService = App::make(WorkReportService::class);
     }
 }

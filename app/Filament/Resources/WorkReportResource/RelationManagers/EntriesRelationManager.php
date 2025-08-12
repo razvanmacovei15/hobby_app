@@ -9,7 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Services\IWorkReportEntryService;
+use App\Services\IWorkReportService;
 use App\Enums\ServiceType;
 
 class EntriesRelationManager extends RelationManager
@@ -43,8 +43,8 @@ class EntriesRelationManager extends RelationManager
                             return [];
                         }
 
-                        $workReportEntryService = app(IWorkReportEntryService::class);
-                        
+                        $workReportEntryService = app(IWorkReportService::class);
+
                         $enumServiceType = match($serviceType) {
                             'App\\Models\\ContractService' => ServiceType::CONTRACT_SERVICE,
                             'App\\Models\\ContractExtraService' => ServiceType::CONTRACT_EXTRA_SERVICE,
@@ -56,7 +56,7 @@ class EntriesRelationManager extends RelationManager
                         }
 
                         $services = $workReportEntryService->getServices($enumServiceType, $companyId);
-                        
+
                         return $services->pluck('name', 'id');
                     })
 //                    ->createOptionForm([
