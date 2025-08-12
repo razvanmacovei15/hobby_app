@@ -45,6 +45,23 @@ class Company extends Model
 
     public function extraServices(): HasMany
     {
-        return $this->hasMany(ContractExtraService::class);
+        return $this->hasMany(WorkReportExtraService::class, 'executor_company_id');
+    }
+
+    public function beneficiaryExtraServices(): HasMany
+    {
+        return $this->hasMany(WorkReportExtraService::class, 'beneficiary_company_id');
+    }
+
+    public function ownedWorkspaces()
+    {
+        return $this->hasMany(Workspace::class, 'owner_id');
+    }
+
+    public function asExecutorIn()
+    {
+        return $this->belongsToMany(Workspace::class, 'workspace_executors')
+            ->withPivot(['is_active','executor_type'])
+            ->withTimestamps();
     }
 }

@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contracts', function (Blueprint $table) {
+        Schema::create('workspace_executors', function (Blueprint $table) {
             $table->id();
-            $table->string('contract_number')->unique();
-            $table->foreignId('beneficiary_id')->constrained('companies')->restrictOnDelete();
+
+            $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();
             $table->foreignId('executor_id')->constrained('companies')->restrictOnDelete();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->date('sign_date');
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
+
+            $table->unique(['workspace_id', 'executor_id']);
+            $table->index(['is_active', 'workspace_id']);
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contracts');
+        Schema::dropIfExists('workspace_executors');
     }
 };

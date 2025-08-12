@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('contract_annexes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained('contracts')->cascadeOnDelete();
-            $table->string('annex_number')->unique();
+            $table->foreignId('contract_id')->index()->constrained('contracts')->restrictOnDelete();
+            $table->integer('annex_number')->unique();
             $table->date('sign_date');
-            $table->text('description')->nullable();
+            $table->text('notes')->nullable();
+
+            $table->unique(['contract_id', 'annex_number']);
+
             $table->timestamps();
         });
     }

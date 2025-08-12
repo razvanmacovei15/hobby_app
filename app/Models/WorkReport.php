@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class WorkReport extends Model
 {
@@ -15,17 +13,28 @@ class WorkReport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'company_id',
+        'contract_id',
+        'contract_annex_id',
+
         'written_by',
         'report_month', // e.g., july
         'report_year', // e.g., 2025
         'report_number', //incrementing for all reports
-        'observations', // optional notes or remarks
+        'notes', // optional notes or remarks
+
+        // add status later draft|submitted|approved|locked
+        // add approved_at and approved_by
+        // add locked_at
     ];
 
-    public function company(): BelongsTo
+    public function contract(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Contract::class);
+    }
+
+    public function contractAnnex(): BelongsTo
+    {
+        return $this->belongsTo(ContractAnnex::class);
     }
 
     public function writtenBy(): BelongsTo
@@ -38,63 +47,28 @@ class WorkReport extends Model
         return $this->hasMany(WorkReportEntry::class);
     }
 
-    // Get contracts where this company is the executor
-    public function contractsAsExecutor(): HasMany
+    public function extraServices(): HasMany
     {
-        return $this->hasMany(Contract::class, 'executor_id', 'company_id');
-    }
-
-    // Get contracts where this company is the beneficiary
-    public function contractsAsBeneficiary(): HasMany
-    {
-        return $this->hasMany(Contract::class, 'beneficiary_id', 'company_id');
-    }
-
-    // Get all contracts for this company (either as executor or beneficiary)
-    public function contracts(): HasMany
-    {
-        return $this->hasMany(Contract::class, 'executor_id', 'company_id');
-    }
-
-    // Get contract services through contracts where this company is the executor
-    public function contractServices(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            ContractService::class,
-            ContractAnnex::class,
-            'contract_id', // Foreign key on contract_annexes table
-            'contract_annex_id', // Foreign key on contract_services table
-            'company_id', // Local key on work_reports table
-            'id' // Local key on contract_annexes table
-        )->whereHas('contract', function ($query) {
-            $query->where('executor_id', $this->company_id);
-        });
-    }
-
-    // Get contract extra services through contracts where this company is the executor
-    public function contractExtraServices(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            ContractExtraService::class,
-            Contract::class,
-            'executor_id', // Foreign key on contracts table
-            'contract_id', // Foreign key on contract_extra_services table
-            'company_id', // Local key on work_reports table
-            'id' // Local key on contracts table
-        );
+        return $this->hasMany(WorkReportExtraService::class);
     }
 
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($workReport) {
-            // Get the highest report number for the current year and increment it
-            $lastReport = static::where('report_year', $workReport->report_year)
-                ->orderBy('report_number', 'desc')
-                ->first();
+        static::creating(function (WorkReport $wr) {
+            if (!$wr->contract_id) {
+                throw new \InvalidArgumentException('contract_id required.');
+            }
 
-            $workReport->report_number = $lastReport ? $lastReport->report_number + 1 : 1;
+            \DB::transaction(function () use ($wr) {
+                $max = WorkReport::where('contract_id', $wr->contract_id)
+                    ->where('report_year', $wr->report_year)
+                    ->lockForUpdate()
+                    ->max('report_number');
+
+                $wr->report_number = ($max ?? 0) + 1;
+            });
         });
     }
 }

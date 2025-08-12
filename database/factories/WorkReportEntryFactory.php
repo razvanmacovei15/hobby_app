@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\ContractService;
-use App\Models\ContractExtraService;
+use App\Models\WorkReportExtraService;
 use App\Models\WorkReport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,12 +19,12 @@ class WorkReportEntryFactory extends Factory
      */
     public function definition(): array
     {
-        // Randomly choose between ContractService and ContractExtraService
+        // Randomly choose between ContractService and WorkReportExtraService
         $serviceType = $this->faker->randomElement([
             ContractService::class,
-            ContractExtraService::class
+            WorkReportExtraService::class
         ]);
-        
+
         return [
             'work_report_id' => WorkReport::factory(),
             'order' => $this->faker->numberBetween(1, 10),
@@ -32,6 +32,7 @@ class WorkReportEntryFactory extends Factory
             'service_id' => $serviceType::factory(),
             'quantity' => $this->faker->randomFloat(2, 1, 500),
             'total' => $this->faker->randomFloat(2, 100, 100000),
+            'notes' => $this->faker->optional(0.7)->sentence(),
         ];
     }
 }

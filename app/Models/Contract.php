@@ -14,11 +14,14 @@ class Contract extends Model
 
     protected $fillable = [
         'contract_number',
+
         'beneficiary_id',
         'executor_id',
         'start_date',
         'end_date',
         'sign_date',
+
+        // create enums for contract status
     ];
 
     public function beneficiary(): BelongsTo
@@ -38,6 +41,6 @@ class Contract extends Model
 
     public function extraServices(): HasMany
     {
-        return $this->hasMany(ContractExtraService::class);
+        return $this->hasMany(WorkReportExtraService::class);
     }
 }

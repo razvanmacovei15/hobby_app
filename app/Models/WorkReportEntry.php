@@ -14,12 +14,15 @@ class WorkReportEntry extends Model
 
     protected $fillable = [
         'work_report_id',
-        'order',
 
         'service_type',
         'service_id',
+
         'quantity',
-        'total'
+        'total',
+
+        'order',
+        'notes'
     ];
 
     public function workReport(): BelongsTo

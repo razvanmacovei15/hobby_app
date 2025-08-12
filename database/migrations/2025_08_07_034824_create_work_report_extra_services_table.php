@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contract_extra_services', function (Blueprint $table) {
+        Schema::create('work_report_extra_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('company_id')->constrained()->cascadeOnDelete(); // the executor of the extra service
+            $table->foreignId('work_report_id')->index()->constrained()->cascadeOnDelete();
+            $table->foreignId('contract_id')->index()->constrained('contracts');
+            $table->foreignId('executor_company_id')->constrained('companies'); // the executor of the extra service
+            $table->foreignId('beneficiary_company_id')->constrained('companies'); // the beneficiary of the extra service
+
             $table->string('name');
             $table->string('unit_of_measure')->nullable();
             $table->decimal('price_per_unit_of_measure', 10, 2);
-            $table->integer('quantity')->default(1);
-            $table->text('description')->nullable(); // optional explanation
-            $table->date('provided_at'); // when it was done
+            $table->text('notes')->nullable(); // optional explanation
+
             $table->timestamps();
         });
     }

@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contract_services', function (Blueprint $table) {
+        Schema::create('workspaces', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_annex_id')->index()->constrained('contract_annexes')->restrictOnDelete();
-            $table->integer('order');
             $table->string('name');
-            $table->string('unit_of_measure');
-            $table->decimal('price_per_unit_of_measure', 10, 2);
-
-            $table->unique(['contract_annex_id', 'name']);
-
+            $table->foreignId('owner_id')->index()->constrained('companies')->restrictOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contract_services');
+        Schema::dropIfExists('workspaces');
     }
 };

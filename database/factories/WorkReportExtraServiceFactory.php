@@ -4,12 +4,13 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Contract;
+use App\Models\WorkReport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContractExtraService>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WorkReportExtraService>
  */
-class ContractExtraServiceFactory extends Factory
+class WorkReportExtraServiceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -38,14 +39,14 @@ class ContractExtraServiceFactory extends Factory
         ];
 
         return [
+            'work_report_id' => WorkReport::factory(),
             'contract_id' => Contract::factory(),
-            'company_id' => Company::factory(),
-            'name' => fake()->randomElement($services),
-            'unit_of_measure' => fake()->randomElement($unitsOfMeasure),
-            'price_per_unit_of_measure' => fake()->randomFloat(2, 10, 5000),
-            'quantity' => fake()->numberBetween(1, 100),
-            'description' => fake()->optional(0.7)->sentence(),
-            'provided_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'executor_company_id' => Company::factory(),
+            'beneficiary_company_id' => Company::factory(),
+            'name' => $this->faker->randomElement($services),
+            'unit_of_measure' => $this->faker->randomElement($unitsOfMeasure),
+            'price_per_unit_of_measure' => $this->faker->randomFloat(2, 10, 5000),
+            'notes' => $this->faker->optional(0.7)->sentence(),
         ];
     }
 }
