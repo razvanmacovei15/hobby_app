@@ -160,7 +160,7 @@ class CompanyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCompanies::route('/'),
+            'index' => Pages\ListCompanies::route('/executors'),
         ];
     }
 }
