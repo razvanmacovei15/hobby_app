@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\Implementations\UserService;
-use App\Services\Implementations\WorkReportService;
-use App\Services\IUserService;
-use App\Services\IWorkReportService;
+use App\Services\IExecutorService;
+use App\Services\Implementations\ExecutorService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,8 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(IUserService::class, UserService::class);
-        $this->app->bind(IWorkReportService::class, WorkReportService::class);
+        $this->app->bind(IExecutorService::class, ExecutorService::class);
     }
 
     /**

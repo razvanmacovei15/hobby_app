@@ -61,8 +61,8 @@ class Company extends Model
 
     public function asExecutorIn()
     {
-        return $this->belongsToMany(Workspace::class, 'workspace_executors')
-            ->withPivot(['is_active','executor_type'])
+        return $this->belongsToMany(Workspace::class,'workspace_executors')
+            ->withPivot(['is_active'])
             ->withTimestamps();
     }
 }

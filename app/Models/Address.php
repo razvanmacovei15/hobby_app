@@ -24,6 +24,29 @@ class Address extends Model
         'country',
     ];
 
+    // Optional: expose it automatically when the model is JSON-cast
+    protected $appends = ['full_address'];
+
+    public function getFullAddressAttribute(): string
+    {
+        $line1 = array_filter([
+            trim(implode(' ', array_filter([$this->street, $this->street_number])) ?: ''),
+            $this->building ? 'Bl. '.$this->building : null,
+            $this->apartment_number ? 'Ap. '.$this->apartment_number : null,
+        ]);
+
+        $line2 = array_filter([
+            $this->city,
+            $this->state,
+            $this->country,
+        ]);
+
+        return trim(implode(', ', array_filter([
+            implode(', ', $line1) ?: null,
+            implode(', ', $line2) ?: null,
+        ])));
+    }
+
     public function company(): HasOne
     {
         return $this->hasOne(Company::class);

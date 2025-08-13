@@ -17,7 +17,8 @@ class WorkspaceExecutor extends Model
         'executor_id',
 
         'is_active',
-        'executor_type'
+        'executor_type',
+        'has_contract',
     ];
 
     public function executor(): BelongsTo
