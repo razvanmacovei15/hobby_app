@@ -12,11 +12,8 @@ use App\Filament\Resources\Executors\Tables\ExecutorsTable;
 use App\Models\WorkspaceExecutor;
 use App\Services\IExecutorService;
 use BackedEnum;
-use Filament\Facades\Filament;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 

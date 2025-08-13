@@ -4,8 +4,6 @@ namespace App\Filament\Resources\Executors\Pages;
 
 use App\Filament\Resources\Executors\ExecutorResource;
 use App\Filament\Resources\Executors\Schemas\ExecutorForm;
-use App\Models\WorkspaceExecutor;
-use App\Services\IExecutorService;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
