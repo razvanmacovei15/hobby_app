@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ContractServiceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class ContractService extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContractServiceFactory> */
+    /** @use HasFactory<ContractServiceFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             CompanySeeder::class,
             WorkspaceSeeder::class,
+            WorkspaceUserSeeder::class,
             ConstructionSiteSeeder::class,
             BuildingSeeder::class,
             ContractSeeder::class,
@@ -33,6 +34,5 @@ class DatabaseSeeder extends Seeder
             FloorSeeder::class,
             ApartmentSeeder::class,
         ]);
-
     }
 }

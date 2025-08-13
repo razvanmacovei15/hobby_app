@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\WorkspaceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Workspace extends Model
 {
-    /** @use HasFactory<\Database\Factories\WorkspaceFactory> */
+    /** @use HasFactory<WorkspaceFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -32,9 +33,16 @@ class Workspace extends Model
             ->wherePivot('is_active', true);
     }
 
+    public function contracts()
+    {
+        return $this->belongsToMany(Contract::class, 'workspace_contracts')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
     public function users()
     {
-        return $this->belongsToMany(\App\Models\User::class, 'user_workspace', 'workspace_id', 'user_id')
+        return $this->belongsToMany(User::class, 'workspace_users', 'workspace_id', 'user_id')
             ->withTimestamps();
     }
 }

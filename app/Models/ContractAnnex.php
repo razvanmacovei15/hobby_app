@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use InvalidArgumentException;
+use Database\Factories\ContractAnnexFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class ContractAnnex extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContractAnnexFactory> */
+    /** @use HasFactory<ContractAnnexFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -39,7 +41,7 @@ class ContractAnnex extends Model
             // Safety: if it's being created via relationship ($contract->annexes()->create()),
             // contract_id will already be set.
             if (! $annex->contract_id) {
-                throw new \InvalidArgumentException('contract_id is required to generate annex_number.');
+                throw new InvalidArgumentException('contract_id is required to generate annex_number.');
             }
 
             // Robust version with row-level lock to avoid race conditions under high concurrency:

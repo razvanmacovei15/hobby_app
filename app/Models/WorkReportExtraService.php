@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\WorkReportExtraServiceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class WorkReportExtraService extends Model
 {
-    /** @use HasFactory<\Database\Factories\WorkReportExtraServiceFactory> */
+    /** @use HasFactory<WorkReportExtraServiceFactory> */
     use HasFactory;
     protected $fillable = [
         'work_report_id',

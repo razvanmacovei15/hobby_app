@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use InvalidArgumentException;
+use DB;
+use Database\Factories\WorkReportFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WorkReport extends Model
 {
-    /** @use HasFactory<\Database\Factories\WorkReportFactory> */
+    /** @use HasFactory<WorkReportFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -58,10 +61,10 @@ class WorkReport extends Model
 
         static::creating(function (WorkReport $wr) {
             if (!$wr->contract_id) {
-                throw new \InvalidArgumentException('contract_id required.');
+                throw new InvalidArgumentException('contract_id required.');
             }
 
-            \DB::transaction(function () use ($wr) {
+            DB::transaction(function () use ($wr) {
                 $max = WorkReport::where('contract_id', $wr->contract_id)
                     ->where('report_year', $wr->report_year)
                     ->lockForUpdate()

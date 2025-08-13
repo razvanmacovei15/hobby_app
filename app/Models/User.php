@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -18,7 +19,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable implements HasName, FilamentUser, HasTenants
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -58,7 +59,7 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
 
     public function workspaces(): BelongsToMany
     {
-        return $this->belongsToMany(Workspace::class, 'user_workspace', 'user_id', 'workspace_id')
+        return $this->belongsToMany(Workspace::class, 'workspace_users', 'user_id', 'workspace_id')
             ->withTimestamps();
     }
 
@@ -72,7 +73,6 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     {
         return true;
     }
-
 
     public function canAccessTenant(Model $tenant): bool
     {
