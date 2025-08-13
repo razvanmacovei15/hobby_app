@@ -3,13 +3,37 @@
 namespace App\Filament\Resources\Executors\Pages;
 
 use App\Filament\Resources\Executors\ExecutorResource;
+use App\Filament\Resources\Executors\Schemas\ExecutorForm;
+use App\Models\Address;
+use App\Models\Company;
+use App\Models\User;
+use App\Services\IExecutorService;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Arr;
+use Filament\Schemas\Schema;
 
 class EditExecutor extends EditRecord
 {
     protected static string $resource = ExecutorResource::class;
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        /** @var IExecutorService $svc */
+        $svc = app(IExecutorService::class);
+
+        // Pass the current related company if present
+        $currentExecutor = $this->record->executor ?? null;
+
+        return $svc->mutateFormDataBeforeSave($data, $currentExecutor);
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return ExecutorForm::configure($schema)
+            ->record($this->record); // 👈 v4: bind the model for editing
+    }
 
     protected function getHeaderActions(): array
     {

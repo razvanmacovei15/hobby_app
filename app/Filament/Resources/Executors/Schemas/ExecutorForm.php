@@ -3,15 +3,18 @@
 namespace App\Filament\Resources\Executors\Schemas;
 
 use App\Models\Address;
+use App\Models\Company;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Arr;
 
 class ExecutorForm
 {
@@ -43,17 +46,6 @@ class ExecutorForm
                             ->label('IBAN')
                             ->formatStateUsing(fn ($record) => $record?->executor?->iban),
 
-                        Select::make('executor.representative_id')
-                            ->label('Representative')
-                            ->options(fn () => User::query()
-                                ->selectRaw("id, CONCAT(first_name,' ', last_name) AS name")
-                                ->orderBy('name')
-                                ->pluck('name', 'id')
-                                ->all())
-                            ->searchable()
-                            ->preload()
-                            ->formatStateUsing(fn ($record) => $record?->executor?->representative_id),
-
                         TextInput::make('executor.phone')
                             ->label('Phone')
                             ->tel()
@@ -61,17 +53,68 @@ class ExecutorForm
                     ])
                     ->columns(2),
 
-                Section::make('Workspace link')->schema([
-                    Toggle::make('is_active')->label('Active'),
-                ]),
+                Section::make('Address')
+                    ->schema([
+                        TextInput::make('executor.address.street')
+                            ->label('Street')
+                            ->required()
+                            ->maxLength(255)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->street),
 
-            ]);
-    }
+                        TextInput::make('executor.address.street_number')
+                            ->label('No.')
+                            ->maxLength(50)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->street_number),
 
-    public static function edit(): array
-    {
-        return [
+                        TextInput::make('executor.address.building')
+                            ->maxLength(50)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->building),
 
-        ];
+                        TextInput::make('executor.address.apartment_number')
+                            ->label('Apt')
+                            ->maxLength(50)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->apartment_number),
+
+                        TextInput::make('executor.address.city')
+                            ->required()
+                            ->maxLength(255)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->city),
+
+                        TextInput::make('executor.address.state')
+                            ->maxLength(255)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->state),
+
+                        TextInput::make('executor.address.country')
+                            ->required()
+                            ->maxLength(255)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->address?->country),
+                    ])
+                    ->columns(4),
+
+                Section::make('Representative')
+                    ->schema([
+                        TextInput::make('executor.representative.first_name')
+                            ->label('First name')
+                            ->required()
+                            ->maxLength(100)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->representative?->first_name),
+
+                        TextInput::make('executor.representative.last_name')
+                            ->label('Last name')
+                            ->required()
+                            ->maxLength(100)
+                            ->formatStateUsing(fn ($record) => $record?->executor?->representative?->last_name),
+
+                        TextInput::make('executor.representative.email')
+                            ->label('Email')
+                            ->email()
+                            ->required()
+                            ->maxLength(190)
+                            ->helperText('If this email already exists, we’ll link that user as representative.')
+                            ->formatStateUsing(fn ($record) => $record?->executor?->representative?->email),
+                    ])
+                    ->columns(3),
+            ])
+            ->columns(1);
     }
 }

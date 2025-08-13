@@ -20,4 +20,6 @@ interface IExecutorService
      * scoped to the current tenant and eager-loaded.
      */
     public function findForView(int $workspaceExecutorId): WorkspaceExecutor;
+
+    public function mutateFormDataBeforeSave(array $data, ?Company $currentExecutor = null): array;
 }

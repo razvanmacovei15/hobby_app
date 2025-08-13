@@ -22,10 +22,32 @@ class ExecutorInfolist
                 TextEntry::make('executor.phone')->label('Phone'),
             ])->columns(3),
 
+            Section::make('Address')->schema([
+                TextEntry::make('executor.address.street')->label('Street'),
+                TextEntry::make('executor.address.street_number')->label('No.'),
+                TextEntry::make('executor.address.building')->label('Building'),
+                TextEntry::make('executor.address.apartment_number')->label('Apt'),
+                TextEntry::make('executor.address.city')->label('City'),
+                TextEntry::make('executor.address.state')->label('State'),
+                TextEntry::make('executor.address.country')->label('Country'),
+            ])->columns(4),
+
+            Section::make('Representative')->schema([
+                TextEntry::make('representative_name')
+                    ->label('Name')
+                    ->state(fn ($record) => $record?->executor?->representative
+                        ? $record->executor->representative->getFilamentName()
+                        : '—'),
+
+                TextEntry::make('executor.representative.email')->label('Email')
+            ])->columns(2),
+
             Section::make('Workspace')->schema([
                 TextEntry::make('workspace.name')->label('Workspace'),
+                TextEntry::make('executor_type')->label('Service Type')->badge(),
                 IconEntry::make('is_active')->label('Is Executor Active')->boolean(),
-            ]),
+                IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
+            ])->columns(4),
         ])
             ->columns(1);
     }

@@ -13,6 +13,7 @@ use App\Models\WorkspaceExecutor;
 use App\Services\IExecutorService;
 use BackedEnum;
 use Filament\Facades\Filament;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -23,8 +24,11 @@ class ExecutorResource extends Resource
 {
     protected static ?string $model = WorkspaceExecutor::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // 👇 new
+    protected static string|null|\UnitEnum $navigationGroup = 'Execution Network';
 
+    // swap the basic icon for something with personality
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
     protected static ?string $recordTitleAttribute = 'executor.name';
 
     public static function form(Schema $schema): Schema
@@ -45,7 +49,6 @@ class ExecutorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

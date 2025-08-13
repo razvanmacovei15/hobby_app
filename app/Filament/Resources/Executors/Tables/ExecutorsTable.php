@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\Executors\Tables;
 
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,15 +44,33 @@ class ExecutorsTable
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\CheckboxColumn::make('is_active')
+                TextColumn::make('executor_type')->label('Service Type')->badge(),
+
+                Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
                     ->sortable()
-                    ->disabled(),
+                    ->boolean(),
 
-                Tables\Columns\CheckboxColumn::make('has_contract')
+                Tables\Columns\IconColumn::make('has_contract')
                     ->label('Has Contract')
                     ->sortable()
-                    ->disabled(),
+                    ->boolean(),
+
+            ])
+            ->recordAction(ViewAction::class)
+            ->recordActions([
+                ViewAction::make(),
+
+                EditAction::make()
+                    // optional: customize the icon/label/tooltip
+                    ->icon('heroicon-m-pencil-square')
+                    ->tooltip('Edit'),
+
+                DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Remove executor from workspace')
+                    ->modalDescription('This removes the executor link in this workspace. The Company record remains.')
+                    ->modalSubmitActionLabel('Delete'),
             ]);
     }
 }
