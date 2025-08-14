@@ -21,8 +21,8 @@ class OwnerCompany extends Page implements HasInfolists
     protected static string|null|\UnitEnum $navigationGroup = 'Organization';
 
     protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationLabel = 'Owner company';
-    protected static ?string $title = 'Owner company';
+    protected static ?string $navigationLabel = 'Company Details';
+    protected static ?string $title = '';
 
     public ?Company $record = null;
 
@@ -40,7 +40,7 @@ class OwnerCompany extends Page implements HasInfolists
         return $infolist
             ->record($this->record)
             ->components([
-                Section::make('Company Details')->schema([
+                Section::make('Invoice Details')->schema([
                     TextEntry::make('name')->label('Company Name'),
                     TextEntry::make('cui')->label('CUI'),
                     TextEntry::make('j')->label('J'),
@@ -59,8 +59,9 @@ class OwnerCompany extends Page implements HasInfolists
                     TextEntry::make('address.country')->label('Country'),
                 ])->columns(4),
 
-                Section::make('Representative')->schema([
-                    TextEntry::make('representative_name')
+                Section::make('Representative')
+                    ->schema([
+                    TextEntry::make('representative')
                         ->label('Name')
                         ->state(fn($record) => $record?->representative
                             ? $record->representative->getFilamentName()
@@ -75,18 +76,9 @@ class OwnerCompany extends Page implements HasInfolists
     protected function getHeaderActions(): array
     {
         if (! $this->record) {
-            // No company yet → show "Create" in header
-            return [
-
-            ];
+            return [];
         }
 
-        // Company exists → show "Edit"
-        return [
-            Action::make('edit')
-                ->label('Edit')
-                ->icon('heroicon-o-pencil-square')
-                ->url(EditOwnerCompany::getUrl()),
-        ];
+        return [];
     }
 }

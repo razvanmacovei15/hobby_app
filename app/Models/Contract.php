@@ -43,13 +43,6 @@ class Contract extends Model
         return $this->hasMany(ContractAnnex::class);
     }
 
-    public function workspaces()
-    {
-        return $this->belongsToMany(Workspace::class, 'workspace_contracts')
-            ->withPivot('role')
-            ->withTimestamps();
-    }
-
     /** Visibility scope: contracts shared to a company */
     public function scopeVisibleToCompany(Builder $q, int $companyId): Builder
     {

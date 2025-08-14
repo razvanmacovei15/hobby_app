@@ -2,13 +2,17 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Address;
 use App\Models\Company;
+use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class EditOwnerCompany extends Page
 {
@@ -142,27 +146,75 @@ class EditOwnerCompany extends Page
     public function save(): void
     {
         $workspace = Filament::getTenant();
-        $data = $this->form->getState();
 
-        if ($this->record) {
-            // Update
-            $this->record->fill($data)->save();
-            $this->form->saveRelationships();
-        } else {
-            // Create and link to workspace
-            $this->record = Company::create($data);
-            $this->form->record($this->record)->saveRelationships();
+        $state = $this->form->getState();
 
-            if ($workspace) {
-                $workspace->update(['owner_id' => $this->record->getKey()]);
+        $companyData = collect($state)->except(['address', 'representative'])->toArray();
+        $addressData = $state['address'] ?? null;
+        $repData     = $state['representative'] ?? null;
+
+        DB::transaction(function () use ($workspace, $companyData, $addressData, $repData) {
+            // 1) CREATE or UPDATE the company core
+            if ($this->record) {
+                $company = $this->record->fill($companyData);
+            } else {
+                $company = new Company($companyData);
             }
-        }
+
+            // 2) Address: upsert separately (no ->relationship())
+            if ($addressData && array_filter($addressData, fn ($v) => $v !== null && $v !== '')) {
+                if ($company->address) {
+                    $company->address->fill($addressData)->save();
+                } else {
+                    $address = Address::create($addressData);
+                    $company->address()->associate($address);
+                }
+            }
+
+            // 3) Representative: create-or-update by email, then associate
+            // --- representative upsert + associate ---
+            if (! empty($repData)) {
+                // Prefer to resolve by email to avoid duplicates
+                $resolved = null;
+
+                if (! empty($repData['email'])) {
+                    $resolved = User::query()->firstWhere('email', $repData['email']);
+                }
+
+                if ($resolved) {
+                    // Update name fields on the existing user (don’t touch password)
+                    $resolved->fill(Arr::only($repData, ['first_name', 'last_name']))->save();
+                    $user = $resolved;
+                } else {
+                    // Create a new user with a random password (hashed by cast)
+                    $user = new User();
+                    $user->fill(Arr::only($repData, ['first_name', 'last_name', 'email']));
+                    $user->save();
+                    // Associate on the company
+                    $company->representative()->associate($user);
+                }
+            }
+
+
+            // 4) Persist company (will also persist address association & representative_id)
+            $company->save();
+
+            // 5) On first create, link workspace -> owner
+            if (!$this->record && $workspace) {
+                $workspace->update(['owner_id' => $company->getKey()]);
+            }
+
+            // Keep page state in sync
+            $this->record = $company->fresh(['address', 'representative']);
+        });
 
         Notification::make()
             ->success()
             ->title('Owner company saved')
             ->send();
 
-        $this->redirect(OwnerCompany::getUrl());
+        // Back to read-only page
+        $this->redirect(\App\Filament\Pages\OwnerCompany::getUrl());
     }
+
 }

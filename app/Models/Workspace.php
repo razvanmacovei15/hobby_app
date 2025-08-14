@@ -33,13 +33,6 @@ class Workspace extends Model
             ->wherePivot('is_active', true);
     }
 
-    public function contracts()
-    {
-        return $this->belongsToMany(Contract::class, 'workspace_contracts')
-            ->withPivot('role')
-            ->withTimestamps();
-    }
-
     public function users()
     {
         return $this->belongsToMany(User::class, 'workspace_users', 'workspace_id', 'user_id')

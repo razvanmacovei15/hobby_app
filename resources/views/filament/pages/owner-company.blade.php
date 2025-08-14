@@ -4,13 +4,12 @@
 
 <x-filament::page>
     {{-- Wrap everything in a centered container --}}
-    <div class="mx-auto w-full max-w-4xl border">
         @if ($this->record)
             {{-- VIEW MODE: centered card with heading + infolist --}}
-            <div class="rounded-2xl border shadow-sm bg-white dark:bg-gray-900 p-6">
+            <div class="rounded-2xl  shadow-sm bg-white dark:bg-gray-900 p-6">
                 <div class="mb-6 flex items-start justify-between gap-4">
                     <div>
-                        <h2 class="text-xl font-semibold">Owner company</h2>
+{{--                        <h2 class="text-xl font-semibold">Owner company</h2>--}}
                         <p class="mt-1 text-sm text-gray-500">
                             Company details for this workspace.
                         </p>
@@ -48,5 +47,4 @@
                 </div>
             </div>
         @endif
-    </div>
 </x-filament::page>
