@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('workspaces', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('owner_id')->index()->constrained('companies')->restrictOnDelete();
+            $table->foreignId('owner_id')->nullable()->index()->constrained('companies')->nullOnDelete();
             $table->timestamps();
         });
     }
