@@ -32,8 +32,9 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->tenant(Workspace::class)
+            ->tenant(Workspace::class, slugAttribute: 'id', ownershipRelationship: null)
             ->tenantMenu(false)
+            ->breadcrumbs(false)
             ->path('')
             ->registration(Register::class)
             ->login()

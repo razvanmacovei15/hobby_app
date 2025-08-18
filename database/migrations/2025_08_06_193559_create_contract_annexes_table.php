@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contract_annexes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_id')->index()->constrained('contracts')->restrictOnDelete();
-            $table->integer('annex_number')->unique();
+            $table->integer('annex_number');
             $table->date('sign_date');
             $table->text('notes')->nullable();
 

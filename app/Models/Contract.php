@@ -17,6 +17,7 @@ class Contract extends Model
     use HasFactory;
 
     protected $fillable = [
+        'registration_key',
         'contract_number',
 
         'beneficiary_id',
@@ -41,14 +42,5 @@ class Contract extends Model
     public function annexes(): HasMany
     {
         return $this->hasMany(ContractAnnex::class);
-    }
-
-    /** Visibility scope: contracts shared to a company */
-    public function scopeVisibleToCompany(Builder $q, int $companyId): Builder
-    {
-        return $q->where(function ($qq) use ($companyId) {
-            $qq->where('beneficiary_id', $companyId)
-                ->orWhere('executor_id', $companyId);
-        });
     }
 }
