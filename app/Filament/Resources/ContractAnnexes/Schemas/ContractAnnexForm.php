@@ -15,11 +15,12 @@ class ContractAnnexForm
         return $schema
             ->components([
                 Select::make('contract_id')
-                    ->relationship('contract', 'id')
-                    ->required(),
-                TextInput::make('annex_number')
+                    ->label('Contract')
+                    ->relationship('contract', 'contract_number') // or display column
                     ->required()
-                    ->numeric(),
+                    ->default(fn () => request()->integer('contract_id'))
+                    ->disabled(fn () => request()->filled('contract_id')) // user can’t change it
+                    ->dehydrated(), // still saves when disabled
                 DatePicker::make('sign_date')
                     ->required(),
                 Textarea::make('notes')

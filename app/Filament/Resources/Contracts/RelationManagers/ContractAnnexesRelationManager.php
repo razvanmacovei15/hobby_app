@@ -48,8 +48,14 @@ class ContractAnnexesRelationManager extends RelationManager
                 TextColumn::make('notes')
             ])
             ->headerActions([
-                Action::make('Create annex')
-                    ->label('Create annex'),
+                Action::make('createAnnex')
+                    ->label('Create annex')
+                    ->icon('heroicon-m-plus')
+                    ->url(function (): string {
+                        $contractId = $this->getOwnerRecord()->getKey(); // parent Contract
+                        return ContractAnnexResource::getUrl('create') . '?contract_id=' . $contractId;
+                    }),
+
             ]);
     }
 }
