@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\AddressFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Address extends Model
 {
-    /** @use HasFactory<\Database\Factories\AddressFactory> */
+    /** @use HasFactory<AddressFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -22,6 +23,29 @@ class Address extends Model
         'state',
         'country',
     ];
+
+    // Optional: expose it automatically when the model is JSON-cast
+    protected $appends = ['full_address'];
+
+    public function getFullAddressAttribute(): string
+    {
+        $line1 = array_filter([
+            trim(implode(' ', array_filter([$this->street, $this->street_number])) ?: ''),
+            $this->building ? 'Bl. '.$this->building : null,
+            $this->apartment_number ? 'Ap. '.$this->apartment_number : null,
+        ]);
+
+        $line2 = array_filter([
+            $this->city,
+            $this->state,
+            $this->country,
+        ]);
+
+        return trim(implode(', ', array_filter([
+            implode(', ', $line1) ?: null,
+            implode(', ', $line2) ?: null,
+        ])));
+    }
 
     public function company(): HasOne
     {

@@ -2,21 +2,20 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Components\Component;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Auth\Register as BaseRegister;
 
 use Filament\Pages\Page;
 
-class Register extends BaseRegister
+class Register extends \Filament\Auth\Pages\Register
 {
     protected function getForms(): array
     {
         return [
             'form' => $this->form(
                 $this->makeForm()
-                    ->schema([
+                    ->components([
                         $this->getFirstNameFormComponent(),
                         $this->getLastNameFormComponent(),
                         $this->getEmailFormComponent(),

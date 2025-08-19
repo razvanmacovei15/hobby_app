@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('work_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('contract_id')->index()->constrained()->restrictOnDelete();
+            $table->foreignId('contract_annex_id')->index()->constrained()->restrictOnDelete();
             $table->foreignId('written_by')->constrained('users')->cascadeOnDelete();
+
             $table->string('report_month'); // e.g., july
             $table->integer('report_year'); // e.g., 2025
             $table->integer('report_number'); // incrementing for all reports (handled in model)
-            $table->text('observations')->nullable(); // optional notes or remarks
+            $table->text('notes')->nullable(); // optional notes or remarks
+
+            $table->unique(['report_year', 'report_number']);
+            $table->unique(['contract_id', 'report_year', 'report_month']);
+
             $table->timestamps();
         });
     }

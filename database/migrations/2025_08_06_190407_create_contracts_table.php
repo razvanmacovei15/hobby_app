@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('contract_number')->unique();
-            $table->foreignId('beneficiary_id')->constrained('companies');
-            $table->foreignId('executor_id')->constrained('companies');
+            $table->foreignId('beneficiary_id')->constrained('companies')->restrictOnDelete();
+            $table->foreignId('executor_id')->constrained('companies')->restrictOnDelete();
             $table->date('start_date');
             $table->date('end_date');
             $table->date('sign_date');

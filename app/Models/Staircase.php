@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\StaircaseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Staircase extends Model
 {
-    /** @use HasFactory<\Database\Factories\StaircaseFactory> */
+    /** @use HasFactory<StaircaseFactory> */
     use HasFactory;
 
     protected $fillable = [

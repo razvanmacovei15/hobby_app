@@ -10,14 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ContractAnnexFactory extends Factory
 {
-    protected $annexTypes = [
-        'Modificare prețuri',
-        'Prelungire termen',
-        'Modificare specificații',
-        'Adăugare servicii',
-        'Modificare condiții'
-    ];
-
     /**
      * Define the model's default state.
      *
@@ -26,13 +18,12 @@ class ContractAnnexFactory extends Factory
     public function definition(): array
     {
         $signDate = $this->faker->dateTimeBetween('-6 months', 'now');
-        $annexNumber = $this->faker->unique()->numberBetween(1, 50);
         
         return [
             'contract_id' => Contract::factory(),
-            'annex_number' => 'Anexa ' . $annexNumber,
+            'annex_number' => $this->faker->unique()->numberBetween(1, 50),
             'sign_date' => $signDate,
-            'description' => $this->faker->randomElement($this->annexTypes) . ': ' . $this->faker->sentence(),
+            'notes' => $this->faker->optional(0.7)->sentence(),
         ];
     }
 }

@@ -20,18 +20,19 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             LocationSeeder::class,
             CompanySeeder::class,
+            WorkspaceSeeder::class,
+            WorkspaceUserSeeder::class,
             ConstructionSiteSeeder::class,
             BuildingSeeder::class,
             ContractSeeder::class,
             ContractAnnexSeeder::class,
             ContractServiceSeeder::class,
-            ContractExtraServiceSeeder::class,
             WorkReportSeeder::class,
+            ContractExtraServiceSeeder::class,
             WorkReportEntrySeeder::class,
             StaircaseSeeder::class,
             FloorSeeder::class,
             ApartmentSeeder::class,
         ]);
-
     }
 }

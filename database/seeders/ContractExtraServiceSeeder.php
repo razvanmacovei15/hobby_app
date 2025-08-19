@@ -13,40 +13,40 @@ class ContractExtraServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('contract_extra_services')->insert([
+        DB::table('work_report_extra_services')->insert([
             [
+                'work_report_id' => 1,
                 'contract_id' => 1,
-                'company_id' => 1,
+                'executor_company_id' => 2,
+                'beneficiary_company_id' => 1,
                 'name' => 'Instalare sistem de ventilatie',
                 'unit_of_measure' => 'buc',
                 'price_per_unit_of_measure' => 1250.00,
-                'quantity' => 4,
-                'description' => 'Instalare sistem de ventilatie pentru toate apartamentele',
-                'provided_at' => '2025-03-15',
+                'notes' => 'Instalare sistem de ventilatie pentru toate apartamentele',
                 'created_at' => now()->subDays(5),
                 'updated_at' => now()->subDays(5),
             ],
             [
+                'work_report_id' => 1,
                 'contract_id' => 1,
-                'company_id' => 2,
+                'executor_company_id' => 2,
+                'beneficiary_company_id' => 1,
                 'name' => 'Montare geamuri termopan',
                 'unit_of_measure' => 'mp',
                 'price_per_unit_of_measure' => 450.00,
-                'quantity' => 120,
-                'description' => 'Montare geamuri termopan pentru toate ferestrele',
-                'provided_at' => '2025-04-10',
+                'notes' => 'Montare geamuri termopan pentru toate ferestrele',
                 'created_at' => now()->subDays(5),
                 'updated_at' => now()->subDays(5),
             ],
             [
+                'work_report_id' => 2,
                 'contract_id' => 1,
-                'company_id' => 1,
+                'executor_company_id' => 2,
+                'beneficiary_company_id' => 1,
                 'name' => 'Instalare sistem de lift',
                 'unit_of_measure' => 'buc',
                 'price_per_unit_of_measure' => 85000.00,
-                'quantity' => 2,
-                'description' => 'Instalare si montare sisteme de lift pentru ambele scari',
-                'provided_at' => '2025-05-20',
+                'notes' => 'Instalare si montare sisteme de lift pentru ambele scari',
                 'created_at' => now()->subDays(5),
                 'updated_at' => now()->subDays(5),
             ]

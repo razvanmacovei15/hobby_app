@@ -16,9 +16,9 @@ class ContractAnnexSeeder extends Seeder
         DB::table('contract_annexes')->insert([
             [
                 'contract_id' => 1,
-                'annex_number' => 'Anexa 1',
+                'annex_number' => 1,
                 'sign_date' => '2025-02-15',
-                'description' => 'Modificare prețuri: Actualizare costuri materiale conform indicilor de preț',
+                'notes' => 'Modificare prețuri: Actualizare costuri materiale conform indicilor de preț',
                 'created_at' => now()->subDays(5),
                 'updated_at' => now()->subDays(5),
             ]

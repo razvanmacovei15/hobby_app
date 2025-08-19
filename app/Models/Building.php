@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\BuildingFactory;
 use App\Enums\BuildingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Building extends Model
 {
-    /** @use HasFactory<\Database\Factories\BuildingFactory> */
+    /** @use HasFactory<BuildingFactory> */
     use HasFactory;
 
     protected $fillable = [

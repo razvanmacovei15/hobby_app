@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('j')->unique();
-            $table->string('cui')->unique();
-            $table->string('place_of_registration');
-            $table->string('iban')->unique();
-            $table->foreignId('representative_id')->constrained('users');
+            $table->string('j')->unique()->nullable();
+            $table->string('cui')->unique()->nullable();
+            $table->string('place_of_registration')->nullable();
+            $table->string('iban')->nullable()->unique();
+            $table->foreignId('representative_id')->nullable()->constrained('users');
             $table->string('phone')->nullable();
-            $table->foreignId('address_id')->constrained('addresses')->cascadeOnDelete();
+            $table->foreignId('address_id')->nullable()->constrained('addresses')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('work_report_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('work_report_id')->constrained()->cascadeOnDelete();
-            $table->integer('order');
-            $table->string('service_type'); // ContractService or ContractExtraService
+            $table->foreignId('work_report_id')->index()->constrained()->cascadeOnDelete();
+
+            $table->string('service_type'); // ContractService or WorkReportExtraService
             $table->unsignedBigInteger('service_id'); // ID of the service
+
             $table->decimal('quantity', 10, 2);
             $table->decimal('total', 10, 2);
+
+            $table->integer('order');
+            $table->string('notes')->nullable();
+
             $table->timestamps();
+
+            $table->index(['work_report_id', 'order']);
         });
     }
 

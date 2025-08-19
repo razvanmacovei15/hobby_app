@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('contract_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_annex_id')->constrained('contract_annexes')->cascadeOnDelete();
+            $table->foreignId('contract_annex_id')->index()->constrained('contract_annexes')->restrictOnDelete();
             $table->integer('order');
             $table->string('name');
             $table->string('unit_of_measure');
             $table->decimal('price_per_unit_of_measure', 10, 2);
+
+            $table->unique(['contract_annex_id', 'name']);
+
             $table->timestamps();
         });
     }
