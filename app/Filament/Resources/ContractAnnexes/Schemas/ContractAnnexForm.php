@@ -35,27 +35,27 @@ class ContractAnnexForm
                     ->defaultItems(1)
                     ->addActionLabel('Add service')
                     ->columnSpan(2)
+                    ->columns(3)
                     ->schema([
-                        TextInput::make('name')->label('Name')->required()->columnSpan(4),
-                        TextInput::make('unit')->label('Unit')->placeholder('pcs, h, m²')->columnSpan(2),
-                        TextInput::make('quantity')
-                            ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(3)
-                            ->live()
-                            ->afterStateUpdated(function (Set $set, Get $get) {
-                                $set('line_total', (float)$get('quantity') * (float)$get('unit_price'));
-                            }),
-                        TextInput::make('unit_price')
-                            ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(3)
+                        TextInput::make('name')->label('Name')->required()->columns(1),
+                        TextInput::make('unit_of_measure')->label('Unit')->placeholder('pcs, h, m²')->columnSpan(1),
+//                        TextInput::make('quantity')
+//                            ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(3)
+//                            ->live()
+//                            ->afterStateUpdated(function (Set $set, Get $get) {
+//                                $set('line_total', (float)$get('quantity') * (float)$get('unit_price'));
+//                            }),
+                        TextInput::make('price_per_unit_of_measure')
+                            ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(1)
                             ->prefix('€')
                             ->live()
                             ->afterStateUpdated(function (Set $set, Get $get) {
-                                $set('line_total', (float)$get('quantity') * (float)$get('unit_price'));
+                                $set('line_total', (float)$get('quantity') * (float)$get('price_per_unit_of_measure'));
                             }),
-                        TextInput::make('line_total')
-                            ->numeric()->prefix('€')->disabled()
-                            ->dehydrated(false) // display-only
-                            ->columnSpan(3),
-                        TextInput::make('notes')->columnSpan(12),
+//                        TextInput::make('line_total')
+//                            ->numeric()->prefix('€')->disabled()
+//                            ->dehydrated(false) // display-only
+//                            ->columnSpan(3),
                     ])
                     ->collapsed(false)
                     ->cloneable(),
