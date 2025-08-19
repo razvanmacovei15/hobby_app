@@ -30,7 +30,7 @@ class ContractAnnex extends Model
 
     public function services(): HasMany
     {
-        return $this->hasMany(ContractService::class);
+        return $this->hasMany(ContractService::class, 'contract_annex_id');
     }
 
     protected static function boot(): void
