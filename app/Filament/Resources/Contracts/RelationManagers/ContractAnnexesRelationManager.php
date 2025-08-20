@@ -70,7 +70,7 @@ class ContractAnnexesRelationManager extends RelationManager
                         TextInput::make('price_per_unit_of_measure')
                             ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(1)
                             ->prefix('€')
-                            ->live()
+                            ->live(onBlur: true) // or ->live(debounce: 600)
                             ->afterStateUpdated(function (Set $set, Get $get) {
                                 $set('line_total', (float)$get('quantity') * (float)$get('price_per_unit_of_measure'));
                             }),
