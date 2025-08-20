@@ -36,7 +36,10 @@ class ContractAnnexForm
                     ->addActionLabel('Add service')
                     ->columnSpan(2)
                     ->columns(3)
+                    ->reorderable('sort_order')
                     ->schema([
+                        TextInput::make('sort_order')->hidden()->dehydrated(),
+
                         TextInput::make('name')->label('Name')->required()->columns(1),
                         TextInput::make('unit_of_measure')->label('Unit')->placeholder('pcs, h, m²')->columnSpan(1),
 //                        TextInput::make('quantity')
@@ -47,7 +50,7 @@ class ContractAnnexForm
 //                            }),
                         TextInput::make('price_per_unit_of_measure')
                             ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(1)
-                            ->prefix('€')
+                            ->suffix('RON')
                             ->live()
                             ->afterStateUpdated(function (Set $set, Get $get) {
                                 $set('line_total', (float)$get('quantity') * (float)$get('price_per_unit_of_measure'));
@@ -57,8 +60,7 @@ class ContractAnnexForm
 //                            ->dehydrated(false) // display-only
 //                            ->columnSpan(3),
                     ])
-                    ->collapsed(false)
-                    ->cloneable(),
+                    ->collapsed(false),
             ]);
     }
 }
