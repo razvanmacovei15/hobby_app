@@ -37,6 +37,7 @@ class ContractAnnexResource extends Resource
     public static function table(Table $table): Table
     {
         return ContractAnnexesTable::configure($table);
+
     }
 
     public static function getRelations(): array
