@@ -36,46 +36,11 @@ class ServicesRelationManager extends RelationManager
         return false;
     }
 
-//    public function form(Schema $schema): Schema
-//    {
-//        return $schema
-//            ->components([
-//                TextInput::make('sort_order')
-//                    ->required()
-//                    ->numeric()
-//                    ->default(0),
-//                TextInput::make('name')
-//                    ->required(),
-//                TextInput::make('unit_of_measure')
-//                    ->required(),
-//                TextInput::make('price_per_unit_of_measure')
-//                    ->required()
-//                    ->numeric(),
-//            ]);
-//    }
-//
-//    public function infolist(Schema $schema): Schema
-//    {
-//        return $schema
-//            ->components([
-//                TextEntry::make('sort_order')
-//                    ->numeric(),
-//                TextEntry::make('name'),
-//                TextEntry::make('unit_of_measure'),
-//                TextEntry::make('price_per_unit_of_measure')
-//                    ->numeric(),
-//                TextEntry::make('created_at')
-//                    ->dateTime(),
-//                TextEntry::make('updated_at')
-//                    ->dateTime(),
-//            ]);
-//    }
-
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('name')
-            ->defaultSort('sort_order')
+            ->defaultSort('sort_order', 'asc')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()

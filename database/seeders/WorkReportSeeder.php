@@ -17,8 +17,9 @@ class WorkReportSeeder extends Seeder
             [
                 'contract_id' => 1,
                 'contract_annex_id' => 1,
+                'company_id' => 2,
                 'written_by' => 1,
-                'report_month' => 'martie',
+                'report_month' => 3,
                 'report_year' => 2025,
                 'report_number' => 1,
                 'notes' => 'Lucrările au progresat conform programării. Toate materialele sunt conform specificațiilor.',
@@ -28,8 +29,9 @@ class WorkReportSeeder extends Seeder
             [
                 'contract_id' => 1,
                 'contract_annex_id' => 1,
+                'company_id' => 2,
                 'written_by' => 1,
-                'report_month' => 'aprilie',
+                'report_month' => 4,
                 'report_year' => 2025,
                 'report_number' => 2,
                 'notes' => 'Finalizare lucrări de finisaj. Sistemul de lift a fost instalat cu succes.',
@@ -39,8 +41,9 @@ class WorkReportSeeder extends Seeder
             [
                 'contract_id' => 1,
                 'contract_annex_id' => 1,
+                'company_id' => 2,
                 'written_by' => 1,
-                'report_month' => 'mai',
+                'report_month' => 5,
                 'report_year' => 2025,
                 'report_number' => 3,
                 'notes' => 'Lucrări de amenajare exterioară în curs de desfășurare.',
