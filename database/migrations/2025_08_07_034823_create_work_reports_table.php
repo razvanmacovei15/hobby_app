@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('work_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_id')->index()->constrained()->restrictOnDelete();
-            $table->foreignId('contract_annex_id')->index()->constrained()->restrictOnDelete();
             $table->foreignId('written_by')->constrained('users')->cascadeOnDelete();
 
             $table->integer('report_month'); // e.g., 3

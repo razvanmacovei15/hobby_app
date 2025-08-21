@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\WorkReports\Schemas;
 
+use App\Services\IWorkReportService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class WorkReportForm
 {
@@ -14,7 +16,23 @@ class WorkReportForm
         return $schema
             ->components([
                 Select::make('company_id')
-                    ->relationship('company', 'name')
+                    ->relationship(
+                        name: 'company',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: function (Builder $query) {
+                            $svc = app(IWorkReportService::class);
+
+                            // CORRECT: pluck from companies, not executors
+                            $ids = $svc->getAllExecutorsForThisWorkspace()
+                                ->pluck('companies.id')
+                                ->all();
+
+                            // Use the qualified PK for safety (e.g., "companies.id")
+                            $qualifiedKey = $query->getModel()->getQualifiedKeyName();
+
+                            $query->whereIn($qualifiedKey, $ids ?: [0]); // [0] returns no rows when empty
+                        }
+                    )
                     ->required(),
                 Select::make('written_by')
                     ->relationship('writtenBy', 'first_name')

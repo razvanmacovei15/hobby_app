@@ -43,6 +43,7 @@ class ContractService extends Model
     }
 
 
+
     public function workReportEntries(): MorphMany
     {
         return $this->morphMany(WorkReportEntry::class, 'service');

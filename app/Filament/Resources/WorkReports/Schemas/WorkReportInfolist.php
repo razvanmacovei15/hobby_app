@@ -13,8 +13,6 @@ class WorkReportInfolist
             ->components([
                 TextEntry::make('contract.id')
                     ->numeric(),
-                TextEntry::make('contractAnnex.id')
-                    ->numeric(),
                 TextEntry::make('written_by')
                     ->numeric(),
                 TextEntry::make('report_month'),

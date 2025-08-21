@@ -16,7 +16,6 @@ class WorkReportSeeder extends Seeder
         DB::table('work_reports')->insert([
             [
                 'contract_id' => 1,
-                'contract_annex_id' => 1,
                 'company_id' => 2,
                 'written_by' => 1,
                 'report_month' => 3,
@@ -28,7 +27,6 @@ class WorkReportSeeder extends Seeder
             ],
             [
                 'contract_id' => 1,
-                'contract_annex_id' => 1,
                 'company_id' => 2,
                 'written_by' => 1,
                 'report_month' => 4,
@@ -40,7 +38,6 @@ class WorkReportSeeder extends Seeder
             ],
             [
                 'contract_id' => 1,
-                'contract_annex_id' => 1,
                 'company_id' => 2,
                 'written_by' => 1,
                 'report_month' => 5,

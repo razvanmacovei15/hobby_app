@@ -10,6 +10,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Carbon;
 
 class WorkReportsTable
 {
@@ -20,9 +21,10 @@ class WorkReportsTable
                 TextColumn::make('company.name')
                     ->sortable(),
                 TextColumn::make('report_month')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(fn($state) => Carbon::create()->locale(app()->getLocale())->month((int)$state)->isoFormat('MMMM')
+                    ),
                 TextColumn::make('report_year')
-                    ->numeric()
                     ->sortable(),
                 TextColumn::make('report_number')
                     ->numeric()
@@ -57,7 +59,7 @@ class WorkReportsTable
                         11 => 'November',
                         12 => 'December',
                     ])
-                    ->default(now()->format('F')),
+                    ->default(now()->month),
             ])
             ->recordActions([
                 ViewAction::make(),
