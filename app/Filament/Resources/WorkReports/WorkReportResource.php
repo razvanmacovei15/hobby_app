@@ -6,6 +6,7 @@ use App\Filament\Resources\WorkReports\Pages\CreateWorkReport;
 use App\Filament\Resources\WorkReports\Pages\EditWorkReport;
 use App\Filament\Resources\WorkReports\Pages\ListWorkReports;
 use App\Filament\Resources\WorkReports\Pages\ViewWorkReport;
+use App\Filament\Resources\WorkReports\RelationManagers\EntriesRelationManager;
 use App\Filament\Resources\WorkReports\Schemas\WorkReportForm;
 use App\Filament\Resources\WorkReports\Schemas\WorkReportInfolist;
 use App\Filament\Resources\WorkReports\Tables\WorkReportsTable;
@@ -45,7 +46,7 @@ class WorkReportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EntriesRelationManager::class,
         ];
     }
 

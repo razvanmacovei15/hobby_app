@@ -1,0 +1,35 @@
+[90m= [39m[34;4mIlluminate\Support\Collection[39;24m {#7337
+    [34mall[39m: [
+      [34;4mApp\Models\ContractService[39;24m {#7355
+        [34mid[39m: [35m1[39m,
+        [34mcontract_annex_id[39m: [35m1[39m,
+        [34msort_order[39m: [35m1[39m,
+        [34mname[39m: "[32mExcavare fundații[39m",
+        [34munit_of_measure[39m: "[32mm³[39m",
+        [34mprice_per_unit_of_measure[39m: "[32m45.50[39m",
+        [34mcreated_at[39m: "[32m2025-08-16 19:02:07[39m",
+        [34mupdated_at[39m: "[32m2025-08-16 19:02:07[39m",
+      },
+      [34;4mApp\Models\ContractService[39;24m {#7336
+        [34mid[39m: [35m2[39m,
+        [34mcontract_annex_id[39m: [35m1[39m,
+        [34msort_order[39m: [35m2[39m,
+        [34mname[39m: "[32mBetonare fundații[39m",
+        [34munit_of_measure[39m: "[32mm³[39m",
+        [34mprice_per_unit_of_measure[39m: "[32m120.00[39m",
+        [34mcreated_at[39m: "[32m2025-08-16 19:02:07[39m",
+        [34mupdated_at[39m: "[32m2025-08-16 19:02:07[39m",
+      },
+      [34;4mApp\Models\ContractService[39;24m {#7335
+        [34mid[39m: [35m3[39m,
+        [34mcontract_annex_id[39m: [35m1[39m,
+        [34msort_order[39m: [35m3[39m,
+        [34mname[39m: "[32mZidărie pereți[39m",
+        [34munit_of_measure[39m: "[32mm²[39m",
+        [34mprice_per_unit_of_measure[39m: "[32m85.75[39m",
+        [34mcreated_at[39m: "[32m2025-08-16 19:02:07[39m",
+        [34mupdated_at[39m: "[32m2025-08-16 19:02:07[39m",
+      },
+    ],
+  }
+

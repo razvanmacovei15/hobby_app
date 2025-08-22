@@ -11,21 +11,22 @@ class WorkReportInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('contract.id')
+                TextEntry::make('contract.registration_key')
+                    ->numeric(),
+                TextEntry::make('company.name')
+                    ->numeric(),
+                TextEntry::make('report_number')
                     ->numeric(),
                 TextEntry::make('written_by')
                     ->numeric(),
                 TextEntry::make('report_month'),
                 TextEntry::make('report_year')
                     ->numeric(),
-                TextEntry::make('report_number')
-                    ->numeric(),
+
                 TextEntry::make('created_at')
                     ->dateTime(),
-                TextEntry::make('updated_at')
-                    ->dateTime(),
-                TextEntry::make('company.name')
-                    ->numeric(),
-            ]);
+
+            ])
+            ->columns(3);
     }
 }
