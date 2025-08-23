@@ -10,4 +10,5 @@ interface IWorkReportService
     public function getAllServicesForThisContract(int $contractId);
     public function getServiceUnitOfMeasure(int $serviceId): ?string;
     public function getPricePerUnit(int $serviceId): ?string;
+
 }

@@ -9,26 +9,28 @@ use App\Models\Workspace;
 use App\Services\IWorkReportService;
 use Filament\Facades\Filament;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use RuntimeException;
 
 class WorkReportService implements IWorkReportService
 {
-
-    public function createReportFromFilamentResource(array $data)
+    public function createReportFromFilamentResource(array $data): WorkReport
     {
-        $workspace = Filament::getTenant();
-        if (!$workspace) {
+        $workspace = \Filament\Facades\Filament::getTenant();
+        if (! $workspace) {
             throw new RuntimeException('No active workspace selected.');
         }
 
-        $executorId = (int)$data['company_id'];
+        $executorId  = (int) ($data['company_id'] ?? 0);
+        if (! $executorId) {
+            throw new InvalidArgumentException('company_id is required.');
+        }
 
-        $contractId = $this->getContractIdFromWorkSpaceOwner($executorId);
+        $contractId  = $this->getContractIdFromWorkSpaceOwner($executorId);
 
-        // 4) Normalize / validate inputs
-        $reportMonth = (int)($data['report_month'] ?? 0);
-        $reportYear = (int)($data['report_year'] ?? 0);
+        $reportMonth = (int) ($data['report_month'] ?? 0);
+        $reportYear  = (int) ($data['report_year'] ?? 0);
 
         if ($reportMonth < 1 || $reportMonth > 12) {
             throw new InvalidArgumentException('report_month must be between 1 and 12.');
@@ -37,18 +39,30 @@ class WorkReportService implements IWorkReportService
             throw new InvalidArgumentException('report_year looks invalid.');
         }
 
-        // Prefer the provided author, fallback to current user
-        $writtenBy = (int)auth()->id();
+        $writtenBy = (int) (auth()->id() ?? 0);
 
-        return [
-            'contract_id' => $contractId,
-            'company_id' => $executorId,
-            'written_by' => $writtenBy,
-            'report_month' => $reportMonth,
-            'report_year' => $reportYear,
-            'notes' => $data['notes'] ?? null,
-        ];
+        // Generate report_number atomically per (company_id, report_year)
+        return DB::transaction(function () use ($executorId, $reportYear, $contractId, $reportMonth, $writtenBy, $data) {
+            $max = WorkReport::query()
+                ->where('company_id', $executorId)
+                ->where('report_year', $reportYear)
+                ->lockForUpdate()
+                ->max('report_number');
+
+            $nextNumber = ((int) $max) + 1;
+
+            return WorkReport::create([
+                'contract_id'   => $contractId,
+                'company_id'    => $executorId,
+                'written_by'    => $writtenBy,
+                'report_month'  => $reportMonth,
+                'report_year'   => $reportYear,
+                'notes'         => $data['notes'] ?? null,
+                'report_number' => $nextNumber,
+            ]);
+        });
     }
+
 
     public function getAllExecutorsForThisWorkspace()
     {
