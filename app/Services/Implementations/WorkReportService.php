@@ -102,7 +102,7 @@ class WorkReportService implements IWorkReportService
             ->pluck('id');
 
         // 2) Get services with proper id => name mapping
-        $services = \App\Models\ContractService::query()
+        $services = \App\Models\ContractedService::query()
             ->whereIn('contract_annex_id', $annexIds)
             ->orderBy('sort_order')
             ->pluck('name', 'id');
@@ -112,14 +112,14 @@ class WorkReportService implements IWorkReportService
 
     public function getServiceUnitOfMeasure(int $serviceId): ?string
     {
-        return \App\Models\ContractService::query()
+        return \App\Models\ContractedService::query()
             ->where('id', $serviceId)
             ->value('unit_of_measure');
     }
 
     public function getPricePerUnit(int $serviceId): ?string
     {
-        return \App\Models\ContractService::query()
+        return \App\Models\ContractedService::query()
             ->where('id', $serviceId)
             ->value('price_per_unit_of_measure');
     }

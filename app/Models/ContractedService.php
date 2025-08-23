@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\ContractServiceFactory;
+use Database\Factories\ContractedServiceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
-class ContractService extends Model
+class ContractedService extends Model
 {
-    /** @use HasFactory<ContractServiceFactory> */
+    /** @use HasFactory<ContractedServiceFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -37,7 +37,7 @@ class ContractService extends Model
             ContractAnnex::class,
             'id',            // ContractAnnex.id
             'id',            // Contract.id
-            'contract_annex_id', // ContractService.contract_annex_id
+            'contract_annex_id', // ContractedService.contract_annex_id
             'contract_id'        // ContractAnnex.contract_id
         );
     }
@@ -53,7 +53,7 @@ class ContractService extends Model
     {
         parent::boot();
 
-        static::creating(function (ContractService $contractService) {
+        static::creating(function (ContractedService $contractService) {
             // Safety: if it's being created via relationship ($contract->annexes()->create()),
             // contract_id will already be set.
             if (! $contractService->contract_annex_id) {

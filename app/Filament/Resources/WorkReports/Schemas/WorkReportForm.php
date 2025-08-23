@@ -4,7 +4,7 @@ namespace App\Filament\Resources\WorkReports\Schemas;
 
 use App\Models\Company;
 use App\Models\Contract;
-use App\Models\ContractService;
+use App\Models\ContractedService;
 use App\Models\WorkReportExtraService;
 use App\Services\IWorkReportService;
 use Filament\Facades\Filament;
@@ -77,17 +77,17 @@ class WorkReportForm
                     ->reorderable()
                     ->orderColumn('order')
                     ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-                        $data['service_type'] = ContractService::class;
+                        $data['service_type'] = ContractedService::class;
                         return $data;
                     })
                     ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
-                        $data['service_type'] = $data['service_type'] ?? ContractService::class;
+                        $data['service_type'] = $data['service_type'] ?? ContractedService::class;
                         return $data;
                     })
                     ->schema([
-                        // Hidden field to store service type (ContractService for now)
+                        // Hidden field to store service type (ContractedService for now)
                         Hidden::make('service_type')
-                            ->default(ContractService::class)
+                            ->default(ContractedService::class)
                             ->hidden()
                             ->dehydrated(true),
 
@@ -121,7 +121,7 @@ class WorkReportForm
                                     return;
                                 }
 
-                                // Get the unit of measure for the selected ContractService
+                                // Get the unit of measure for the selected ContractedService
                                 $svc = app(IWorkReportService::class);
 
                                 $uom = $svc->getServiceUnitOfMeasure($state);

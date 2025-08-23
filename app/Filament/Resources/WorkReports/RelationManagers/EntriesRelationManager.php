@@ -34,14 +34,26 @@ class EntriesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (\Illuminate\Database\Eloquent\Builder $query) {
+                return $query->with('service'); // this $query is guaranteed to be a Builder
+            })
             ->recordTitleAttribute('order')
             ->defaultSort('order')
             ->columns([
+                // If all entries point to ContractedService, this “just works”:
+                TextColumn::make('service.name')
+                    ->label('Service')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('service.unit_of_measure')
+                    ->label('Unit'),
+
+                TextColumn::make('service.price_per_unit_of_measure')
+                    ->label('Price / Unit')
+                    ->numeric(2),
                 TextColumn::make('service_type')
                     ->searchable(),
-                TextColumn::make('service_id')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('quantity')
                     ->numeric()
                     ->sortable(),
