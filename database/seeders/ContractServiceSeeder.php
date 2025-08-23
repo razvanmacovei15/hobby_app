@@ -16,7 +16,7 @@ class ContractServiceSeeder extends Seeder
         DB::table('contract_services')->insert([
             [
                 'contract_annex_id' => 1,
-                'order' => 1,
+                'sort_order' => 1,
                 'name' => 'Excavare fundații',
                 'unit_of_measure' => 'm³',
                 'price_per_unit_of_measure' => 45.50,
@@ -25,7 +25,7 @@ class ContractServiceSeeder extends Seeder
             ],
             [
                 'contract_annex_id' => 1,
-                'order' => 2,
+                'sort_order' => 2,
                 'name' => 'Betonare fundații',
                 'unit_of_measure' => 'm³',
                 'price_per_unit_of_measure' => 120.00,
@@ -34,7 +34,7 @@ class ContractServiceSeeder extends Seeder
             ],
             [
                 'contract_annex_id' => 1,
-                'order' => 3,
+                'sort_order' => 3,
                 'name' => 'Zidărie pereți',
                 'unit_of_measure' => 'm²',
                 'price_per_unit_of_measure' => 85.75,

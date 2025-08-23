@@ -27,10 +27,17 @@ class Workspace extends Model
 
     public function executors(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class, 'workspace_executors')
-            ->withPivot(['is_active'])
+        return $this
+            ->belongsToMany(
+                related: Company::class,
+                table: 'workspace_executors',
+                foreignPivotKey: 'workspace_id',
+                relatedPivotKey: 'executor_id',
+            )
+            ->withPivot(['is_active', 'has_contract'])
             ->withTimestamps()
-            ->wherePivot('is_active', true);
+            ->wherePivot('is_active', true)
+            ->wherePivot('has_contract', true);
     }
 
     public function users()

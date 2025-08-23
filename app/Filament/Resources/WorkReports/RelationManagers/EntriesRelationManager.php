@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ContractAnnexes\RelationManagers;
+namespace App\Filament\Resources\WorkReports\RelationManagers;
 
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
@@ -10,27 +10,22 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ServicesRelationManager extends RelationManager
+class EntriesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'services';
-    protected static ?string $title = 'Services';
+    protected static string $relationship = 'entries';
 
-    // Show this relation ONLY on the Annex View page (not on Edit/Create)
     public static function canViewForRecord($ownerRecord, string $pageClass): bool
     {
         return is_subclass_of($pageClass, ViewRecord::class);
     }
 
-    // Keep it read-only on the View page
     public function isReadOnly(): bool
     {
         return false;
@@ -39,17 +34,25 @@ class ServicesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
-            ->defaultSort('sort_order', 'asc')
+            ->recordTitleAttribute('order')
+            ->defaultSort('order')
             ->columns([
-                TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('unit_of_measure')
+                TextColumn::make('service_type')
                     ->searchable(),
-                TextColumn::make('price_per_unit_of_measure')
+                TextColumn::make('service_id')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('quantity')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('total')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('order')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('notes')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -66,7 +69,7 @@ class ServicesRelationManager extends RelationManager
 
             ])
             ->recordActions([
-                DeleteAction::make('delete'),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
 

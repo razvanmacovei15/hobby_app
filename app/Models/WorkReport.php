@@ -17,10 +17,10 @@ class WorkReport extends Model
 
     protected $fillable = [
         'contract_id',
-        'contract_annex_id',
+        'company_id',
 
         'written_by',
-        'report_month', // e.g., july
+        'report_month', // e.g., 5
         'report_year', // e.g., 2025
         'report_number', //incrementing for all reports
         'notes', // optional notes or remarks
@@ -32,12 +32,12 @@ class WorkReport extends Model
 
     public function contract(): BelongsTo
     {
-        return $this->belongsTo(Contract::class);
+        return $this->belongsTo(Contract::class, 'contract_id');
     }
 
-    public function contractAnnex(): BelongsTo
+    public function company(): BelongsTo
     {
-        return $this->belongsTo(ContractAnnex::class);
+        return $this->belongsTo(Company::class);
     }
 
     public function writtenBy(): BelongsTo
