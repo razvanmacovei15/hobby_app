@@ -17,7 +17,7 @@ class WorkReportEntrySeeder extends Seeder
             [
                 'work_report_id' => 1,
                 'order' => 1,
-                'service_type' => 'App\\Models\\ContractService',
+                'service_type' => 'App\\Models\\ContractedService',
                 'service_id' => 1,
                 'quantity' => 150.00,
                 'total' => 6825.00,
@@ -28,7 +28,7 @@ class WorkReportEntrySeeder extends Seeder
             [
                 'work_report_id' => 1,
                 'order' => 2,
-                'service_type' => 'App\\Models\\ContractService',
+                'service_type' => 'App\\Models\\ContractedService',
                 'service_id' => 2,
                 'quantity' => 45.00,
                 'total' => 5400.00,
@@ -50,7 +50,7 @@ class WorkReportEntrySeeder extends Seeder
             [
                 'work_report_id' => 2,
                 'order' => 1,
-                'service_type' => 'App\\Models\\ContractService',
+                'service_type' => 'App\\Models\\ContractedService',
                 'service_id' => 3,
                 'quantity' => 200.00,
                 'total' => 17150.00,

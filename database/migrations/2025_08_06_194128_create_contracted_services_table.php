@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contract_services', function (Blueprint $table) {
+        Schema::create('contracted_services', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_annex_id')->index()->constrained('contract_annexes')->restrictOnDelete();
             $table->integer('order');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contract_services');
+        Schema::dropIfExists('contracted_services');
     }
 };

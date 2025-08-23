@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\ContractService;
+use App\Models\ContractedService;
 use App\Models\WorkReportExtraService;
 use App\Models\WorkReport;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,9 +19,9 @@ class WorkReportEntryFactory extends Factory
      */
     public function definition(): array
     {
-        // Randomly choose between ContractService and WorkReportExtraService
+        // Randomly choose between ContractedService and WorkReportExtraService
         $serviceType = $this->faker->randomElement([
-            ContractService::class,
+            ContractedService::class,
             WorkReportExtraService::class
         ]);
 

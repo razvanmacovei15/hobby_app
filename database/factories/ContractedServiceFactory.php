@@ -6,9 +6,9 @@ use App\Models\ContractAnnex;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContractService>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContractedService>
  */
-class ContractServiceFactory extends Factory
+class ContractedServiceFactory extends Factory
 {
     protected $serviceNames = [
         'Excavare fundații',

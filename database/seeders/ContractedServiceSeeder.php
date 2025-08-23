@@ -6,14 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ContractServiceSeeder extends Seeder
+class ContractedServiceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('contract_services')->insert([
+        DB::table('contracted_services')->insert([
             [
                 'contract_annex_id' => 1,
                 'sort_order' => 1,

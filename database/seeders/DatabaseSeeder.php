@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             ContractSeeder::class,
             ContractAnnexSeeder::class,
-            ContractServiceSeeder::class,
+            ContractedServiceSeeder::class,
             WorkReportSeeder::class,
             ContractExtraServiceSeeder::class,
             WorkReportEntrySeeder::class,

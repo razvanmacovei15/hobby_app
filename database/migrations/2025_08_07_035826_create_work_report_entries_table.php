@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_report_id')->index()->constrained()->cascadeOnDelete();
 
-            $table->string('service_type'); // ContractService or WorkReportExtraService
+            $table->string('service_type'); // ContractedService or WorkReportExtraService
             $table->unsignedBigInteger('service_id'); // ID of the service
 
             $table->decimal('quantity', 10, 2);
