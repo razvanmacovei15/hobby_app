@@ -20,18 +20,6 @@ class WorkspaceSeeder extends Seeder
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
-            [
-                'name' => 'Complex Comercial Plaza Mall',
-                'owner_id' => 2, // Building Solutions Ltd
-                'created_at' => now()->subDays(25),
-                'updated_at' => now()->subDays(25),
-            ],
-            [
-                'name' => 'Bloc de Locuințe Green Valley',
-                'owner_id' => 1, // Construct Pro SRL
-                'created_at' => now()->subDays(20),
-                'updated_at' => now()->subDays(20),
-            ]
         ]);
 
         // Add some workspace executors (companies that work on these workspaces)
@@ -43,20 +31,6 @@ class WorkspaceSeeder extends Seeder
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
-            [
-                'workspace_id' => 2,
-                'executor_id' => 1, // Construct Pro SRL as executor
-                'is_active' => true,
-                'created_at' => now()->subDays(25),
-                'updated_at' => now()->subDays(25),
-            ],
-            [
-                'workspace_id' => 3,
-                'executor_id' => 2, // Building Solutions Ltd as executor
-                'is_active' => true,
-                'created_at' => now()->subDays(20),
-                'updated_at' => now()->subDays(20),
-            ]
         ]);
     }
 }

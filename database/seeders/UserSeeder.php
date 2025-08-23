@@ -12,9 +12,9 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'first_name' => 'admin',
-                'last_name' => 'admin',
-                'email' => 'random@email.com',
+                'first_name' => 'Maco',
+                'last_name' => 'Support',
+                'email' => 'support@macocoding.com',
                 'password' => Hash::make('password'),
             ],[
                 'first_name' => 'dan',

@@ -38,25 +38,7 @@ class WorkspaceUserSeeder extends Seeder
                 'workspace_id' => 2, // Complex Comercial Plaza Mall
                 'created_at' => now()->subDays(25),
                 'updated_at' => now()->subDays(25),
-            ],
-            [
-                'user_id' => 2, // dan boitos
-                'workspace_id' => 2, // Complex Comercial Plaza Mall
-                'created_at' => now()->subDays(25),
-                'updated_at' => now()->subDays(25),
-            ],
-            [
-                'user_id' => 1, // admin user
-                'workspace_id' => 3, // Bloc de Locuințe Green Valley
-                'created_at' => now()->subDays(20),
-                'updated_at' => now()->subDays(20),
-            ],
-            [
-                'user_id' => 3, // razvan macovei
-                'workspace_id' => 3, // Bloc de Locuințe Green Valley
-                'created_at' => now()->subDays(20),
-                'updated_at' => now()->subDays(20),
-            ],
+            ]
         ]);
     }
 }
