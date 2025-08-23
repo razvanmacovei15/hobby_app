@@ -29,7 +29,7 @@ class WorkspaceSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 2, // Building Solutions Ltd as executor
-                'service_type' => ExecutorType::ELECTRICAL->value,
+                'executor_type' => ExecutorType::ELECTRICAL->value,
                 'is_active' => true,
                 'has_contract' => true,
                 'created_at' => now()->subDays(30),
