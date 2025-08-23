@@ -48,11 +48,11 @@ class EntriesRelationManager extends RelationManager
                 TextColumn::make('total')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('order')
-                    ->numeric()
-                    ->sortable(),
+
                 TextColumn::make('notes')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -170,7 +170,7 @@ class WorkReportForm
                             ->label('Quantity')
                             ->numeric()
                             ->required()
-                            ->live(debounce: null) // immediate updates
+                            ->live(onBlur: true) // <-- only send update on blur
                             ->disabled(fn (Get $get) => ! $get('service_id'))
                             ->afterStateUpdated(function ($state, Set $set, Get $get) {
                                 $qty   = (float) ($state ?? 0);
