@@ -32,15 +32,13 @@ class WorkReportForm
                         modifyQueryUsing: function (Builder $query) {
                             $svc = app(IWorkReportService::class);
 
-                            // CORRECT: pluck from companies, not executors
-                            $ids = $svc->getAllExecutorsForThisWorkspace()
-                                ->pluck('companies.id')
-                                ->all();
+                            // Get executor company IDs directly from the service
+                            $executorIds = $svc->getAllExecutorsForThisWorkspace();
 
-                            // Use the qualified PK for safety (e.g., "companies.id")
+                            // Use the qualified PK for safety
                             $qualifiedKey = $query->getModel()->getQualifiedKeyName();
 
-                            $query->whereIn($qualifiedKey, $ids ?: [0]); // [0] returns no rows when empty
+                            $query->whereIn($qualifiedKey, $executorIds ?: [0]); // [0] returns no rows when empty
                         }
                     )
                     ->required()
@@ -78,35 +76,80 @@ class WorkReportForm
                     ->reorderable()
                     ->orderColumn('order')
                     ->schema([
-                        Select::make('service_id')                 // matches your WorkReportEntry fillable
-                        ->label('Service')
+                        // Hidden field to store service type (ContractService for now)
+                        TextInput::make('service_type')
+                            ->default('App\\Models\\ContractService')
+                            ->hidden()
+                            ->dehydrated(),
+
+                        Select::make('service_id')
+                            ->label('Service')
                             ->searchable()
                             ->preload()
-                            ->live()                              // re-run options when parent state changes
-                            ->disabled(fn (Get $get) => ! $get('../../company_id'))
+                            ->live()
+                            ->disabled(fn(Get $get) => !$get('../../company_id'))
                             ->options(function (Get $get) {
                                 $svc = app(IWorkReportService::class);
 
-                                $executorId = (int) $get('../../company_id'); // parent Select on the form
-                                if (! $executorId) {
+                                $executorId = (int)$get('../../company_id');
+                                if (!$executorId) {
                                     return [];
                                 }
 
-                                $contractId = (int) $svc->getContractIdFromWorkSpaceOwner($executorId);
+                                $contractId = (int)$svc->getContractIdFromWorkSpaceOwner($executorId);
 
-                                if (! $contractId) {
+                                if (!$contractId) {
                                     return [];
                                 }
-                                $beneficiary = Company::findOrFail(Contract::findOrFail($contractId)->beneficiary_id)->id;
-                                $executor = Company::findOrFail($executorId)->id;
 
-
-                                // Pull services via your service method
-                                return $svc->getAllServicesForThisContract($contractId); // id => label
-
+                                return $svc->getAllServicesForThisContract($contractId);
                             })
-                            ->columnSpan(3),
-                        // ... add quantity/price/total fields next
+                            ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                // Clear when nothing selected
+                                if (!$state) {
+                                    $set('unit_of_measure', null);
+                                    $set('price_per_unit_of_measure', null);
+                                    return;
+                                }
+
+                                // Get the unit of measure for the selected ContractService
+                                $svc = app(IWorkReportService::class);
+
+                                $uom = $svc->getServiceUnitOfMeasure($state);
+                                $price = $svc->getPricePerUnit($state);
+
+                                $set('unit_of_measure', $uom ?? '-');
+                                $set('price_per_unit_of_measure', $price ?? '');
+                            })
+                            ->columnSpan(2),
+
+                        TextInput::make('unit_of_measure')
+                            ->label('Unit')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->columnSpan(1),
+
+                        TextInput::make('price_per_unit_of_measure')
+                            ->label('Price')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->columnSpan(1),
+
+                        TextInput::make('quantity')
+                            ->label('Quantity')
+                            ->numeric()
+                            ->required()
+                            ->columnSpan(1),
+
+                        TextInput::make('total')
+                            ->label('Total')
+                            ->numeric()
+                            ->required()
+                            ->columnSpan(1),
+
+                        TextInput::make('notes')
+                            ->label('Notes')
+                            ->columnSpan(1),
                     ])
                     ->columnSpan(2)
                     ->collapsed(false)

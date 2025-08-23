@@ -56,7 +56,9 @@ class WorkReportService implements IWorkReportService
         if (!$workspace) {
             throw new RuntimeException('No active workspace selected.');
         }
-        return $workspace->executors();
+
+        // Get the executor company IDs from the workspace
+        return $workspace->executors()->pluck('executor_id');
     }
 
     public function getContractIdFromWorkSpaceOwner(int $executorId): int
@@ -85,20 +87,26 @@ class WorkReportService implements IWorkReportService
             ->where('contract_id', $contractId)
             ->pluck('id');
 
-        // 2) Accumulate services across annexes
-        $allServices = collect();
+        // 2) Get services with proper id => name mapping
+        $services = \App\Models\ContractService::query()
+            ->whereIn('contract_annex_id', $annexIds)
+            ->orderBy('sort_order')
+            ->pluck('name', 'id');
 
-        foreach ($annexIds as $annexId) {
-            $services = \App\Models\ContractService::query()
-                ->where('contract_annex_id', $annexId)
-                 ->orderBy('sort_order') // Uncomment if this column exists
-                ->get();
+        return $services;
+    }
 
-            foreach ($services as $service) {
-                $allServices->push($service);
-            }
-        }
-        // 3) De-duplicate by ID and reindex
-        return $allServices->unique('id')->values();
+    public function getServiceUnitOfMeasure(int $serviceId): ?string
+    {
+        return \App\Models\ContractService::query()
+            ->where('id', $serviceId)
+            ->value('unit_of_measure');
+    }
+
+    public function getPricePerUnit(int $serviceId): ?string
+    {
+        return \App\Models\ContractService::query()
+            ->where('id', $serviceId)
+            ->value('price_per_unit_of_measure');
     }
 }
