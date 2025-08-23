@@ -33,12 +33,6 @@ class WorkspaceUserSeeder extends Seeder
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
-            [
-                'user_id' => 1, // admin user
-                'workspace_id' => 2, // Complex Comercial Plaza Mall
-                'created_at' => now()->subDays(25),
-                'updated_at' => now()->subDays(25),
-            ]
         ]);
     }
 }
