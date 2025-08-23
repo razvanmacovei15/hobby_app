@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ExecutorType;
+use App\Enums\ServiceType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +29,9 @@ class WorkspaceSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 2, // Building Solutions Ltd as executor
+                'service_type' => ExecutorType::ELECTRICAL->value,
                 'is_active' => true,
+                'has_contract' => true,
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
