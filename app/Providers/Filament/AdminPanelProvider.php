@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\OwnerCompanies\OwnerCompanyResource;
+use App\Http\Responses\LoginResponse;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -34,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->tenant(Workspace::class, slugAttribute: 'id', ownershipRelationship: null)
             ->tenantMenu(false)
+            ->tenantBillingProvider(null)
             ->breadcrumbs(false)
             ->path('')
             ->registration(Register::class)
@@ -68,5 +71,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->sidebarFullyCollapsibleOnDesktop();
+    }
+
+    public function boot(): void
+    {
+        // Bind custom login response to redirect to default workspace
+        $this->app->bind(LoginResponseContract::class, LoginResponse::class);
     }
 }

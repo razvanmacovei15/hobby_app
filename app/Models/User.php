@@ -83,4 +83,12 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     {
         return $this->workspaces()->get();
     }
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        // Get the default workspace for this user
+        return $this->workspaces()
+            ->wherePivot('is_default', true)
+            ->first();
+    }
 }

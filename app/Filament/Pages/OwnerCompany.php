@@ -41,22 +41,22 @@ class OwnerCompany extends Page implements HasInfolists
             ->record($this->record)
             ->components([
                 Section::make('Invoice Details')->schema([
-                    TextEntry::make('name')->label('Company Name'),
-                    TextEntry::make('cui')->label('CUI'),
-                    TextEntry::make('j')->label('J'),
-                    TextEntry::make('place_of_registration')->label('Place of Registration'),
-                    TextEntry::make('iban')->label('IBAN'),
-                    TextEntry::make('phone')->label('Phone'),
+                    TextEntry::make('name')->label('Company Name')->state(fn($record) => $record->name ?? "—"),
+                    TextEntry::make('cui')->label('CUI')->state(fn($record) => $record->cui ?? "—"),
+                    TextEntry::make('j')->label('J')->state(fn($record) => $record->j ?? "—"),
+                    TextEntry::make('place_of_registration')->label('Place of Registration')->state(fn($record) => $record->place_of_registration ?? "—"),
+                    TextEntry::make('iban')->label('IBAN')->state(fn($record) => $record->iban ?? "—"),
+                    TextEntry::make('phone')->label('Phone')->state(fn($record) => $record->phone ?? "—"),
                 ])->columns(4),
 
                 Section::make('Address')->schema([
-                    TextEntry::make('address.street')->label('Street'),
-                    TextEntry::make('address.street_number')->label('No.'),
-                    TextEntry::make('address.building')->label('Building'),
-                    TextEntry::make('address.apartment_number')->label('Apt'),
-                    TextEntry::make('address.city')->label('City'),
-                    TextEntry::make('address.state')->label('State'),
-                    TextEntry::make('address.country')->label('Country'),
+                    TextEntry::make('address.street')->label('Street')->state(fn($record) => $record->address->street ?? "—"),
+                    TextEntry::make('address.street_number')->label('No.')->state(fn($record) => $record->address->street_number ?? "—"),
+                    TextEntry::make('address.building')->label('Building')->state(fn($record) => $record->address->building ?? "—"),
+                    TextEntry::make('address.apartment_number')->label('Apt')->state(fn($record) => $record->address->apartment_number ?? "—"),
+                    TextEntry::make('address.city')->label('City')->state(fn($record) => $record->address->city ?? "—"),
+                    TextEntry::make('address.state')->label('State')->state(fn($record) => $record->address->state ?? "—"),
+                    TextEntry::make('address.country')->label('Country')->state(fn($record) => $record->address->country ?? "—"),
                 ])->columns(4),
 
                 Section::make('Representative')
@@ -67,7 +67,7 @@ class OwnerCompany extends Page implements HasInfolists
                             ? $record->representative->getFilamentName()
                             : '—'),
 
-                    TextEntry::make('representative.email')->label('Email')
+                    TextEntry::make('representative.email')->label('Email')->state(fn($record) => $record->representative->email ?? "—")
                 ])->columns(2),
             ])
             ->columns(1);

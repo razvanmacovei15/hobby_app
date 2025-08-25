@@ -22,9 +22,10 @@ class WorkReportService implements IWorkReportService
             throw new RuntimeException('No active workspace selected.');
         }
 
-        $executorId  = (int) ($data['company_id'] ?? 0);
+        $beneficiaryId = $workspace->owner_id;
+        $executorId  = (int) ($data['executor_id'] ?? 0);
         if (! $executorId) {
-            throw new InvalidArgumentException('company_id is required.');
+            throw new InvalidArgumentException('executor_id is required.');
         }
 
         $contractId  = $this->getContractIdFromWorkSpaceOwner($executorId);
@@ -42,9 +43,9 @@ class WorkReportService implements IWorkReportService
         $writtenBy = (int) (auth()->id() ?? 0);
 
         // Generate report_number atomically per (company_id, report_year)
-        return DB::transaction(function () use ($executorId, $reportYear, $contractId, $reportMonth, $writtenBy, $data) {
+        return DB::transaction(function () use ($beneficiaryId, $executorId, $reportYear, $contractId, $reportMonth, $writtenBy, $data) {
             $max = WorkReport::query()
-                ->where('company_id', $executorId)
+                ->where('executor_id', $executorId)
                 ->where('report_year', $reportYear)
                 ->lockForUpdate()
                 ->max('report_number');
@@ -53,7 +54,8 @@ class WorkReportService implements IWorkReportService
 
             return WorkReport::create([
                 'contract_id'   => $contractId,
-                'company_id'    => $executorId,
+                'beneficiary_id' => $beneficiaryId,
+                'executor_id'    => $executorId,
                 'written_by'    => $writtenBy,
                 'report_month'  => $reportMonth,
                 'report_year'   => $reportYear,

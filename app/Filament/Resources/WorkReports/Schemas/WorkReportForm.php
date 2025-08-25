@@ -25,10 +25,10 @@ class WorkReportForm
     {
         return $schema
             ->components([
-                Select::make('company_id')
+                Select::make('executor_id')
                     ->live()
                     ->relationship(
-                        name: 'company',
+                        name: 'executor',
                         titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query) {
                             $svc = app(IWorkReportService::class);
@@ -96,11 +96,11 @@ class WorkReportForm
                             ->searchable()
                             ->preload()
                             ->live()
-                            ->disabled(fn(Get $get) => !$get('../../company_id'))
+                            ->disabled(fn(Get $get) => !$get('../../executor_id'))
                             ->options(function (Get $get) {
                                 $svc = app(IWorkReportService::class);
 
-                                $executorId = (int)$get('../../company_id');
+                                $executorId = (int)$get('../../executor_id');
                                 if (!$executorId) {
                                     return [];
                                 }

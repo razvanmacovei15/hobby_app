@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Contract;
-use App\Models\ContractAnnex;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,7 +29,8 @@ class WorkReportFactory extends Factory
         
         return [
             'contract_id' => Contract::factory(),
-            'contract_annex_id' => ContractAnnex::factory(),
+            'beneficiary_id' => Company::factory(),
+            'executor_id' => Company::factory(),
             'written_by' => User::factory(),
             'report_month' => $reportMonth,
             'report_year' => $reportYear,

@@ -17,7 +17,8 @@ class WorkReport extends Model
 
     protected $fillable = [
         'contract_id',
-        'company_id',
+        'beneficiary_id',
+        'executor_id',
 
         'written_by',
         'report_month', // e.g., 5
@@ -35,9 +36,14 @@ class WorkReport extends Model
         return $this->belongsTo(Contract::class, 'contract_id');
     }
 
-    public function company(): BelongsTo
+    public function beneficiary(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'beneficiary_id');
+    }
+
+    public function executor(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'executor_id');
     }
 
     public function writtenBy(): BelongsTo

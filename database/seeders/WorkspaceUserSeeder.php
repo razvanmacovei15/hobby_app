@@ -18,18 +18,21 @@ class WorkspaceUserSeeder extends Seeder
             [
                 'user_id' => 1, // admin user
                 'workspace_id' => 1, // Proiect Rezidențial Central Park
+                'is_default' => true,
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
             [
                 'user_id' => 2, // dan boitos
                 'workspace_id' => 1, // Proiect Rezidențial Central Park
+                'is_default' => true,
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
             [
                 'user_id' => 3, // razvan macovei
                 'workspace_id' => 1, // Proiect Rezidențial Central Park
+                'is_default' => true,
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
