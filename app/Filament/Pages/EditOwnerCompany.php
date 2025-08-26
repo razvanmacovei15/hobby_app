@@ -71,6 +71,11 @@ class EditOwnerCompany extends Page
                             ->label('Phone')
                             ->tel()
                             ->formatStateUsing(fn ($record) => $record?->phone),
+
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->formatStateUsing(fn ($record) => $record?->email),
                     ])
                     ->columns(2),
 

@@ -42,6 +42,7 @@ class CompanyFactory extends Factory
             'iban' => 'RO' . $this->faker->unique()->numberBetween(1000000000000000000000, 9999999999999999999999),
             'representative_id' => User::factory(),
             'phone' => $this->faker->phoneNumber(),
+            'email' => $this->faker->companyEmail(),
             'address_id' => Address::factory(),
         ];
     }

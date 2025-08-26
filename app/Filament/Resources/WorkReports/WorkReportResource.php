@@ -11,6 +11,8 @@ use App\Filament\Resources\WorkReports\Schemas\WorkReportForm;
 use App\Filament\Resources\WorkReports\Schemas\WorkReportInfolist;
 use App\Filament\Resources\WorkReports\Tables\WorkReportsTable;
 use App\Models\WorkReport;
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Builder;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -27,6 +29,21 @@ class WorkReportResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentList;
 
     protected static ?string $recordTitleAttribute = 'report_number';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Get current workspace (tenant)
+        $workspace = Filament::getTenant();
+
+        if ($workspace) {
+            // Filter work reports where beneficiary_id matches the workspace's owner company
+            $query->where('beneficiary_id', $workspace->owner_id)->where('workspace_id', $workspace->id);
+        }
+
+        return $query;
+    }
 
     public static function form(Schema $schema): Schema
     {

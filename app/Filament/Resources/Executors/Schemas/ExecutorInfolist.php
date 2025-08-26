@@ -20,6 +20,7 @@ class ExecutorInfolist
                 TextEntry::make('executor.place_of_registration')->label('Place of Registration'),
                 TextEntry::make('executor.iban')->label('IBAN'),
                 TextEntry::make('executor.phone')->label('Phone'),
+                TextEntry::make('executor.email')->label('Email'),
             ])->columns(3),
 
             Section::make('Address')->schema([

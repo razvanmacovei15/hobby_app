@@ -58,6 +58,7 @@ class CompanyService implements ICompanyService
                 'place_of_registration',
                 'iban',
                 'phone',
+                'email'
             ];
 
             $payload = Arr::only($companyData, $fillable);

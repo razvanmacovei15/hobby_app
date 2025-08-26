@@ -81,7 +81,7 @@ class EntriesRelationManager extends RelationManager
 
             ])
             ->recordActions([
-                DeleteAction::make(),
+                DeleteAction::make()->color('delete'),
             ])
             ->toolbarActions([
 

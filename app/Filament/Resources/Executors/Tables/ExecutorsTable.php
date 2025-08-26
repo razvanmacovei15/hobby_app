@@ -38,7 +38,7 @@ class ExecutorsTable
                         });
                     }),
 
-                Tables\Columns\TextColumn::make('executor.representative.email')
+                Tables\Columns\TextColumn::make('executor.email')
                     ->label('Email')
                     ->searchable()
                     ->sortable()
@@ -64,7 +64,7 @@ class ExecutorsTable
                 EditAction::make()
                     // optional: customize the icon/label/tooltip
                     ->icon('heroicon-m-pencil-square')
-                    ->tooltip('Edit'),
+                    ->tooltip('Edit')->color('edit'),
 
                 DeleteAction::make()
                     ->requiresConfirmation()

@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\OwnerCompanies\OwnerCompanyResource;
+use App\Http\Responses\LoginResponse;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -34,12 +36,20 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->tenant(Workspace::class, slugAttribute: 'id', ownershipRelationship: null)
             ->tenantMenu(false)
+            ->tenantBillingProvider(null)
             ->breadcrumbs(false)
             ->path('')
             ->registration(Register::class)
             ->login()
             ->colors([
                 'primary' => Color::Amber,
+                'danger' => Color::Red,
+                'success' => Color::Green,
+                'delete' => Color::Red,
+                'edit' => '#0ea5e9',
+                'create' => Color::Green,
+                'cancel' => Color::Amber,
+                'default' => '#FFFFFF',
             ])
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.topbar.workspace-switcher'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -68,5 +78,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->sidebarFullyCollapsibleOnDesktop();
+    }
+
+    public function boot(): void
+    {
+        // Bind custom login response to redirect to default workspace
+        $this->app->bind(LoginResponseContract::class, LoginResponse::class);
     }
 }

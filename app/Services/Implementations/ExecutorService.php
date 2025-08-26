@@ -67,7 +67,7 @@ class ExecutorService implements IExecutorService
 
         $executor->fill(Arr::only($executorData, [
             'name', 'cui', 'j', 'place_of_registration', 'iban',
-            'phone', 'representative_id', // representative_id will be overwritten after we resolve the user
+            'phone', 'email', 'representative_id', // representative_id will be overwritten after we resolve the user
         ]));
 
         $executor->save();

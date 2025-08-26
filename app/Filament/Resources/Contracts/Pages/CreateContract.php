@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Models\WorkspaceExecutor;
 use App\Services\IContractService;
 use App\Services\Implementations\ContractService;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -60,5 +61,37 @@ class CreateContract extends CreateRecord
             $this->initServices();
         }
         return $this->contractService;
+    }
+
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->label('Save')
+            ->icon('heroicon-o-check-circle')
+            ->color('success')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCreateAnotherFormAction(): Action
+    {
+        return parent::getCreateAnotherFormAction()
+            ->label('Save & Create Another')
+            ->icon('heroicon-o-document-duplicate')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Cancel')
+            ->icon('heroicon-o-x-circle')
+            ->color('cancel')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
     }
 }
