@@ -39,11 +39,11 @@
 **Priority**: Professional user experience
 
 **High-Priority Tasks:**
-- [ ] **Add missing action icons** to all view pages (ViewExecutor, ViewContract, ViewContractAnnex, ViewWorkReport)
+- [x] **Add missing action icons** to all view pages (ViewExecutor, ViewContract, ViewContractAnnex, ViewWorkReport)
   - EditAction::make()->icon('heroicon-o-pencil-square')
   - ViewAction::make()->icon('heroicon-o-eye')  
   - DeleteAction::make()->icon('heroicon-o-trash')
-- [ ] **Add email field to Company model** + migration
+- [x] **Add email field to Company model** + migration
 - [ ] **Enhance Company model** with Romanian business fields:
   - `email`, `website`, `vat_number`, `legal_form`, `activity_code`, `contact_person`
 - [ ] **Create BuildingPermit model** with Romanian construction requirements:

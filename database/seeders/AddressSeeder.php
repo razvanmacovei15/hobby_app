@@ -44,6 +44,26 @@ class AddressSeeder extends Seeder
                 'country' => 'Romania',
                 'created_at' => now()->subDays(5),
                 'updated_at' => now()->subDays(5),
+            ],[
+                'street' => 'Strada Pacii',
+                'street_number' => '15',
+                'city' => 'Iasi',
+                'building' => 'A2',
+                'apartment_number' => '45',
+                'state' => 'Iasi',
+                'country' => 'Romania',
+                'created_at' => now()->subDays(4),
+                'updated_at' => now()->subDays(4),
+            ],[
+                'street' => 'Bulevardul Tomis',
+                'street_number' => '128',
+                'city' => 'Constanta',
+                'building' => 'C1',
+                'apartment_number' => '72',
+                'state' => 'Constanta',
+                'country' => 'Romania',
+                'created_at' => now()->subDays(3),
+                'updated_at' => now()->subDays(3),
             ],
         ]);
     }

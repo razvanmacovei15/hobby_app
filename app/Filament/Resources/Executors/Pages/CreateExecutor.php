@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Company;
 use App\Models\User;
 use App\Services\IExecutorService;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Arr;
@@ -37,5 +38,37 @@ class CreateExecutor extends CreateRecord
                 'representative' => [],
             ],
         ]);
+    }
+
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->label('Save')
+            ->icon('heroicon-o-check-circle')
+            ->color('success')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCreateAnotherFormAction(): Action
+    {
+        return parent::getCreateAnotherFormAction()
+            ->label('Save & Create Another')
+            ->icon('heroicon-o-document-duplicate')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Cancel')
+            ->icon('heroicon-o-x-circle')
+            ->color('cancel')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
     }
 }

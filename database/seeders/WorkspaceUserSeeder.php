@@ -36,6 +36,13 @@ class WorkspaceUserSeeder extends Seeder
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
             ],
+            [
+                'user_id' => 3, // razvan macovei
+                'workspace_id' => 2, // Proiect Comercial Plaza Business
+                'is_default' => false,
+                'created_at' => now()->subDays(20),
+                'updated_at' => now()->subDays(20),
+            ],
         ]);
     }
 }

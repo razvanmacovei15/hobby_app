@@ -17,6 +17,7 @@ class WorkReport extends Model
 
     protected $fillable = [
         'contract_id',
+        'workspace_id',
         'beneficiary_id',
         'executor_id',
 
@@ -44,6 +45,11 @@ class WorkReport extends Model
     public function executor(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'executor_id');
+    }
+
+    public function workspace(): BelongsTo
+    {
+        return $this->belongsTo(Workspace::class, 'workspace_id');
     }
 
     public function writtenBy(): BelongsTo

@@ -16,8 +16,8 @@
                     </div>
 
                     {{-- optional top-right edit (keep this OR header action, not both) --}}
-                    <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-pencil-square" size="sm">
-                        Edit
+                    <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Company Details">
+                        Edit Company Details
                     </x-filament::button>
                 </div>
 

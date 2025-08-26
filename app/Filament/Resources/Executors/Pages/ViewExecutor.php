@@ -50,6 +50,7 @@ class ViewExecutor extends ViewRecord
         return [
             Action::make('viewOrCreateContract')
                 ->label($buttonName)
+                ->icon('heroicon-o-document')
                 ->action(function (): void {
                     $tenant = Filament::getTenant();
                     $beneficiaryId = $tenant?->owner_id;
@@ -71,8 +72,8 @@ class ViewExecutor extends ViewRecord
                         'executor_id' => $this->record->executor_id,
                     ]));
                 }),
-            EditAction::make(),
-            DeleteAction::make(),
+            EditAction::make()->icon('heroicon-o-pencil')->color('edit'),
+            DeleteAction::make()->icon('heroicon-o-trash')->color('delete'),
         ];
     }
 }

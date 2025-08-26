@@ -103,19 +103,22 @@ class ContractAnnexesRelationManager extends RelationManager
                 Action::make('create')
                     ->icon('heroicon-o-plus')
                     ->label('Create Contract Annex')
-                    ->url(fn () => ContractAnnexResource::getUrl('create') . '?' . http_build_query([
+                    ->color('create')
+                    ->url(fn() => ContractAnnexResource::getUrl('create') . '?' . http_build_query([
                             'contract_id' => $this->getOwnerRecord()->getKey(),
                         ])),
             ])
             ->recordActions([
-                Action::make('view')
+                ViewAction::make('view')
                     ->label('View')
                     ->icon('heroicon-m-eye')
                     ->url(fn(ContractAnnex $record) => ContractAnnexResource::getUrl('view', ['record' => $record])),
                 Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil')
-                    ->url(fn(ContractAnnex $record) => ContractAnnexResource::getUrl('edit', ['record' => $record])),
+                    ->url(fn(ContractAnnex $record) => ContractAnnexResource::getUrl('edit', ['record' => $record]))
+                    ->color('edit'),
+
                 DeleteAction::make('delete')
             ]);
     }

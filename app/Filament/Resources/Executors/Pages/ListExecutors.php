@@ -21,7 +21,7 @@ class ListExecutors extends ListRecords
         return [
             CreateAction::make()
                 ->label('Register executor') // 👈 your custom label
-                ->icon('heroicon-m-plus-circle'),
+                ->icon('heroicon-m-plus-circle')->color('create'),
         ];
     }
 }

@@ -33,15 +33,15 @@ class WorkReportResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        
+
         // Get current workspace (tenant)
         $workspace = Filament::getTenant();
-        
+
         if ($workspace) {
             // Filter work reports where beneficiary_id matches the workspace's owner company
-            $query->where('beneficiary_id', $workspace->owner_id);
+            $query->where('beneficiary_id', $workspace->owner_id)->where('workspace_id', $workspace->id);
         }
-        
+
         return $query;
     }
 

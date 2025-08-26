@@ -47,6 +47,7 @@ class OwnerCompany extends Page implements HasInfolists
                     TextEntry::make('place_of_registration')->label('Place of Registration')->state(fn($record) => $record->place_of_registration ?? "—"),
                     TextEntry::make('iban')->label('IBAN')->state(fn($record) => $record->iban ?? "—"),
                     TextEntry::make('phone')->label('Phone')->state(fn($record) => $record->phone ?? "—"),
+                    TextEntry::make('email')->label('Email')->state(fn($record) => $record->email ?? "—"),
                 ])->columns(4),
 
                 Section::make('Address')->schema([

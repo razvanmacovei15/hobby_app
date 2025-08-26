@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ContractAnnexes\Pages;
 
 use App\Filament\Resources\ContractAnnexes\ContractAnnexResource;
 use App\Filament\Resources\Contracts\ContractResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateContractAnnex extends CreateRecord
@@ -23,5 +24,37 @@ class CreateContractAnnex extends CreateRecord
         return ContractResource::getUrl('view', [
             'record' => $this->record->contract_id,
         ]);
+    }
+
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->label('Save')
+            ->icon('heroicon-o-check-circle')
+            ->color('success')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCreateAnotherFormAction(): Action
+    {
+        return parent::getCreateAnotherFormAction()
+            ->label('Save & Create Another')
+            ->icon('heroicon-o-document-duplicate')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Cancel')
+            ->icon('heroicon-o-x-circle')
+            ->color('cancel')
+            ->extraAttributes([
+                'style' => 'color: black;',
+            ]); // or any other color like 'primary', 'warning', etc.
     }
 }

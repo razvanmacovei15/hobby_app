@@ -43,6 +43,13 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Amber,
+                'danger' => Color::Red,
+                'success' => Color::Green,
+                'delete' => Color::Red,
+                'edit' => '#0ea5e9',
+                'create' => Color::Green,
+                'cancel' => Color::Amber,
+                'default' => '#FFFFFF',
             ])
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.topbar.workspace-switcher'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

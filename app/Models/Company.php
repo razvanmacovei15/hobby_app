@@ -21,7 +21,8 @@ class Company extends Model
         'iban',
         'address_id',
         'representative_id',
-        'phone'
+        'phone',
+        'email'
     ];
 
     public function address(): BelongsTo

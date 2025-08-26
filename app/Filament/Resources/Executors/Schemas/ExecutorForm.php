@@ -50,6 +50,11 @@ class ExecutorForm
                             ->label('Phone')
                             ->tel()
                             ->formatStateUsing(fn ($record) => $record?->executor?->phone),
+
+                        TextInput::make('executor.email')
+                            ->label('Email')
+                            ->email()
+                            ->formatStateUsing(fn ($record) => $record?->executor?->email),
                     ])
                     ->columns(2),
 

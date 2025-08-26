@@ -18,7 +18,8 @@ class WorkReportsTable
     {
         return $table
             ->columns([
-                TextColumn::make('company.name')
+                TextColumn::make('executor.name')
+                    ->label('Executor Company')
                     ->sortable(),
                 TextColumn::make('report_month')
                     ->searchable()
@@ -63,8 +64,8 @@ class WorkReportsTable
             ])
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()->color('edit'),
+                DeleteAction::make()->color('delete'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
