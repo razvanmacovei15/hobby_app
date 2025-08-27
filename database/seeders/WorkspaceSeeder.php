@@ -28,6 +28,12 @@ class WorkspaceSeeder extends Seeder
                 'created_at' => now()->subDays(20),
                 'updated_at' => now()->subDays(20),
             ],
+            [
+                'name' => 'Elite City',
+                'owner_id' => 1, // Construct Pro SRL (same owner as workspace 1)
+                'created_at' => now()->subDays(20),
+                'updated_at' => now()->subDays(20),
+            ],
         ]);
 
         // Add some workspace executors (companies that work on these workspaces)

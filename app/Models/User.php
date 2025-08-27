@@ -16,11 +16,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasName, FilamentUser, HasTenants
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -90,5 +91,59 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
         return $this->workspaces()
             ->wherePivot('is_default', true)
             ->first();
+    }
+
+    /**
+     * Get user's roles in a specific workspace
+     */
+    public function getWorkspaceRoles(Workspace $workspace)
+    {
+        return $this->roles()->where('workspace_id', $workspace->id)->get();
+    }
+
+    /**
+     * Check if user has a specific role in a workspace
+     */
+    public function hasWorkspaceRole(Workspace $workspace, string $roleName): bool
+    {
+        return $this->roles()
+            ->where('workspace_id', $workspace->id)
+            ->where('name', $roleName)
+            ->exists();
+    }
+
+    /**
+     * Check if user has a specific permission in a workspace
+     */
+    public function hasWorkspacePermission(Workspace $workspace, string $permission): bool
+    {
+        // Check direct permissions
+        if ($this->permissions()->where('workspace_id', $workspace->id)->where('name', $permission)->exists()) {
+            return true;
+        }
+
+        // Check permissions through roles
+        $workspaceRoles = $this->getWorkspaceRoles($workspace);
+        foreach ($workspaceRoles as $role) {
+            if ($role->hasPermissionTo($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Assign a role to user in a specific workspace
+     */
+    public function assignWorkspaceRole(Workspace $workspace, string $roleName): void
+    {
+        $role = \App\Models\Permission\Role::where('name', $roleName)
+            ->where('workspace_id', $workspace->id)
+            ->first();
+
+        if ($role) {
+            $this->assignRole($role);
+        }
     }
 }

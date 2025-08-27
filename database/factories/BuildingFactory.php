@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\BuildingType;
 use App\Models\Address;
+use App\Models\BuildingPermit;
 use App\Models\ConstructionSite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -33,6 +34,7 @@ class BuildingFactory extends Factory
             'building_type' => $this->faker->randomElement($this->buildingTypes),
             'construction_site_id' => ConstructionSite::factory(),
             'address_id' => Address::factory(),
+            'building_permit_id' => BuildingPermit::factory(),
         ];
     }
 }
