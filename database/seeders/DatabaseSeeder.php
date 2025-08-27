@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             WorkspaceSeeder::class,
             WorkspaceUserSeeder::class,
+            BuildingPermitSeeder::class,
             ConstructionSiteSeeder::class,
             BuildingSeeder::class,
             ContractSeeder::class,

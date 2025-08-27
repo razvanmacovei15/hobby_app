@@ -46,7 +46,7 @@
 - [x] **Add email field to Company model** + migration
 - [ ] **Enhance Company model** with Romanian business fields:
   - `email`, `website`, `vat_number`, `legal_form`, `activity_code`, `contact_person`
-- [ ] **Create BuildingPermit model** with Romanian construction requirements:
+- [x] **Create BuildingPermit model** with Romanian construction requirements:
   - `permit_number`, `issued_by`, `issue_date`, `expiry_date`
   - `construction_type`, `total_area`, `built_area`, `height_restriction`
   - `architect_name`, `structural_engineer`, `permit_status`

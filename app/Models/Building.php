@@ -23,7 +23,8 @@ class Building extends Model
         'building_type', // enum type
 
         'address_id',
-        'construction_site_id'
+        'construction_site_id',
+        'building_permit_id'
     ];
 
     protected $casts = [
@@ -53,6 +54,11 @@ class Building extends Model
     public function apartments(): HasMany
     {
         return $this->hasMany(Apartment::class);
+    }
+
+    public function buildingPermit(): BelongsTo
+    {
+        return $this->belongsTo(BuildingPermit::class);
     }
 
 }
