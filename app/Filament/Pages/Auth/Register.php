@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages\Auth;
 
-use App\Services\IUserWorkspaceService;
+use App\Services\IUserRegistrationService;
 use Filament\Auth\Http\Responses\RegistrationResponse;
 use Filament\Schemas\Components\Component;
 use Filament\Forms\Components\Select;
@@ -49,7 +49,7 @@ class Register extends BaseRegister
     {
         $data = $this->form->getState();
         // Use your custom service to create user with workspace
-        $userWorkspaceService = app(IUserWorkspaceService::class);
+        $userWorkspaceService = app(IUserRegistrationService::class);
         $user = $userWorkspaceService->registerUserWithDefaultWorkspace($data);
 
         event(new Registered($user));

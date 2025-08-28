@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\PermitStatus;
 use App\Models\BuildingPermit;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
@@ -44,15 +45,13 @@ class BuildingPermitPage extends Page implements HasInfolists
                     TextEntry::make('status')->label('Status')->state(fn($record) => $record->status?->label() ?? "—")
                         ->badge()
                         ->color(fn ($record) => match ($record?->status) {
-                            \App\Enums\PermitStatus::PENDING => 'warning',
-                            \App\Enums\PermitStatus::APPROVED => 'success',
+                            PermitStatus::PENDING=> 'warning',
+                            PermitStatus::APPROVED => 'success',
                             \App\Enums\PermitStatus::REJECTED => 'danger',
                             \App\Enums\PermitStatus::EXPIRED => 'gray',
                             \App\Enums\PermitStatus::REVOKED => 'danger',
                             default => 'gray',
                         }),
-                    TextEntry::make('created_at')->label('Created')->state(fn($record) => $record->created_at?->format('Y-m-d H:i') ?? "—"),
-                    TextEntry::make('updated_at')->label('Updated')->state(fn($record) => $record->updated_at?->format('Y-m-d H:i') ?? "—"),
                 ])->columns(3),
             ])
             ->columns(1);

@@ -42,16 +42,7 @@ class WorkReportService implements IWorkReportService
 
         $writtenBy = (int) (auth()->id() ?? 0);
 
-        // Generate report_number atomically per (company_id, report_year)
         return DB::transaction(function () use ($workspaceId, $beneficiaryId, $executorId, $reportYear, $contractId, $reportMonth, $writtenBy, $data) {
-            $max = WorkReport::query()
-                ->where('executor_id', $executorId)
-                ->where('report_year', $reportYear)
-                ->lockForUpdate()
-                ->max('report_number');
-
-            $nextNumber = ((int) $max) + 1;
-
             return WorkReport::create([
                 'contract_id'   => $contractId,
                 'beneficiary_id' => $beneficiaryId,
@@ -61,7 +52,6 @@ class WorkReportService implements IWorkReportService
                 'report_month'  => $reportMonth,
                 'report_year'   => $reportYear,
                 'notes'         => $data['notes'] ?? null,
-                'report_number' => $nextNumber,
             ]);
         });
     }

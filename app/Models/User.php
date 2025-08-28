@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -145,5 +147,52 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
         if ($role) {
             $this->assignRole($role);
         }
+    }
+
+    /**
+     * Get companies where this user is employed
+     */
+    public function employers(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class, 'company_employees')
+            ->using(CompanyEmployee::class)
+            ->withPivot(['job_title', 'salary', 'hired_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Workspace invitations received by this user (polymorphic)
+     */
+    public function workspaceInvitations(): MorphMany
+    {
+        return $this->morphMany(WorkspaceInvitation::class, 'invitee');
+    }
+
+    /**
+     * Workspace invitations sent by this user (as admin)
+     */
+    public function sentWorkspaceInvitations(): HasMany
+    {
+        return $this->hasMany(WorkspaceInvitation::class, 'invited_by');
+    }
+
+    /**
+     * Get pending workspace invitations for this user
+     */
+    public function pendingWorkspaceInvitations(): MorphMany
+    {
+        return $this->workspaceInvitations()
+            ->whereNull('accepted_at')
+            ->where('expires_at', '>', now());
+    }
+
+    /**
+     * Check if user has pending invitation to a workspace
+     */
+    public function hasPendingInvitationTo(Workspace $workspace): bool
+    {
+        return $this->pendingWorkspaceInvitations()
+            ->where('workspace_id', $workspace->id)
+            ->exists();
     }
 }

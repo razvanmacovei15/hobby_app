@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
             StaircaseSeeder::class,
             FloorSeeder::class,
             ApartmentSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

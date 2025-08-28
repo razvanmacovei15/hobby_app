@@ -4,6 +4,7 @@ namespace App\Models\Permission;
 
 use Spatie\Permission\Models\Permission as SpatiePermission;
 use App\Models\Workspace;
+use App\Enums\PermissionCategory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Permission extends SpatiePermission
@@ -12,6 +13,12 @@ class Permission extends SpatiePermission
         'name',
         'guard_name',
         'workspace_id',
+        'category',
+        'description',
+    ];
+
+    protected $casts = [
+        'category' => PermissionCategory::class,
     ];
 
     public function workspace(): BelongsTo
