@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 
 class BuildingPermitService implements IBuildingPermitService
 {
-
     public function getAllPermitsForCompanyId(int $companyId): Collection
     {
         return BuildingPermit::query()

@@ -7,10 +7,10 @@ return [
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
          * Eloquent model should be used to retrieve your permissions. Of course, it
-         * is often just the "Permission" model but you may use whatever you like.
+         * is often just the "Authorization" model but you may use whatever you like.
          *
-         * The model you want to use as a Permission model needs to implement the
-         * `Spatie\Permission\Contracts\Permission` contract.
+         * The model you want to use as a Authorization model needs to implement the
+         * `Spatie\Authorization\Contracts\Authorization` contract.
          */
 
         'permission' => App\Models\Permission\Permission::class,
@@ -21,7 +21,7 @@ return [
          * is often just the "Role" model but you may use whatever you like.
          *
          * The model you want to use as a Role model needs to implement the
-         * `Spatie\Permission\Contracts\Role` contract.
+         * `Spatie\Authorization\Contracts\Role` contract.
          */
 
         'role' => App\Models\Permission\Role::class,
@@ -112,10 +112,10 @@ return [
 
     /*
      * Events will fire when a role or permission is assigned/unassigned:
-     * \Spatie\Permission\Events\RoleAttached
-     * \Spatie\Permission\Events\RoleDetached
-     * \Spatie\Permission\Events\PermissionAttached
-     * \Spatie\Permission\Events\PermissionDetached
+     * \Spatie\Authorization\Events\RoleAttached
+     * \Spatie\Authorization\Events\RoleDetached
+     * \Spatie\Authorization\Events\PermissionAttached
+     * \Spatie\Authorization\Events\PermissionDetached
      *
      * To enable, set to true, and then create listeners to watch these events.
      */
@@ -172,7 +172,7 @@ return [
      * The class to use for interpreting wildcard permissions.
      * If you need to modify delimiters, override the class and specify its name here.
      */
-    // 'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
+    // 'wildcard_permission' => Spatie\Authorization\WildcardPermission::class,
 
     /* Cache-specific settings */
 
