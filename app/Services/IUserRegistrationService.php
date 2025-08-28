@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 
-interface IUserWorkspaceService
+interface IUserRegistrationService
 {
     public function registerUserWithDefaultWorkspace(array $userData): User;
 }

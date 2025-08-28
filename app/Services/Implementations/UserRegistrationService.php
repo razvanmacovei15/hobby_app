@@ -5,11 +5,11 @@ namespace App\Services\Implementations;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Workspace;
-use App\Services\IUserWorkspaceService;
+use App\Services\IUserRegistrationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserWorkspaceService implements IUserWorkspaceService
+class UserRegistrationService implements IUserRegistrationService
 {
     public function registerUserWithDefaultWorkspace(array $userData): User
     {

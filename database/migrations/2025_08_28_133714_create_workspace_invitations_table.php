@@ -23,7 +23,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['token', 'expires_at']);
-            $table->unique(['workspace_id', 'user_id'], 'unique_workspace_user_invitation');
         });
     }
 

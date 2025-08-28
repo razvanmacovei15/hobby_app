@@ -12,13 +12,13 @@ use App\Services\ICompanyService;
 use App\Services\Implementations\WorkReportService;
 use App\Services\IRoleService;
 use App\Services\IUserService;
-use App\Services\IUserWorkspaceService;
+use App\Services\IUserRegistrationService;
 use App\Services\Implementations\AddressService;
 use App\Services\Implementations\BuildingPermitService;
 use App\Services\Implementations\CompanyService;
 use App\Services\Implementations\RoleService;
 use App\Services\Implementations\UserService;
-use App\Services\Implementations\UserWorkspaceService;
+use App\Services\Implementations\UserRegistrationService;
 use App\Services\IWorkReportService;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IBuildingPermitService::class, BuildingPermitService::class);
         $this->app->bind(IRoleService::class, RoleService::class);
         $this->app->bind(IUserService::class, UserService::class);
-        $this->app->bind(IUserWorkspaceService::class, UserWorkspaceService::class);
+        $this->app->bind(IUserRegistrationService::class, UserRegistrationService::class);
         $this->app->bind(ICompanyService::class, CompanyService::class);
         $this->app->bind(IWorkReportService::class, WorkReportService::class);
         $this->app->bind(ICompanyEmployeeService::class, CompanyEmployeeService::class);
