@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Company extends Model
 {
@@ -65,5 +67,41 @@ class Company extends Model
         return $this->belongsToMany(Workspace::class,'workspace_executors')
             ->withPivot(['is_active'])
             ->withTimestamps();
+    }
+
+    public function employees(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'company_employees')
+            ->using(CompanyEmployee::class)
+            ->withPivot(['job_title', 'salary', 'hired_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Workspace invitations received by this company (polymorphic)
+     */
+    public function workspaceInvitations(): MorphMany
+    {
+        return $this->morphMany(WorkspaceInvitation::class, 'invitee');
+    }
+
+    /**
+     * Get pending workspace invitations for this company
+     */
+    public function pendingWorkspaceInvitations(): MorphMany
+    {
+        return $this->workspaceInvitations()
+            ->whereNull('accepted_at')
+            ->where('expires_at', '>', now());
+    }
+
+    /**
+     * Check if company has pending invitation to a workspace
+     */
+    public function hasPendingInvitationTo(Workspace $workspace): bool
+    {
+        return $this->pendingWorkspaceInvitations()
+            ->where('workspace_id', $workspace->id)
+            ->exists();
     }
 }

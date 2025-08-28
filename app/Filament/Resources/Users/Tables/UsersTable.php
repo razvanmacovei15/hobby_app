@@ -27,7 +27,6 @@ class UsersTable
                 TextColumn::make('workspace_roles')
                     ->label('Roles')
                     ->badge()
-                    ->separator(',')
                     ->getStateUsing(function ($record) {
                         $currentWorkspace = Filament::getTenant();
                         if (!$currentWorkspace) {

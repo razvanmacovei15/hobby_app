@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\ICompanyEmployeeService;
 use App\Services\IExecutorService;
+use App\Services\Implementations\CompanyEmployeeService;
 use App\Services\Implementations\ExecutorService;
 use App\Services\IAddressService;
 use App\Services\IBuildingPermitService;
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IUserWorkspaceService::class, UserWorkspaceService::class);
         $this->app->bind(ICompanyService::class, CompanyService::class);
         $this->app->bind(IWorkReportService::class, WorkReportService::class);
+        $this->app->bind(ICompanyEmployeeService::class, CompanyEmployeeService::class);
 
     }
 
