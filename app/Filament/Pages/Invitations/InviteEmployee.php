@@ -85,6 +85,8 @@ class InviteEmployee extends Page implements HasForms
                 $data['roles']
             );
 
+            dd($data);
+
             // Show success notification
             Notification::make()
                 ->title('Invitation Sent Successfully!')
@@ -130,11 +132,10 @@ class InviteEmployee extends Page implements HasForms
             if ($employees->isEmpty()) {
                 return ['no_employees' => 'No employees available to invite'];
             }
-
             return $employees->mapWithKeys(function ($employee) {
                 $jobTitle = $employee->job_title ? " ({$employee->job_title})" : '';
                 return [
-                    $employee->id => "{$employee->user->first_name} {$employee->user->last_name}{$jobTitle}"
+                    $employee->user_id => "{$employee->user->first_name} {$employee->user->last_name}{$jobTitle}"
                 ];
             })->toArray();
 

@@ -105,16 +105,7 @@ class InvitationController extends Controller
 
     public function acceptInvitation(string $token)
     {
-        $result = $this->invitationService->acceptInvitation($token);
-
-        if (!$result['success']) {
-            return response()->json(['error' => $result['message']], 400);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Invitation accepted successfully!',
-            'redirect' => route('login')
-        ]);
+        // Redirect to the registration form
+        return redirect()->route('register.from-invitation', $token);
     }
 }
