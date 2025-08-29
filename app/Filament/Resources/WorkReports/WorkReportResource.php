@@ -26,7 +26,7 @@ class WorkReportResource extends Resource
     protected static ?string $model = WorkReport::class;
     protected static string|null|\UnitEnum $navigationGroup = 'Execution Network';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentList;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static ?string $recordTitleAttribute = 'report_number';
 
