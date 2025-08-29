@@ -17,16 +17,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ContractResource extends Resource
 {
     protected static bool $isScopedToTenant = false;
     protected static ?string $tenantOwnershipRelationshipName = null;
-    protected static bool $shouldRegisterNavigation = false; // ✅ hide from sidebar
+    protected static bool $shouldRegisterNavigation = true; // ✅ hide from sidebar
 
     protected static ?string $model = Contract::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected static string | UnitEnum | null $navigationGroup = 'Company Management';
     protected static ?string $recordTitleAttribute = 'contract_number';
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
