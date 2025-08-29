@@ -60,10 +60,10 @@ class BuildingPermitPage extends Page implements HasInfolists
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('edit')
-                ->label($this->record ? 'Edit Permit' : 'Create Permit')
-                ->icon('heroicon-o-pencil')
-                ->url(fn () => EditBuildingPermitPage::getUrl()),
+//            Action::make('edit')
+//                ->label($this->record ? 'Edit Permit' : 'Create Permit')
+//                ->icon('heroicon-o-pencil')
+//                ->url(fn () => EditBuildingPermitPage::getUrl()),
         ];
     }
 }
