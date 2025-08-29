@@ -14,6 +14,11 @@ use Throwable;
 class CreateCompanyEmployee extends CreateRecord
 {
     protected static string $resource = CompanyEmployeeResource::class;
+    
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 
     protected function handleRecordCreation(array $data): Model
     {

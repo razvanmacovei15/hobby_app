@@ -56,12 +56,23 @@ class CompanyEmployeeService implements ICompanyEmployeeService
                 'hired_at' => $data['hired_at'],
             ]);
 
-            // Add user to workspace if not already added
-            if (!$user->workspaces()->where('workspace_id', $workspace->id)->exists()) {
-                $user->workspaces()->attach($workspace->id);
-            }
-
             return $companyEmployee->load(['user', 'company']);
         });
+    }
+
+    public function getEmployeesTheAreNotInWorkspace(int $workspaceId)
+    {
+        $workspace = Filament::getTenant();
+        
+        // Get all user IDs that are already in this workspace
+        $usersInWorkspace = DB::table('workspace_users')
+            ->where('workspace_id', $workspace->id)
+            ->pluck('user_id');
+        
+        // Get company employees whose users are NOT in the workspace
+        return CompanyEmployee::where('company_id', $workspace->owner_id)
+            ->whereNotIn('user_id', $usersInWorkspace)
+            ->with(['user'])
+            ->get();
     }
 }

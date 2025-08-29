@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\WorkspaceUsers\Pages;
 
+use App\Filament\Pages\Invitations\InviteEmployee;
 use App\Filament\Resources\WorkspaceUsers\WorkspaceUserResource;
-use Filament\Actions\CreateAction;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListWorkspaceUsers extends ListRecords
@@ -13,7 +14,11 @@ class ListWorkspaceUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            Action::make('Invite Employee to Workspace')
+                ->color('success')
+                ->icon('heroicon-o-user-plus')
+                ->label('Invite Employee to Workspace')
+                ->url(InviteEmployee::getUrl()),
         ];
     }
 }

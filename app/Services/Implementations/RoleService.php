@@ -5,6 +5,7 @@ namespace App\Services\Implementations;
 use App\Models\Permission\Permission;
 use App\Models\Permission\Role;
 use App\Services\IRoleService;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -98,5 +99,14 @@ class RoleService implements IRoleService
 
         // Remove duplicates and return
         return array_unique($permissionIds);
+    }
+
+    public function getCurrentWorkspaceRoles()
+    {
+        $workspace = Filament::getTenant();
+
+        return Role::query()
+            ->where('workspace_id', $workspace->id)
+            ->get();
     }
 }

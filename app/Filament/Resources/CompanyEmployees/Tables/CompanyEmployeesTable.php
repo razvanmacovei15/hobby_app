@@ -18,8 +18,8 @@ class CompanyEmployeesTable
                 TextColumn::make('user.first_name')->label('First Name'),
                 TextColumn::make('user.last_name')->label('Last Name'),
                 TextColumn::make('user.email')->label('Email'),
-                TextColumn::make('job_title')->label('Title'),
-                TextColumn::make('salary')->label('Salary'),
+                TextColumn::make('job_title')->label('Title')->placeholder('—'),
+                TextColumn::make('salary')->label('Salary')->placeholder('—'),
                 TextColumn::make('hired_at')->label('Hired At')->dateTime(),
             ])
             ->filters([

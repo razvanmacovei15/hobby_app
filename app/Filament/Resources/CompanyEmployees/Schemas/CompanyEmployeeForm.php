@@ -24,7 +24,7 @@ class CompanyEmployeeForm
                 Section::make('')->label('Job Info')->components([
                     TextInput::make('job_title')->label('Job Title'),
                     TextInput::make('salary')->label('Salary'),
-                    DatePicker::make('hired_at')->label('Hired At')->native(false),
+                    DatePicker::make('hired_at')->label('Hired At')->native(false)->placeholder('Pick a date'),
                 ])
 
             ])

@@ -24,7 +24,6 @@ class CompanyEmployeeResource extends Resource
     protected static string|null|\UnitEnum $navigationGroup = 'Company Management';
 
     protected static bool $isScopedToTenant = false;
-
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema

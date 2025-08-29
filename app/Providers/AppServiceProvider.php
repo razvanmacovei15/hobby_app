@@ -10,6 +10,7 @@ use App\Services\IAddressService;
 use App\Services\IBuildingPermitService;
 use App\Services\ICompanyService;
 use App\Services\Implementations\WorkReportService;
+use App\Services\Implementations\WorkspaceInvitationService;
 use App\Services\IRoleService;
 use App\Services\IUserService;
 use App\Services\IUserRegistrationService;
@@ -20,6 +21,7 @@ use App\Services\Implementations\RoleService;
 use App\Services\Implementations\UserService;
 use App\Services\Implementations\UserRegistrationService;
 use App\Services\IWorkReportService;
+use App\Services\IWorkspaceInvitationService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ICompanyService::class, CompanyService::class);
         $this->app->bind(IWorkReportService::class, WorkReportService::class);
         $this->app->bind(ICompanyEmployeeService::class, CompanyEmployeeService::class);
+        $this->app->bind(IWorkspaceInvitationService::class, WorkspaceInvitationService::class);
 
     }
 

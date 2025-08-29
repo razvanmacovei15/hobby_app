@@ -30,4 +30,5 @@ interface IRoleService
      * @return array
      */
     public function extractPermissionIds(array $data): array;
+    public function getCurrentWorkspaceRoles();
 }
