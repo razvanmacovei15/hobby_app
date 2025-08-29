@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission\Role;
 use App\Models\User;
 use App\Models\WorkspaceInvitation;
 use App\Services\IWorkspaceInvitationService;
@@ -96,9 +97,16 @@ class InvitationController extends Controller
             Auth::login($user);
 
             //todo must link the user to workspace
+            $user->workspaces()->attach($invitation->workspace_id);
 
             //todo must link user role to this workspace
+            $roles = Role::query()->whereIn('id', $invitation->roles)
+                ->where('workspace_id', $invitation->workspace_id)
+                ->get();
 
+            foreach ($roles as $role) {
+                $user->assignRole($role);
+            }
             return redirect()->route('filament.admin.pages.dashboard')
                 ->with('success', "Welcome! You've successfully joined {$invitation->workspace->name}.");
 

@@ -85,7 +85,6 @@ class InviteEmployee extends Page implements HasForms
                 $data['roles']
             );
 
-            dd($data);
 
             // Show success notification
             Notification::make()
