@@ -76,7 +76,7 @@ class InvitationController extends Controller
 
         try {
             // Create the user account
-            $user = User::create([
+            $user = User::update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
@@ -94,6 +94,10 @@ class InvitationController extends Controller
 
             // Log the user in
             Auth::login($user);
+
+            //todo must link the user to workspace
+
+            //todo must link user role to this workspace
 
             return redirect()->route('filament.admin.pages.dashboard')
                 ->with('success', "Welcome! You've successfully joined {$invitation->workspace->name}.");
