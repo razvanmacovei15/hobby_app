@@ -20,7 +20,7 @@
                 <p class="text-red-700">{{ $message }}</p>
             </div>
             <div class="mt-6">
-                <a href="{{ route('login') }}"
+                <a href="{{ route('filament.admin.auth.login') }}"
                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                     Go to Login
                 </a>

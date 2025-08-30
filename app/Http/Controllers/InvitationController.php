@@ -43,15 +43,18 @@ class InvitationController extends Controller
             ]);
         }
 
-        $invitation->load(['workspace', 'invitee', 'invitedBy']);
+        $invitation->load(['workspace', 'invitedBy']);
+
+        // Get user directly by ID since morphTo relationship has issues
+        $user = User::findOrFail($invitation->invitee_id);
 
         return view('auth.register-from-invitation', [
             'invitation' => $invitation,
             'token' => $token,
             'prefilledData' => [
-                'first_name' => $invitation->invitee->first_name ?? 'User',
-                'last_name' => $invitation->invitee->last_name ?? 'Test',
-                'email' => $invitation->invitee->email,
+                'first_name' => $user->first_name ?? 'User',
+                'last_name' => $user->last_name ?? 'Test',
+                'email' => $user->email,
             ]
         ]);
     }
@@ -60,14 +63,11 @@ class InvitationController extends Controller
     {
         $invitation = WorkspaceInvitation::findByToken($token);
 
-        if (!$invitation || $invitation->isExpired() || $invitation->isAccepted()) {
+        if ($invitation->isExpired() || $invitation->isAccepted()) {
             return back()->withErrors(['token' => 'Invalid or expired invitation.']);
         }
 
         $validator = Validator::make($request->all(), [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
@@ -76,37 +76,24 @@ class InvitationController extends Controller
         }
 
         try {
-            // Create the user account
-            $user = User::update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
+            // Get the user directly by ID since morphTo isn't working
+            $user = User::findOrFail($invitation->invitee_id);
+            // Update user password
+            $user->update([
                 'password' => Hash::make($request->password),
                 'email_verified_at' => now(),
             ]);
+            $user->save();
 
             // Accept the invitation
             $result = $this->invitationService->acceptInvitation($token);
 
             if (!$result['success']) {
-                $user->delete();
                 return back()->withErrors(['general' => $result['message']])->withInput();
             }
-
             // Log the user in
             Auth::login($user);
 
-            //todo must link the user to workspace
-            $user->workspaces()->attach($invitation->workspace_id);
-
-            //todo must link user role to this workspace
-            $roles = Role::query()->whereIn('id', $invitation->roles)
-                ->where('workspace_id', $invitation->workspace_id)
-                ->get();
-
-            foreach ($roles as $role) {
-                $user->assignRole($role);
-            }
             return redirect()->route('filament.admin.pages.dashboard')
                 ->with('success', "Welcome! You've successfully joined {$invitation->workspace->name}.");
 

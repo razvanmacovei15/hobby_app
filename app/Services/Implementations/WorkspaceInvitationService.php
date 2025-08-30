@@ -4,6 +4,7 @@ namespace App\Services\Implementations;
 
 use App\Mail\WorkspaceInvitationMail;
 use App\Models\EmailLog;
+use App\Models\Permission\Role;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
@@ -106,7 +107,6 @@ class WorkspaceInvitationService implements IWorkspaceInvitationService
     public function acceptInvitation(string $token): array
     {
         $invitation = $this->getInvitationByToken($token);
-
         if (!$invitation) {
             return [
                 'success' => false,
@@ -136,13 +136,18 @@ class WorkspaceInvitationService implements IWorkspaceInvitationService
 
             // Add the user to the workspace with the specified roles
             $workspace = $invitation->workspace;
-            $user = $invitation->invitee;
+            $user = User::findOrFail($invitation->invitee_id);
 
             // Assuming you have a pivot table for workspace_users with roles
-            $workspace->users()->attach($user->id, [
-                'roles' => json_encode($invitation->roles),
-                'joined_at' => now()
-            ]);
+            $user->workspaces()->attach($invitation->workspace_id);
+
+            $roles = Role::query()->whereIn('id', $invitation->roles)
+                ->where('workspace_id', $invitation->workspace_id)
+                ->get();
+
+            foreach ($roles as $role) {
+                $user->assignRole($role);
+            }
 
             DB::commit();
 
