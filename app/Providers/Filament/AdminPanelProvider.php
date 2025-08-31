@@ -76,11 +76,10 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationGroups([
-                'Contracts',
-                'Projects',
-                'Companies',
-                'Users & Permissions',
-                'System',
+                'Execution Network',
+                'Workspace',
+                'Company Management',
+                'Authorization',
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->sidebarFullyCollapsibleOnDesktop();
