@@ -2,9 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\OwnerCompanies\OwnerCompanyResource;
 use App\Http\Responses\LoginResponse;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
+use Filament\Auth\Http\Responses\LoginResponse as LoginResponseContract;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -75,6 +74,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->navigationGroups([
+                'Contracts',
+                'Projects',
+                'Companies',
+                'Users & Permissions',
+                'System',
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->sidebarFullyCollapsibleOnDesktop();

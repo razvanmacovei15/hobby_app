@@ -138,8 +138,13 @@ class WorkspaceInvitationService implements IWorkspaceInvitationService
             $workspace = $invitation->workspace;
             $user = User::findOrFail($invitation->invitee_id);
 
-            // Assuming you have a pivot table for workspace_users with roles
-            $user->workspaces()->attach($invitation->workspace_id);
+            // Check if this is the user's first workspace
+            $isFirstWorkspace = $user->workspaces()->count() === 0;
+            
+            // Attach user to workspace, making it default if it's their first
+            $user->workspaces()->attach($invitation->workspace_id, [
+                'is_default' => $isFirstWorkspace
+            ]);
 
             $roles = Role::query()->whereIn('id', $invitation->roles)
                 ->where('workspace_id', $invitation->workspace_id)

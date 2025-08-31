@@ -16,11 +16,12 @@ class LoginResponse extends LoginResponseContract
 
         // Check if user has a default tenant
         $defaultTenant = $user->getDefaultTenant($panel);
-        
+
+
         if ($defaultTenant) {
             // Redirect to the default workspace
             return redirect()->to(
-                Filament::getTenantUrl($defaultTenant, $panel)
+                $panel->getUrl(tenant: $defaultTenant)
             );
         }
 
@@ -28,7 +29,7 @@ class LoginResponse extends LoginResponseContract
         $tenants = $user->getTenants($panel);
         if ($tenants->isNotEmpty()) {
             return redirect()->to(
-                Filament::getTenantUrl($tenants->first(), $panel)
+                $panel->getUrl(tenant: $tenants->first())
             );
         }
 

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission\Role;
 use App\Models\User;
+use App\Models\Workspace;
 use App\Models\WorkspaceInvitation;
 use App\Services\IWorkspaceInvitationService;
+use Filament\Facades\Filament;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -21,31 +24,54 @@ class InvitationController extends Controller
         $this->invitationService = $invitationService;
     }
 
+    private function redirectToWorkspace(Workspace $workspace): RedirectResponse
+    {
+        $panel = Filament::getCurrentPanel();
+        if (!$panel) {
+            return redirect('/');
+        }
+        
+        return redirect()->to(
+            $panel->getUrl(tenant: $workspace)
+        );
+    }
+
+    private function redirectToUserDashboard(): RedirectResponse
+    {
+        $user = Auth::user();
+        $panel = Filament::getCurrentPanel();
+        
+        if (!$panel || !$user) {
+            return redirect('/');
+        }
+
+        $defaultTenant = $user->getDefaultTenant($panel);
+        if ($defaultTenant) {
+            return redirect()->to($panel->getUrl(tenant: $defaultTenant));
+        }
+
+        $tenants = $user->getTenants($panel);
+        if ($tenants->isNotEmpty()) {
+            return redirect()->to($panel->getUrl(tenant: $tenants->first()));
+        }
+
+        return redirect()->to($panel->getUrl());
+    }
+
     public function showRegistrationForm(string $token)
     {
-        $invitation = WorkspaceInvitation::findByToken($token);
-
-        if (!$invitation) {
-            return view('auth.invitation-invalid', [
-                'message' => 'This invitation link is invalid or has expired.'
-            ]);
+        // If user is already logged in, redirect to their workspace
+        if (Auth::check()) {
+            return $this->redirectToUserDashboard();
         }
 
-        if ($invitation->isExpired()) {
-            return view('auth.invitation-invalid', [
-                'message' => 'This invitation has expired. Please contact the person who invited you for a new invitation.'
-            ]);
-        }
-
-        if ($invitation->isAccepted()) {
-            return view('auth.invitation-invalid', [
-                'message' => 'This invitation has already been used.'
-            ]);
+        $invitation = $this->getInvitationOrFail($token);
+        
+        if ($invitation instanceof RedirectResponse) {
+            return $invitation;
         }
 
         $invitation->load(['workspace', 'invitedBy']);
-
-        // Get user directly by ID since morphTo relationship has issues
         $user = User::findOrFail($invitation->invitee_id);
 
         return view('auth.register-from-invitation', [
@@ -61,10 +87,10 @@ class InvitationController extends Controller
 
     public function registerFromInvitation(Request $request, string $token)
     {
-        $invitation = WorkspaceInvitation::findByToken($token);
-
-        if ($invitation->isExpired() || $invitation->isAccepted()) {
-            return back()->withErrors(['token' => 'Invalid or expired invitation.']);
+        $invitation = $this->getInvitationOrFail($token);
+        
+        if ($invitation instanceof RedirectResponse) {
+            return $invitation;
         }
 
         $validator = Validator::make($request->all(), [
@@ -76,14 +102,13 @@ class InvitationController extends Controller
         }
 
         try {
-            // Get the user directly by ID since morphTo isn't working
             $user = User::findOrFail($invitation->invitee_id);
+            
             // Update user password
             $user->update([
                 'password' => Hash::make($request->password),
                 'email_verified_at' => now(),
             ]);
-            $user->save();
 
             // Accept the invitation
             $result = $this->invitationService->acceptInvitation($token);
@@ -91,10 +116,12 @@ class InvitationController extends Controller
             if (!$result['success']) {
                 return back()->withErrors(['general' => $result['message']])->withInput();
             }
+            
             // Log the user in
             Auth::login($user);
 
-            return redirect()->route('filament.admin.pages.dashboard')
+            // Redirect to the workspace they were invited to join
+            return $this->redirectToWorkspace($invitation->workspace)
                 ->with('success', "Welcome! You've successfully joined {$invitation->workspace->name}.");
 
         } catch (\Exception $e) {
@@ -104,7 +131,29 @@ class InvitationController extends Controller
 
     public function acceptInvitation(string $token)
     {
-        // Redirect to the registration form
         return redirect()->route('register.from-invitation', $token);
+    }
+
+    private function getInvitationOrFail(string $token): WorkspaceInvitation|RedirectResponse
+    {
+        // First try to find a pending invitation
+        $invitation = WorkspaceInvitation::findByToken($token);
+        
+        if ($invitation) {
+            return $invitation;
+        }
+
+        // If no pending invitation found, check if it was already accepted
+        $acceptedInvitation = WorkspaceInvitation::where('token', $token)->first();
+        
+        if ($acceptedInvitation && $acceptedInvitation->isAccepted()) {
+            return redirect()->route('filament.admin.auth.login')
+                ->with('info', 'This invitation has already been used. Please log in with your credentials.');
+        }
+
+        // If invitation doesn't exist at all, redirect to login with error
+        return redirect()->route('filament.admin.auth.login')->withErrors([
+            'email' => 'This invitation link is invalid or has expired.'
+        ]);
     }
 }
