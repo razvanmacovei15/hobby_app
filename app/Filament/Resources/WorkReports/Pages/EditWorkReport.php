@@ -15,7 +15,7 @@ class EditWorkReport extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make()->icon('heroicon-o-document')->label('View Work Report'),
+            ViewAction::make()->icon('heroicon-o-eye')->label('View Work Report'),
             DeleteAction::make()->color('delete')->icon('heroicon-o-trash'),
         ];
     }
