@@ -33,7 +33,6 @@ class ExecutorForm
 
                         TextInput::make('executor.cui')
                             ->label('CUI')
-//                            ->required()
                             ->formatStateUsing(fn($record) => $record?->executor?->cui),
 
                         TextInput::make('executor.j')
@@ -70,6 +69,7 @@ class ExecutorForm
 
                         TextInput::make('executor.address.street_number')
                             ->label('No.')
+                            ->required()
                             ->maxLength(50)
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->street_number),
 
@@ -83,7 +83,6 @@ class ExecutorForm
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->apartment_number),
 
                         TextInput::make('executor.address.city')
-//                            ->required()
                             ->maxLength(255)
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->city),
 
@@ -92,7 +91,7 @@ class ExecutorForm
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->state),
 
                         TextInput::make('executor.address.country')
-//                            ->required()
+                            ->required()
                             ->maxLength(255)
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->country),
                     ])
