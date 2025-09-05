@@ -26,7 +26,7 @@ class ExecutorResource extends Resource
 
     // swap the basic icon for something with personality
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
-    protected static ?string $recordTitleAttribute = 'executor.name';
+    protected static ?string $recordTitleAttribute = 'filament_name';
 
     public static function form(Schema $schema): Schema
     {

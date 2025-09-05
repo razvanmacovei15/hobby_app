@@ -8,6 +8,8 @@ use App\Models\Contract;
 use App\Services\IContractService;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use App\Filament\Resources\Executors\Schemas\ExecutorForm;
 use Filament\Actions\DeleteAction;
@@ -19,9 +21,16 @@ class ViewExecutor extends ViewRecord
 {
     protected static string $resource = ExecutorResource::class;
 
+    public function getTitle(): string
+    {
+        return "View - {$this->record->getFilamentName()}";
+    }
+
     protected ?IContractService $contractService = null;
 
-    protected function initServices(): void {}
+    protected function initServices(): void
+    {
+    }
 
     public function mount($record): void
     {
@@ -71,6 +80,15 @@ class ViewExecutor extends ViewRecord
                     $this->redirect(ContractResource::getUrl('create', [
                         'executor_id' => $this->record->executor_id,
                     ]));
+                }),
+            Action::make('Upload Contract')
+                ->label('Upload Contract')
+                ->icon(Heroicon::OutlinedArrowUpOnSquare)
+                ->action(function (): void {
+                    Notification::make()
+                        ->title('This feature will come soon')
+                        ->info()
+                        ->send();
                 }),
             EditAction::make()->icon('heroicon-o-pencil')->color('edit'),
             DeleteAction::make()->icon('heroicon-o-trash')->color('delete'),

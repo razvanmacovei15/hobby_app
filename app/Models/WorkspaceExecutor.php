@@ -30,4 +30,9 @@ class WorkspaceExecutor extends Model
     {
         return $this->belongsTo(Workspace::class, 'workspace_id');
     }
+
+    public function getFilamentName(): string
+    {
+        return $this->executor?->name ?? 'Unknown Executor';
+    }
 }

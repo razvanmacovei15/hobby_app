@@ -41,4 +41,9 @@ class EditWorkReport extends EditRecord
                 'style' => 'color: black;',
             ]); // or any other color like 'primary', 'warning', etc.
     }
+
+    public function getTitle(): string
+    {
+        return "{$this->record->getFilamentName()}";
+    }
 }

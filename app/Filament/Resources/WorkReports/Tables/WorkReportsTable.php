@@ -31,7 +31,10 @@ class WorkReportsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('writtenBy.first_name')
-                    ->numeric()
+                    ->label('Written By')
+                    ->state(fn ($record) => $record?->writtenBy
+                        ? $record->writtenBy->getFilamentName()
+                        : '—')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

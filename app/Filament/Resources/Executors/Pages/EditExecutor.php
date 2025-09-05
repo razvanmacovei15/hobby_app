@@ -12,12 +12,18 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Filament\Schemas\Schema;
 
 class EditExecutor extends EditRecord
 {
     protected static string $resource = ExecutorResource::class;
+
+    public function getTitle(): string
+    {
+        return "Edit - {$this->record->getFilamentName()}";
+    }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {

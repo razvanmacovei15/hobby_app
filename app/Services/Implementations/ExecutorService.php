@@ -111,6 +111,7 @@ class ExecutorService implements IExecutorService
         }
         // If your main record needs an executor_id, put it back so Filament can continue its save
         $data['executor_id'] = $executor->id;
+        $data['is_active'] = true;
         return $data;
     }
 

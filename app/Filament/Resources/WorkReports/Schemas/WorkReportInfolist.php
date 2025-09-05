@@ -12,19 +12,15 @@ class WorkReportInfolist
         return $schema
             ->components([
                 TextEntry::make('contract.registration_key')
+                    ->label('Contract')
                     ->numeric(),
-                TextEntry::make('company.name')
-                    ->numeric(),
-                TextEntry::make('report_number')
-                    ->numeric(),
-                TextEntry::make('written_by')
-                    ->numeric(),
-                TextEntry::make('report_month'),
-                TextEntry::make('report_year')
-                    ->numeric(),
+                TextEntry::make('report_number'),
 
-                TextEntry::make('created_at')
-                    ->dateTime(),
+                TextEntry::make('writtenBy.first_name')
+                    ->label('Written By')
+                    ->state(fn ($record) => $record?->writtenBy
+                        ? $record->writtenBy->getFilamentName()
+                        : '—'),
 
             ])
             ->columns(3);

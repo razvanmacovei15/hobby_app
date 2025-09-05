@@ -44,9 +44,7 @@ class ExecutorInfolist
             ])->columns(2),
 
             Section::make('Workspace')->schema([
-                TextEntry::make('workspace.name')->label('Workspace'),
                 TextEntry::make('executor_type')->label('Service Type')->badge(),
-//                IconEntry::make('is_active')->label('Is Executor Active')->boolean(),
                 IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
             ])->columns(4),
         ])

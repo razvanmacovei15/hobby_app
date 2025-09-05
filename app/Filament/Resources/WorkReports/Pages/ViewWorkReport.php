@@ -16,4 +16,9 @@ class ViewWorkReport extends ViewRecord
             EditAction::make()->color('edit')->icon('heroicon-o-pencil')->label('Edit Work Report'),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return "{$this->record->getFilamentName()}";
+    }
 }

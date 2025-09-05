@@ -127,8 +127,7 @@ class ExecutorForm
                         ->label('Executor Type')
                         ->options(ExecutorType::options())
                         ->required(),
-                    Checkbox::make('is_active')
-                        ->label('Active'),
+
                 ])->columns(2)
             ])
             ->columns(1);

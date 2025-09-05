@@ -86,4 +86,9 @@ class WorkReport extends Model
             });
         });
     }
+
+    public function getFilamentName():string
+    {
+        return $this->executor->name . ' - Report: ' . $this->report_month . '/' . $this->report_year;
+    }
 }

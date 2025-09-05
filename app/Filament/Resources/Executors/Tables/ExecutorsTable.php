@@ -6,6 +6,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,6 +50,7 @@ class ExecutorsTable
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
 
                 Tables\Columns\IconColumn::make('has_contract')
@@ -58,6 +60,15 @@ class ExecutorsTable
 
             ])
             ->recordAction(ViewAction::class)
+            ->filters([
+                SelectFilter::make('is_active')
+                ->label('Activity')
+                ->options([
+                    1 => 'Active',
+                    0 => 'Inactive',
+                ])
+                ->default(true)
+            ])
             ->recordActions([
                 ViewAction::make(),
 
