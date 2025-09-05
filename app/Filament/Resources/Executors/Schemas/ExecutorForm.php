@@ -84,6 +84,7 @@ class ExecutorForm
 
                         TextInput::make('executor.address.city')
                             ->maxLength(255)
+                            ->required()
                             ->formatStateUsing(fn($record) => $record?->executor?->address?->city),
 
                         TextInput::make('executor.address.state')
