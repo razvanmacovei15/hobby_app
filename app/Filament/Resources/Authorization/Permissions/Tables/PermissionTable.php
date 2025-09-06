@@ -50,7 +50,6 @@ class PermissionTable
             ])
             ->defaultGroup('category')
             ->recordActions([
-                // Read-only resource
             ])
             ->defaultSort('category');
     }

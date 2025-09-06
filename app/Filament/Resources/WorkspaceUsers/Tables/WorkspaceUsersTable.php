@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkspaceUsers\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -39,9 +40,6 @@ class WorkspaceUsersTable
                     })
                     ->listWithLineBreaks(),
 
-                TextColumn::make('workspace.name')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -50,14 +48,15 @@ class WorkspaceUsersTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                IconColumn::make('is_default')
-                    ->boolean(),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-//                EditAction::make(),
+                Action::make('Remove from workspace')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
