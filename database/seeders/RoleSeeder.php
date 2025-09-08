@@ -30,11 +30,11 @@ class RoleSeeder extends Seeder
 
         // Get all permissions for this workspace and assign them to super-admin
         $allPermissions = Permission::where('workspace_id', $workspace->id)->get();
-        
+
         if ($allPermissions->isNotEmpty()) {
             $superAdminRole->syncPermissions($allPermissions);
             echo "  Assigned {$allPermissions->count()} permissions to super-admin role\n";
-            
+
             foreach ($allPermissions as $permission) {
                 echo "    - {$permission->name}\n";
             }
@@ -43,7 +43,7 @@ class RoleSeeder extends Seeder
         }
 
         // Assign super-admin role to user ID 3
-        $user = User::find(3);
+        $user = User::findOrFail(3);
         if ($user) {
             $user->assignRole($superAdminRole);
             echo "  Assigned super-admin role to user: {$user->name} (ID: {$user->id})\n";
