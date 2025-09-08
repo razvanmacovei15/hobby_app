@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\WorkReport;
+use App\Policies\WorkReportPolicy;
 use App\Services\ICompanyEmployeeService;
 use App\Services\IExecutorService;
 use App\Services\Implementations\CompanyEmployeeService;
@@ -22,6 +24,7 @@ use App\Services\Implementations\UserService;
 use App\Services\Implementations\UserRegistrationService;
 use App\Services\IWorkReportService;
 use App\Services\IWorkspaceInvitationService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -49,6 +52,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(WorkReport::class, WorkReportPolicy::class);
     }
 }

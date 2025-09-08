@@ -195,4 +195,18 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
             ->where('workspace_id', $workspace->id)
             ->exists();
     }
+
+    /**
+     * Get the current workspace for this user
+     */
+    public function getCurrentWorkspaceAttribute(): Workspace
+    {
+        $currentTenant = Filament::getTenant();
+        
+        if (!$currentTenant instanceof Workspace) {
+            throw new \RuntimeException('No workspace context available. User must be operating within a workspace.');
+        }
+
+        return $currentTenant;
+    }
 }
