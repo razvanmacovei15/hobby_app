@@ -18,7 +18,7 @@ class OwnerCompany extends Page implements HasInfolists
     use InteractsWithInfolists;
 
     protected string $view = 'filament.pages.owner-company';
-    protected static string|null|\UnitEnum $navigationGroup = 'Company management';
+    protected static string|null|\UnitEnum $navigationGroup = 'Company Management';
 
     protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Company Details';
