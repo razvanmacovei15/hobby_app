@@ -5,17 +5,21 @@ namespace App\Enums;
 enum PermissionCategory: string
 {
     case USERS = 'users';
+    case EMPLOYEES = 'employees';
     case WORK_REPORTS = 'work-reports';
     case CONTRACTS = 'contracts';
     case WORKSPACE = 'workspace';
+    case WORKSPACE_EXECUTORS =  'workspace-executors';
 
     public function label(): string
     {
         return match ($this) {
             self::USERS => 'Users',
+            self::EMPLOYEES => 'Employees',
             self::WORK_REPORTS => 'Work Reports',
             self::CONTRACTS => 'Contracts',
             self::WORKSPACE => 'Workspace',
+            self::WORKSPACE_EXECUTORS => 'Workspace-Executors',
         };
     }
 
@@ -23,9 +27,11 @@ enum PermissionCategory: string
     {
         return match ($this) {
             self::USERS => 'User management permissions',
+            self::EMPLOYEES => 'Employees permissions',
             self::WORK_REPORTS => 'Work report management permissions',
             self::CONTRACTS => 'Contract management permissions',
             self::WORKSPACE => 'Workspace management permissions',
+            self::WORKSPACE_EXECUTORS => 'Workspace-Executors management permissions',
         };
     }
 
