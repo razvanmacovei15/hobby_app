@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
+use App\Enums\WorkReportStatus;
 use App\Models\User;
 use App\Models\WorkReport;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class WorkReportPolicy
 {
@@ -13,13 +14,14 @@ class WorkReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        $workspace = $user->currentWorkspace;
-
-        if (!$workspace) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.view');
+        $result = $user->canInWorkspace('work-reports.view');
+        Log::info('WorkReportPolicy::viewAny', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'permission' => 'work-reports.view',
+            'result' => $result
+        ]);
+        return $result;
     }
 
     /**
@@ -27,18 +29,15 @@ class WorkReportPolicy
      */
     public function view(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.view');
+        $result = $user->canInWorkspace('work-reports.view');
+        Log::info('WorkReportPolicy::view', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'work_report_id' => $workReport->id,
+            'permission' => 'work-reports.view',
+            'result' => $result
+        ]);
+        return $result;
     }
 
     /**
@@ -46,13 +45,14 @@ class WorkReportPolicy
      */
     public function create(User $user): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.create');
+        $result = $user->canInWorkspace('work-reports.create');
+        Log::info('WorkReportPolicy::create', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'permission' => 'work-reports.create',
+            'result' => $result
+        ]);
+        return $result;
     }
 
     /**
@@ -60,23 +60,26 @@ class WorkReportPolicy
      */
     public function update(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
         // Prevent editing approved work reports
-        if ($workReport->status === \App\Enums\WorkReportStatus::APPROVED) {
+        if ($workReport->status === WorkReportStatus::APPROVED) {
+            Log::info('WorkReportPolicy::update - BLOCKED (approved status)', [
+                'user_id' => $user->id,
+                'work_report_id' => $workReport->id,
+                'work_report_status' => $workReport->status->value,
+                'result' => false
+            ]);
             return false;
         }
 
-        return $user->hasWorkspacePermission($workspace, 'work-reports.edit');
+        $result = $user->canInWorkspace('work-reports.edit');
+        Log::info('WorkReportPolicy::update', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'work_report_id' => $workReport->id,
+            'permission' => 'work-reports.edit',
+            'result' => $result
+        ]);
+        return $result;
     }
 
     /**
@@ -84,18 +87,15 @@ class WorkReportPolicy
      */
     public function delete(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.delete');
+        $result = $user->canInWorkspace('work-reports.delete');
+        Log::info('WorkReportPolicy::delete', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'work_report_id' => $workReport->id,
+            'permission' => 'work-reports.delete',
+            'result' => $result
+        ]);
+        return $result;
     }
 
     /**
@@ -103,18 +103,7 @@ class WorkReportPolicy
      */
     public function restore(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.delete');
+        return $user->canInWorkspace('work-reports.edit');
     }
 
     /**
@@ -122,18 +111,7 @@ class WorkReportPolicy
      */
     public function forceDelete(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.delete');
+        return $user->canInWorkspace('work-reports.delete');
     }
 
     /**
@@ -141,17 +119,14 @@ class WorkReportPolicy
      */
     public function approve(User $user, WorkReport $workReport): bool
     {
-        $workspace = $user->getCurrentWorkspaceAttribute();
-
-        if (!$workspace) {
-            return false;
-        }
-
-        // Check if work report belongs to current workspace
-        if ($workReport->workspace_id !== $workspace->id) {
-            return false;
-        }
-
-        return $user->hasWorkspacePermission($workspace, 'work-reports.approve');
+        $result = $user->canInWorkspace('work-reports.approve');
+        Log::info('WorkReportPolicy::approve', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'work_report_id' => $workReport->id,
+            'permission' => 'work-reports.approve',
+            'result' => $result
+        ]);
+        return $result;
     }
 }

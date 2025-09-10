@@ -11,6 +11,8 @@ enum PermissionCategory: string
     case WORKSPACE = 'workspace';
     case WORKSPACE_EXECUTORS =  'workspace-executors';
     case CONTRACTED_SERVICES = 'contracted-services';
+    case COMPANIES = 'companies';
+    case ADDRESSES = 'addresses';
 
     public function label(): string
     {
@@ -22,6 +24,8 @@ enum PermissionCategory: string
             self::WORKSPACE => 'Workspace',
             self::WORKSPACE_EXECUTORS => 'Workspace-Executors',
             self::CONTRACTED_SERVICES => 'Contracted Services',
+            self::COMPANIES => 'Companies',
+            self::ADDRESSES => 'Addresses',
         };
     }
 
@@ -35,6 +39,8 @@ enum PermissionCategory: string
             self::WORKSPACE => 'Workspace management permissions',
             self::WORKSPACE_EXECUTORS => 'Workspace-Executors management permissions',
             self::CONTRACTED_SERVICES => 'Contracted services management permissions',
+            self::COMPANIES => 'Company management permissions',
+            self::ADDRESSES => 'Address management permissions',
         };
     }
 

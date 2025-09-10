@@ -2,10 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Address;
+use App\Models\Company;
 use App\Models\ContractedService;
+use App\Models\User;
 use App\Models\WorkReport;
+use App\Models\WorkspaceExecutor;
+use App\Policies\AddressPolicy;
+use App\Policies\CompanyPolicy;
 use App\Policies\ContractedServicePolicy;
+use App\Policies\UserPolicy;
 use App\Policies\WorkReportPolicy;
+use App\Policies\WorkspaceExecutorPolicy;
 use App\Services\ICompanyEmployeeService;
 use App\Services\IExecutorService;
 use App\Services\Implementations\CompanyEmployeeService;
@@ -56,5 +64,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(WorkReport::class, WorkReportPolicy::class);
         Gate::policy(ContractedService::class, ContractedServicePolicy::class);
+        Gate::policy(WorkspaceExecutor::class, WorkspaceExecutorPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Company::class, CompanyPolicy::class);
+        Gate::policy(Address::class, AddressPolicy::class);
     }
 }

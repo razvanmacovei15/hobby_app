@@ -42,15 +42,8 @@ class RoleForm
 
     protected static function getDynamicPermissionSections(): array
     {
-        $tenant = Filament::getTenant();
-
-        if (!$tenant) {
-            return [];
-        }
-
-        // Get all distinct categories that have permissions in this workspace
-        $categories = Permission::where('workspace_id', $tenant->id)
-            ->whereNotNull('category')
+        // Get all distinct categories that have permissions (application-wide)
+        $categories = Permission::whereNotNull('category')
             ->distinct()
             ->pluck('category')
             ->filter()
@@ -69,25 +62,22 @@ class RoleForm
                 ->schema([
                     CheckboxList::make("permission_ids_{$categoryEnum->value}")
                         ->label('')
-                        ->options(function () use ($tenant, $categoryEnum) {
+                        ->options(function () use ($categoryEnum) {
                             return Permission::query()
-                                ->where('workspace_id', $tenant->id)
                                 ->where('category', $categoryEnum)
                                 ->pluck('name', 'id')
                                 ->toArray();
                         })
-                        ->descriptions(function () use ($tenant, $categoryEnum) {
+                        ->descriptions(function () use ($categoryEnum) {
                             return Permission::query()
-                                ->where('workspace_id', $tenant->id)
                                 ->where('category', $categoryEnum)
                                 ->pluck('description', 'id')
                                 ->filter()
                                 ->toArray();
                         })
-                        ->afterStateHydrated(function (CheckboxList $component, $state, $record) use ($categoryEnum, $tenant) {
+                        ->afterStateHydrated(function (CheckboxList $component, $state, $record) use ($categoryEnum) {
                             if ($record) {
                                 $categoryPermissionIds = $record->permissions()
-                                    ->where('workspace_id', $tenant->id)
                                     ->where('category', $categoryEnum)
                                     ->pluck('permissions.id')
                                     ->toArray();
@@ -96,7 +86,8 @@ class RoleForm
                         })
                         ->dehydrated(true)
                         ->columns(3)
-                        ->gridDirection('row'),
+                        ->gridDirection('row')
+                        ->bulkToggleable(),
                 ])
                 ->columnSpanFull()
                 ->collapsed(true)

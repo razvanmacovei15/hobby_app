@@ -21,8 +21,8 @@ use Filament\Tables\Table;
 
 class WorkReportResource extends Resource
 {
-    protected static bool $isScopedToTenant = false;
-    protected static ?string $tenantOwnershipRelationshipName = null;
+    protected static bool $isScopedToTenant = true;
+    protected static ?string $tenantOwnershipRelationshipName = 'workspace';
     protected static ?string $model = WorkReport::class;
     protected static string|null|\UnitEnum $navigationGroup = 'Execution Network';
 

@@ -11,10 +11,7 @@ class PermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        // Get first workspace for testing
-        $workspace = Workspace::findOrFail(1);
-
-        echo "Setting up permissions for workspace: {$workspace->name}\n";
+        echo "Setting up application-wide permissions:\n";
 
         // Define permissions organized by category
         $permissions = [
@@ -48,26 +45,38 @@ class PermissionSeeder extends Seeder
                 'contracted-services.create' => 'Create new contracted services',
                 'contracted-services.edit' => 'Edit existing contracted services',
                 'contracted-services.delete' => 'Delete existing contracted services',
+            ],
+            PermissionCategory::COMPANIES->value => [
+                'companies.view' => 'View companies',
+                'companies.create' => 'Create new companies',
+                'companies.edit' => 'Edit existing companies',
+                'companies.delete' => 'Delete existing companies',
+            ],
+            PermissionCategory::ADDRESSES->value => [
+                'addresses.view' => 'View addresses',
+                'addresses.create' => 'Create new addresses',
+                'addresses.edit' => 'Edit existing addresses',
+                'addresses.delete' => 'Delete existing addresses',
             ]
         ];
 
-        // Create permissions for this workspace
+        // Create permissions once (application-wide)
         foreach ($permissions as $category => $categoryPermissions) {
-            echo "  Creating {$category} permissions:\n";
+            echo "\nCreating {$category} permissions:\n";
 
             foreach ($categoryPermissions as $permissionName => $description) {
                 Permission::updateOrCreate([
                     'name' => $permissionName,
                     'guard_name' => 'web',
-                    'workspace_id' => $workspace->id,
                 ], [
                     'category' => $category,
                     'description' => $description,
                 ]);
-                echo "    - {$permissionName}: {$description}\n";
+                echo "  - {$permissionName}: {$description}\n";
             }
         }
 
-        echo "Authorization setup complete!\n";
+        echo "\nApplication-wide permissions setup complete!\n";
+        echo "These permissions can now be assigned to roles in any workspace.\n";
     }
 }

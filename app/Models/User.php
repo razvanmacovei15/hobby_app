@@ -115,16 +115,77 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     }
 
     /**
+     * Check if user has a specific permission in their current workspace context
+     * This method works with the current Filament tenant or falls back to checking all workspaces
+     */
+    public function canInWorkspace(string $permission): bool
+    {
+        \Log::info('User::canInWorkspace called', [
+            'user_id' => $this->id,
+            'user_email' => $this->email,
+            'permission' => $permission
+        ]);
+
+        try {
+            // Try to get current workspace from Filament tenant
+            $workspace = \Filament\Facades\Filament::getTenant();
+            
+            if ($workspace instanceof Workspace) {
+                \Log::info('Found Filament tenant workspace', [
+                    'workspace_id' => $workspace->id,
+                    'workspace_name' => $workspace->name
+                ]);
+                $result = $this->hasWorkspacePermission($workspace, $permission);
+                \Log::info('Workspace permission check result', [
+                    'workspace_id' => $workspace->id,
+                    'permission' => $permission,
+                    'result' => $result
+                ]);
+                return $result;
+            }
+        } catch (\Exception $e) {
+            \Log::info('Filament tenant not available, using fallback', [
+                'error' => $e->getMessage()
+            ]);
+        }
+        
+        // Fallback: check if user has permission in any of their workspaces
+        \Log::info('Using fallback: checking all user workspaces', [
+            'workspaces_count' => $this->workspaces->count()
+        ]);
+        
+        foreach ($this->workspaces as $workspace) {
+            $hasPermission = $this->hasWorkspacePermission($workspace, $permission);
+            \Log::info('Checking workspace permission (fallback)', [
+                'workspace_id' => $workspace->id,
+                'workspace_name' => $workspace->name,
+                'permission' => $permission,
+                'has_permission' => $hasPermission
+            ]);
+            
+            if ($hasPermission) {
+                \Log::info('Found permission in workspace (fallback)', [
+                    'workspace_id' => $workspace->id,
+                    'permission' => $permission
+                ]);
+                return true;
+            }
+        }
+        
+        \Log::info('Permission not found in any workspace', [
+            'permission' => $permission,
+            'result' => false
+        ]);
+        return false;
+    }
+
+    /**
      * Check if user has a specific permission in a workspace
+     * Since permissions are now application-wide, we only check through workspace roles
      */
     public function hasWorkspacePermission(Workspace $workspace, string $permission): bool
     {
-        // Check direct permissions
-        if ($this->permissions()->where('workspace_id', $workspace->id)->where('name', $permission)->exists()) {
-            return true;
-        }
-
-        // Check permissions through roles
+        // Check permissions through workspace roles
         $workspaceRoles = $this->getWorkspaceRoles($workspace);
         foreach ($workspaceRoles as $role) {
             if ($role->hasPermissionTo($permission)) {

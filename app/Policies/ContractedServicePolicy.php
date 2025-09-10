@@ -13,7 +13,7 @@ class ContractedServicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('contracted-services.view');
+        return $user->canInWorkspace('contracted-services.view');
     }
 
     /**
@@ -21,7 +21,7 @@ class ContractedServicePolicy
      */
     public function view(User $user, ContractedService $contractedService): bool
     {
-        return $user->can('contracted-services.view');
+        return $user->canInWorkspace('contracted-services.view');
     }
 
     /**
@@ -29,7 +29,7 @@ class ContractedServicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('contracted-services.create');
+        return $user->canInWorkspace('contracted-services.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class ContractedServicePolicy
      */
     public function update(User $user, ContractedService $contractedService): bool
     {
-        return $user->can('contracted-services.edit');
+        return $user->canInWorkspace('contracted-services.edit');
     }
 
     /**
@@ -45,7 +45,7 @@ class ContractedServicePolicy
      */
     public function delete(User $user, ContractedService $contractedService): bool
     {
-        return $user->can('contracted-services.delete');
+        return $user->canInWorkspace('contracted-services.delete');
     }
 
     /**
@@ -53,7 +53,7 @@ class ContractedServicePolicy
      */
     public function restore(User $user, ContractedService $contractedService): bool
     {
-        return $user->can('contracted-services.edit');
+        return $user->canInWorkspace('contracted-services.edit');
     }
 
     /**
@@ -61,6 +61,6 @@ class ContractedServicePolicy
      */
     public function forceDelete(User $user, ContractedService $contractedService): bool
     {
-        return $user->can('contracted-services.delete');
+        return $user->canInWorkspace('contracted-services.delete');
     }
 }

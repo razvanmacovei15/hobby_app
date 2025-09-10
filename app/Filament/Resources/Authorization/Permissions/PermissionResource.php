@@ -51,17 +51,17 @@ class PermissionResource extends Resource
         return true;
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $currentWorkspace = Filament::getTenant();
-
-        if ($currentWorkspace) {
-            return parent::getEloquentQuery()
-                ->where('workspace_id', $currentWorkspace->id);
-        }
-
-        return parent::getEloquentQuery();
-    }
+//    public static function getEloquentQuery(): Builder
+//    {
+//        $currentWorkspace = Filament::getTenant();
+//
+//        if ($currentWorkspace) {
+//            return parent::getEloquentQuery()
+//                ->where('workspace_id', $currentWorkspace->id);
+//        }
+//
+//        return parent::getEloquentQuery();
+//    }
 
     public static function getPages(): array
     {
