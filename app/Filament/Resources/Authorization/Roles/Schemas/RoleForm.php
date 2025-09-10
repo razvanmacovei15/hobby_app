@@ -99,6 +99,7 @@ class RoleForm
                         ->gridDirection('row'),
                 ])
                 ->columnSpanFull()
+                ->collapsed(true)
                 ->collapsible();
         }
 
