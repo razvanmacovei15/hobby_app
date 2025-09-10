@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkReports\RelationManagers;
 
+use App\Enums\WorkReportStatus;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -21,14 +22,23 @@ class EntriesRelationManager extends RelationManager
 {
     protected static string $relationship = 'entries';
 
+    private function isWorkReportApproved(): bool
+    {
+        return $this->ownerRecord && $this->ownerRecord->status === WorkReportStatus::APPROVED;
+    }
+
     public static function canViewForRecord($ownerRecord, string $pageClass): bool
     {
-        return is_subclass_of($pageClass, ViewRecord::class);
+        if (!is_subclass_of($pageClass, ViewRecord::class)) {
+            return false;
+        }
+
+        return auth()->user()->can('contracted-services.view');
     }
 
     public function isReadOnly(): bool
     {
-        return false;
+        return !auth()->user()->can('contracted-services.edit') || $this->isWorkReportApproved();
     }
 
     public function table(Table $table): Table
@@ -81,10 +91,17 @@ class EntriesRelationManager extends RelationManager
 
             ])
             ->recordActions([
-                DeleteAction::make()->color('delete'),
+
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->color('delete')
+                    ->visible(fn() => auth()->user()->can('contracted-services.delete') && !$this->isWorkReportApproved()),
             ])
             ->toolbarActions([
-
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->visible(fn() => auth()->user()->can('contracted-services.delete') && !$this->isWorkReportApproved()),
+                ]),
             ]);
     }
 }

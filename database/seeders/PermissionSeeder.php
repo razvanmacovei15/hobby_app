@@ -35,12 +35,19 @@ class PermissionSeeder extends Seeder
                 'work-reports.create' => 'Create new work reports',
                 'work-reports.edit' => 'Edit existing work reports',
                 'work-reports.delete' => 'Delete existing work reports',
+                'work-reports.approve' => 'Approve work reports',
             ],
             PermissionCategory::WORKSPACE_EXECUTORS->value => [
                 'workspace-executors.view' => 'View workspace executors',
                 'workspace-executors.create' => 'Create new workspace executors',
                 'workspace-executors.edit' => 'Edit existing workspace executors',
                 'workspace-executors.delete' => 'Delete existing workspace executors',
+            ],
+            PermissionCategory::CONTRACTED_SERVICES->value => [
+                'contracted-services.view' => 'View contracted services',
+                'contracted-services.create' => 'Create new contracted services',
+                'contracted-services.edit' => 'Edit existing contracted services',
+                'contracted-services.delete' => 'Delete existing contracted services',
             ]
         ];
 

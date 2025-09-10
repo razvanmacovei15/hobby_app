@@ -2,6 +2,7 @@
 
 namespace App\Services\Implementations;
 
+use App\Enums\WorkReportStatus;
 use App\Models\Contract;
 use App\Models\ContractAnnex;
 use App\Models\WorkReport;
@@ -115,5 +116,22 @@ class WorkReportService implements IWorkReportService
         return \App\Models\ContractedService::query()
             ->where('id', $serviceId)
             ->value('price_per_unit_of_measure');
+    }
+
+    public function markAsApproved(WorkReport $workReport, int $approvedBy): WorkReport
+    {
+        if ($workReport->status === WorkReportStatus::APPROVED) {
+            throw new InvalidArgumentException('Work report is already approved.');
+        }
+
+        return DB::transaction(function () use ($workReport, $approvedBy) {
+            $workReport->update([
+                'status' => WorkReportStatus::APPROVED,
+                'approved_at' => now(),
+                'approved_by' => $approvedBy,
+            ]);
+
+            return $workReport->fresh();
+        });
     }
 }

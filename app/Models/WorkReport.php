@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\WorkReportStatus;
 use InvalidArgumentException;
 use DB;
 use Database\Factories\WorkReportFactory;
@@ -26,11 +27,19 @@ class WorkReport extends Model
         'report_year', // e.g., 2025
         'report_number', //incrementing for all reports
         'notes', // optional notes or remarks
-
-        // add status later draft|submitted|approved|locked
-        // add approved_at and approved_by
-        // add locked_at
+        
+        'status',
+        'approved_at',
+        'approved_by',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => WorkReportStatus::class,
+            'approved_at' => 'datetime',
+        ];
+    }
 
     public function contract(): BelongsTo
     {
@@ -65,6 +74,11 @@ class WorkReport extends Model
     public function extraServices(): HasMany
     {
         return $this->hasMany(WorkReportExtraService::class);
+    }
+
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     protected static function boot()

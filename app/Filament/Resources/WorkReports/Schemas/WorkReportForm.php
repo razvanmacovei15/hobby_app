@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkReports\Schemas;
 
+use App\Enums\WorkReportStatus;
 use App\Models\Company;
 use App\Models\Contract;
 use App\Models\ContractedService;
@@ -21,6 +22,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class WorkReportForm
 {
+    private static function isApproved($record): bool
+    {
+        return $record && $record->status === WorkReportStatus::APPROVED;
+    }
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -43,10 +49,12 @@ class WorkReportForm
                         }
                     )
                     ->required()
+                    ->disabled(fn($record) => self::isApproved($record))
                     ->columnSpan(2),
                 Select::make('report_month')
                     ->required()
                     ->default(now()->month)
+                    ->disabled(fn($record) => self::isApproved($record))
                     ->options([
                         1 => 'January',
                         2 => 'February',
@@ -64,9 +72,21 @@ class WorkReportForm
                 TextInput::make('report_year')
                     ->required()
                     ->default(now()->format('Y'))
-                    ->numeric(),
+                    ->numeric()
+                    ->disabled(fn($record) => self::isApproved($record)),
                 Textarea::make('notes')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(fn($record) => self::isApproved($record)),
+
+                Select::make('status')
+                    ->label('Status')
+                    ->options([
+                        WorkReportStatus::DRAFT->value => WorkReportStatus::DRAFT->label(),
+                        WorkReportStatus::PENDING_APPROVAL->value => WorkReportStatus::PENDING_APPROVAL->label(),
+                    ])
+                    ->default(WorkReportStatus::DRAFT->value)
+                    ->required()
+                    ->disabled(fn($record) => self::isApproved($record)),
 
                 Repeater::make('entries')
                     ->relationship('entries')
@@ -76,6 +96,10 @@ class WorkReportForm
                     ->columns(6)
                     ->reorderable()
                     ->orderColumn('order')
+                    ->visible(fn() => auth()->user()->can('contracted-services.view'))
+                    ->addable(fn($record) => auth()->user()->can('contracted-services.create') && !self::isApproved($record))
+                    ->reorderable(fn($record) => auth()->user()->can('contracted-services.edit') && !self::isApproved($record))
+                    ->deletable(fn($record) => auth()->user()->can('contracted-services.delete') && !self::isApproved($record))
                     ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
                         $data['service_type'] = ContractedService::class;
                         return $data;
@@ -96,7 +120,7 @@ class WorkReportForm
                             ->searchable()
                             ->preload()
                             ->live()
-                            ->disabled(fn(Get $get) => !$get('../../executor_id'))
+                            ->disabled(fn(Get $get, $record) => !$get('../../executor_id') || self::isApproved($record) || !auth()->user()->can('contracted-services.edit'))
                             ->options(function (Get $get) {
                                 $svc = app(IWorkReportService::class);
 
@@ -171,7 +195,7 @@ class WorkReportForm
                             ->numeric()
                             ->required()
                             ->live(onBlur: true) // <-- only send update on blur
-                            ->disabled(fn (Get $get) => ! $get('service_id'))
+                            ->disabled(fn (Get $get, $record) => !$get('service_id') || self::isApproved($record) || !auth()->user()->can('contracted-services.edit'))
                             ->afterStateUpdated(function ($state, Set $set, Get $get) {
                                 $qty   = (float) ($state ?? 0);
                                 $price = (float) ($get('price_per_unit_of_measure') ?? 0);
@@ -188,7 +212,7 @@ class WorkReportForm
                             ->columnSpan(1),
 
                         TextInput::make('notes')
-                            ->disabled(fn(Get $get) => !$get('service_id'))
+                            ->disabled(fn (Get $get, $record) => !$get('service_id') || self::isApproved($record) || !auth()->user()->can('contracted-services.edit'))
                             ->label('Notes')
                             ->columnSpanFull(),
                     ])

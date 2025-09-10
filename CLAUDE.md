@@ -136,6 +136,70 @@ protected $casts = ['status' => WorkReportStatus::class];
 - Add comprehensive validation
 - Write tests for critical Romanian compliance features
 
+### Service Layer Architecture (CRITICAL)
+**MANDATORY for all business logic implementation:**
+
+1. **Check for Service Interface**: Before building any business logic for a model, check if a service interface exists (e.g., `IUserService`, `IContractService`)
+2. **Create Missing Services**: If no service interface exists, create both:
+   - Interface: `app/Services/I[Model]Service.php`
+   - Implementation: `app/Services/Implementations/[Model]Service.php`
+3. **Register in AppServiceProvider**: Always bind interfaces to implementations in `app/Providers/AppServiceProvider.php`:
+   ```php
+   $this->app->bind(IContractService::class, ContractService::class);
+   ```
+4. **Use Services Everywhere**: NEVER write business logic directly in:
+   - Filament Pages
+   - Filament Resources  
+   - Filament Actions
+   - Controllers
+   
+   **Always inject and use services for testability**
+5. **Dependency Injection**: Use constructor injection in Filament components or method injection in actions:
+   ```php
+   // Constructor injection
+   public function __construct(private IContractService $contractService) {}
+   
+   // Method injection (preferred for Filament actions)
+   ->action(function (IContractService $contractService) {
+       $contractService->someMethod($this->record);
+   })
+   ```
+
+### Complete Feature Implementation Checklist
+When implementing any new model feature, ALWAYS create/update ALL of these:
+
+**Database Layer:**
+- [ ] Migration with proper foreign keys and indexes
+- [ ] Model with relationships, casts, and fillable fields
+- [ ] Factory with realistic fake data + factory states for different statuses
+- [ ] Seeder with representative sample data
+- [ ] **RUN MIGRATION**: `./vendor/bin/sail artisan migrate`
+
+**Business Logic:**
+- [ ] Interface defining all business methods
+- [ ] Implementation in `app/Services/Implementations/`
+- [ ] Service registration in AppServiceProvider
+- [ ] Proper error handling and validation
+
+**UI Layer (Filament):**
+- [ ] Resource with proper icons and navigation
+- [ ] Form schema with proper defaults and validation
+- [ ] Table schema with filters and actions
+- [ ] Infolist schema for view pages
+- [ ] All action buttons with appropriate icons
+
+**Testing:**
+- [ ] Feature tests for critical business logic
+- [ ] Factory usage in tests for data setup
+
+**Authorization & Permissions:**
+- [ ] Add permission category to `PermissionCategory` enum (case, label, description)
+- [ ] Add permissions to `PermissionSeeder` (view, create, edit, delete)
+- [ ] Run seeder: `./vendor/bin/sail artisan db:seed --class=PermissionSeeder`
+- [ ] Create policy: `./vendor/bin/sail artisan make:policy [Model]Policy --model=[Model]`
+- [ ] Implement policy methods with permission checks (`$user->can('resource.action')`)
+- [ ] Register policy in `AppServiceProvider::boot()` using `Gate::policy()`
+
 ### UI/UX Principles
 - **Construction Industry Focus**: Use industry terminology and workflows
 - **Romanian Language**: Critical for user adoption
@@ -153,11 +217,6 @@ When helping with this project:
 5. **Push back on feature creep** - encourage shipping working MVP first
 
 Remember: This is an MVP to validate market fit, not a feature-complete platform. Success is measured by Romanian construction companies using it daily, not by feature count.
-
-===
-
-<laravel-boost-guidelines>
-=== foundation rules ===
 
 # Laravel Boost Guidelines
 
@@ -245,19 +304,19 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+    - `public function __construct(public GitHub $github) { }`
 - Do not allow empty `__construct()` methods with zero parameters.
 
 ### Type Declarations
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
 
-<code-snippet name="Explicit Return Types and Method Params" lang="php">
+```php
 protected function isAccessible(User $user, ?string $path = null): bool
 {
     ...
 }
-</code-snippet>
+```
 
 ## Comments
 - Prefer PHPDoc blocks over comments. Never use comments within the code itself unless there is something _very_ complex going on.
@@ -295,12 +354,12 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ### Relationships
 - Determine if you can use the `relationship()` method on form components when you need `options` for a select, checkbox, repeater, or when building a `Fieldset`:
 
-<code-snippet name="Relationship example for Form Select" lang="php">
+```php
 Forms\Components\Select::make('user_id')
     ->label('Author')
     ->relationship('author')
     ->required(),
-</code-snippet>
+```
 
 
 ## Testing
@@ -310,46 +369,46 @@ Forms\Components\Select::make('user_id')
 
 ### Example Tests
 
-<code-snippet name="Filament Table Test" lang="php">
-    livewire(ListUsers::class)
-        ->assertCanSeeTableRecords($users)
-        ->searchTable($users->first()->name)
-        ->assertCanSeeTableRecords($users->take(1))
-        ->assertCanNotSeeTableRecords($users->skip(1))
-        ->searchTable($users->last()->email)
-        ->assertCanSeeTableRecords($users->take(-1))
-        ->assertCanNotSeeTableRecords($users->take($users->count() - 1));
-</code-snippet>
+```php
+livewire(ListUsers::class)
+    ->assertCanSeeTableRecords($users)
+    ->searchTable($users->first()->name)
+    ->assertCanSeeTableRecords($users->take(1))
+    ->assertCanNotSeeTableRecords($users->skip(1))
+    ->searchTable($users->last()->email)
+    ->assertCanSeeTableRecords($users->take(-1))
+    ->assertCanNotSeeTableRecords($users->take($users->count() - 1));
+```
 
-<code-snippet name="Filament Create Resource Test" lang="php">
-    livewire(CreateUser::class)
-        ->fillForm([
-            'name' => 'Howdy',
-            'email' => 'howdy@example.com',
-        ])
-        ->call('create')
-        ->assertNotified()
-        ->assertRedirect();
-
-    assertDatabaseHas(User::class, [
+```php
+livewire(CreateUser::class)
+    ->fillForm([
         'name' => 'Howdy',
         'email' => 'howdy@example.com',
-    ]);
-</code-snippet>
+    ])
+    ->call('create')
+    ->assertNotified()
+    ->assertRedirect();
 
-<code-snippet name="Testing Multiple Panels (setup())" lang="php">
-    use Filament\Facades\Filament;
+assertDatabaseHas(User::class, [
+    'name' => 'Howdy',
+    'email' => 'howdy@example.com',
+]);
+```
 
-    Filament::setCurrentPanel('app');
-</code-snippet>
+```php
+use Filament\Facades\Filament;
 
-<code-snippet name="Calling an Action in a Test" lang="php">
-    livewire(EditInvoice::class, [
-        'invoice' => $invoice,
-    ])->callAction('send');
+Filament::setCurrentPanel('app');
+```
 
-    expect($invoice->refresh())->isSent()->toBeTrue();
-</code-snippet>
+```php
+livewire(EditInvoice::class, [
+    'invoice' => $invoice,
+])->callAction('send');
+
+expect($invoice->refresh())->isSent()->toBeTrue();
+```
 
 
 === filament/v4 rules ===
@@ -464,28 +523,28 @@ Forms\Components\Select::make('user_id')
 
 - Prefer lifecycle hooks like `mount()`, `updatedFoo()`) for initialization and reactive side effects:
 
-<code-snippet name="Lifecycle hook examples" lang="php">
-    public function mount(User $user) { $this->user = $user; }
-    public function updatedSearch() { $this->resetPage(); }
-</code-snippet>
+```php
+public function mount(User $user) { $this->user = $user; }
+public function updatedSearch() { $this->resetPage(); }
+```
 
 
 ## Testing Livewire
 
-<code-snippet name="Example Livewire component test" lang="php">
-    Livewire::test(Counter::class)
-        ->assertSet('count', 0)
-        ->call('increment')
-        ->assertSet('count', 1)
-        ->assertSee(1)
-        ->assertStatus(200);
-</code-snippet>
+```php
+Livewire::test(Counter::class)
+    ->assertSet('count', 0)
+    ->call('increment')
+    ->assertSet('count', 1)
+    ->assertSee(1)
+    ->assertStatus(200);
+```
 
 
-    <code-snippet name="Testing a Livewire component exists within a page" lang="php">
-        $this->get('/posts/create')
-        ->assertSeeLivewire(CreatePost::class);
-    </code-snippet>
+```php
+$this->get('/posts/create')
+    ->assertSeeLivewire(CreatePost::class);
+```
 
 
 === livewire/v3 rules ===
@@ -509,7 +568,7 @@ Forms\Components\Select::make('user_id')
 ### Lifecycle Hooks
 - You can listen for `livewire:init` to hook into Livewire initialization, and `fail.status === 419` for the page expiring:
 
-<code-snippet name="livewire:load example" lang="js">
+```js
 document.addEventListener('livewire:init', function () {
     Livewire.hook('request', ({ fail }) => {
         if (fail && fail.status === 419) {
@@ -521,7 +580,7 @@ document.addEventListener('livewire:init', function () {
         console.error(message);
     });
 });
-</code-snippet>
+```
 
 
 === pint/core rules ===
@@ -562,13 +621,13 @@ document.addEventListener('livewire:init', function () {
 ### Spacing
 - When listing items, use gap utilities for spacing, don't use margins.
 
-    <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-        <div class="flex gap-8">
-            <div>Superior</div>
-            <div>Michigan</div>
-            <div>Erie</div>
-        </div>
-    </code-snippet>
+```html
+<div class="flex gap-8">
+    <div>Superior</div>
+    <div>Michigan</div>
+    <div>Erie</div>
+</div>
+```
 
 
 ### Dark Mode
@@ -583,12 +642,12 @@ document.addEventListener('livewire:init', function () {
 - `corePlugins` is not supported in Tailwind v4.
 - In Tailwind v4, you import Tailwind using a regular CSS `@import` statement, not using the `@tailwind` directives used in v3:
 
-<code-snippet name="Tailwind v4 Import Tailwind Diff" lang="diff"
-   - @tailwind base;
-   - @tailwind components;
-   - @tailwind utilities;
-   + @import "tailwindcss";
-</code-snippet>
+```diff
+- @tailwind base;
+- @tailwind components;
+- @tailwind utilities;
++ @import "tailwindcss";
+```
 
 
 ### Replaced Utilities
@@ -609,3 +668,9 @@ document.addEventListener('livewire:init', function () {
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 </laravel-boost-guidelines>
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

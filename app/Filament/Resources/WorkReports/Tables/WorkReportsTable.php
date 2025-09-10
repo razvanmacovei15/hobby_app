@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkReports\Tables;
 
+use App\Enums\WorkReportStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -36,6 +37,12 @@ class WorkReportsTable
                         ? $record->writtenBy->getFilamentName()
                         : '—')
                     ->sortable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn (WorkReportStatus $state): string => $state->label())
+                    ->color(fn (WorkReportStatus $state): string => $state->color())
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -64,6 +71,13 @@ class WorkReportsTable
                         12 => 'December',
                     ])
                     ->default(now()->month),
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        WorkReportStatus::DRAFT->value => WorkReportStatus::DRAFT->label(),
+                        WorkReportStatus::PENDING_APPROVAL->value => WorkReportStatus::PENDING_APPROVAL->label(),
+                        WorkReportStatus::APPROVED->value => WorkReportStatus::APPROVED->label(),
+                    ]),
             ])
             ->recordActions([
                 ViewAction::make(),

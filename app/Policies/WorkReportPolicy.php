@@ -71,6 +71,11 @@ class WorkReportPolicy
             return false;
         }
 
+        // Prevent editing approved work reports
+        if ($workReport->status === \App\Enums\WorkReportStatus::APPROVED) {
+            return false;
+        }
+
         return $user->hasWorkspacePermission($workspace, 'work-reports.edit');
     }
 
@@ -129,5 +134,24 @@ class WorkReportPolicy
         }
 
         return $user->hasWorkspacePermission($workspace, 'work-reports.delete');
+    }
+
+    /**
+     * Determine whether the user can approve the work report.
+     */
+    public function approve(User $user, WorkReport $workReport): bool
+    {
+        $workspace = $user->getCurrentWorkspaceAttribute();
+
+        if (!$workspace) {
+            return false;
+        }
+
+        // Check if work report belongs to current workspace
+        if ($workReport->workspace_id !== $workspace->id) {
+            return false;
+        }
+
+        return $user->hasWorkspacePermission($workspace, 'work-reports.approve');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\ContractedService;
 use App\Models\WorkReport;
+use App\Policies\ContractedServicePolicy;
 use App\Policies\WorkReportPolicy;
 use App\Services\ICompanyEmployeeService;
 use App\Services\IExecutorService;
@@ -53,5 +55,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(WorkReport::class, WorkReportPolicy::class);
+        Gate::policy(ContractedService::class, ContractedServicePolicy::class);
     }
 }
