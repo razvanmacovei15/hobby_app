@@ -1,4 +1,4 @@
-# Multi-Panel Architecture Plan for Construction Tool
+/mcp# Multi-Panel Architecture Plan for Construction Tool
 
 ## **Executive Summary**
 
