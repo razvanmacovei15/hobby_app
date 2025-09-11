@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AddressFactory extends Factory
 {
-    protected $states = ['Cluj', 'Timisoara', 'Bucuresti'];
     /**
      * Define the model's default state.
      *
@@ -23,7 +22,7 @@ class AddressFactory extends Factory
             'city' => $this->faker->city,
             'building' => $this->faker->name(),
             'apartment_number' => $this->faker->randomNumber(nbDigits: 2),
-            'state' => $this->faker->randomElement($this->states),
+            'state' => $this->faker->randomElement(['Cluj', 'Timisoara', 'Bucuresti', 'Iasi', 'Constanta']),
             'country' => 'Romania',
         ];
     }

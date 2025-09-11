@@ -41,10 +41,12 @@ class Address extends Model
             $this->country,
         ]);
 
-        return trim(implode(', ', array_filter([
+        $fullAddress = trim(implode(', ', array_filter([
             implode(', ', $line1) ?: null,
             implode(', ', $line2) ?: null,
         ])));
+
+        return $fullAddress ?: 'No Address';
     }
 
     public function company(): HasOne

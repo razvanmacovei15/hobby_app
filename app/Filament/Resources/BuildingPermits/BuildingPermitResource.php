@@ -5,7 +5,9 @@ namespace App\Filament\Resources\BuildingPermits;
 use App\Filament\Resources\BuildingPermits\Pages\CreateBuildingPermit;
 use App\Filament\Resources\BuildingPermits\Pages\EditBuildingPermit;
 use App\Filament\Resources\BuildingPermits\Pages\ListBuildingPermits;
+use App\Filament\Resources\BuildingPermits\Pages\ViewBuildingPermit;
 use App\Filament\Resources\BuildingPermits\Schemas\BuildingPermitForm;
+use App\Filament\Resources\BuildingPermits\Schemas\BuildingPermitInfolist;
 use App\Filament\Resources\BuildingPermits\Tables\BuildingPermitsTable;
 use App\Models\BuildingPermit;
 use App\Services\IBuildingPermitService;
@@ -25,6 +27,28 @@ class BuildingPermitResource extends Resource
 
     protected static string|null|\UnitEnum $navigationGroup = 'Company Management';
 
+    protected static ?string $recordTitleAttribute = 'display_name';
+
+    public static function getModelLabel(): string
+    {
+        return 'Building Permit';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Building Permits';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Building Permits';
+    }
+
+    public static function getGlobalSearchResultTitle($record): string
+    {
+        return $record->permit_number . '/' . $record->issuance_year . ' - ' . $record->name;
+    }
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
 
     public static function form(Schema $schema): Schema
@@ -35,6 +59,11 @@ class BuildingPermitResource extends Resource
     public static function table(Table $table): Table
     {
         return BuildingPermitsTable::configure($table);
+    }
+
+    public static function infolist(Schema $infolist): Schema
+    {
+        return BuildingPermitInfolist::configure($infolist);
     }
 
     public static function getRelations(): array
@@ -69,6 +98,7 @@ class BuildingPermitResource extends Resource
         return [
             'index' => ListBuildingPermits::route('/'),
             'create' => CreateBuildingPermit::route('/create'),
+//            'view' => ViewBuildingPermit::route('/{record}'),
             'edit' => EditBuildingPermit::route('/{record}/edit'),
         ];
     }
