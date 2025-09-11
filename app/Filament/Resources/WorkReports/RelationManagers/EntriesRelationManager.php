@@ -71,10 +71,6 @@ class EntriesRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('notes')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

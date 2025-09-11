@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->tenant(Workspace::class, slugAttribute: 'id', ownershipRelationship: null)
             ->tenantMenu(false)
             ->tenantBillingProvider(null)
-            ->breadcrumbs(false)
+            ->breadcrumbs(true)
             ->path('')
             ->registration(Register::class)
             ->login()

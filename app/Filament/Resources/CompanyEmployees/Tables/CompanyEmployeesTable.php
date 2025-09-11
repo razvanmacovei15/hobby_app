@@ -6,7 +6,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class CompanyEmployeesTable
@@ -23,15 +28,19 @@ class CompanyEmployeesTable
                 TextColumn::make('hired_at')->label('Hired At')->dateTime(),
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make()
+                EditAction::make()->icon('heroicon-o-pencil'),
+                DeleteAction::make()->icon('heroicon-o-trash'),
+                ForceDeleteAction::make()->icon('heroicon-o-trash'),
+                RestoreAction::make()->icon('heroicon-o-arrow-path'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ]);
     }

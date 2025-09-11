@@ -32,7 +32,6 @@ class WorkReportEntryFactory extends Factory
             'service_id' => $serviceType::factory(),
             'quantity' => $this->faker->randomFloat(2, 1, 500),
             'total' => $this->faker->randomFloat(2, 100, 100000),
-            'notes' => $this->faker->optional(0.7)->sentence(),
         ];
     }
 }

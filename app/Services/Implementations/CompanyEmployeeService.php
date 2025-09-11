@@ -75,4 +75,19 @@ class CompanyEmployeeService implements ICompanyEmployeeService
             ->with(['user'])
             ->get();
     }
+
+    public function restoreCompanyEmployee(int $id): CompanyEmployee
+    {
+        $companyEmployee = CompanyEmployee::onlyTrashed()->findOrFail($id);
+        $companyEmployee->restore();
+        
+        return $companyEmployee->load(['user', 'company']);
+    }
+
+    public function forceDeleteCompanyEmployee(int $id): bool
+    {
+        $companyEmployee = CompanyEmployee::withTrashed()->findOrFail($id);
+        
+        return $companyEmployee->forceDelete();
+    }
 }

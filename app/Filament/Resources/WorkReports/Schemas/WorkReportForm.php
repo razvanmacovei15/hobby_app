@@ -12,6 +12,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -108,6 +109,13 @@ class WorkReportForm
                         $data['service_type'] = $data['service_type'] ?? ContractedService::class;
                         return $data;
                     })
+                    ->table([
+                        TableColumn::make('Service')->width('30%'),
+                        TableColumn::make('Unit')->width('10%'),
+                        TableColumn::make('Price')->width('20%'),
+                        TableColumn::make('Quantity')->width('10%'),
+                        TableColumn::make('Total')->width('10%'),
+                    ])
                     ->schema([
                         // Hidden field to store service type (ContractedService for now)
                         Hidden::make('service_type')
@@ -210,11 +218,6 @@ class WorkReportForm
                             ->disabled()        // read-only to user
                             ->dehydrated()      // still save to DB
                             ->columnSpan(1),
-
-                        TextInput::make('notes')
-                            ->disabled(fn (Get $get, $record) => !$get('service_id') || self::isApproved($record) || !auth()->user()->can('contracted-services.edit'))
-                            ->label('Notes')
-                            ->columnSpanFull(),
                     ])
                     ->columnSpan(2)
                     ->collapsed(false)

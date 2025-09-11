@@ -22,8 +22,7 @@ class WorkReportEntry extends Model
         'quantity',
         'total',
 
-        'order',
-        'notes'
+        'order'
     ];
 
     public function workReport(): BelongsTo

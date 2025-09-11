@@ -57,8 +57,9 @@ class RolesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->icon('heroicon-o-pencil'),
                 DeleteBulkAction::make()
+                    ->icon('heroicon-o-trash')
                     ->requiresConfirmation(),
             ])
 
