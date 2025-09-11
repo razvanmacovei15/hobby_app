@@ -21,6 +21,7 @@ class BuildingPermitForm
         return $schema
             ->components([
                 Tabs::make('Building Permit Details')
+                    ->vertical()
                     ->tabs([
                         Tabs\Tab::make('Basic Information')
                             ->schema([

@@ -8,6 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\Summarizers\Count;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -33,16 +34,19 @@ class WorkReportsTable
                     ->sortable(),
                 TextColumn::make('writtenBy.first_name')
                     ->label('Written By')
-                    ->state(fn ($record) => $record?->writtenBy
+                    ->state(fn($record) => $record?->writtenBy
                         ? $record->writtenBy->getFilamentName()
                         : '—')
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('Status')
-                    ->formatStateUsing(fn (WorkReportStatus $state): string => $state->label())
-                    ->color(fn (WorkReportStatus $state): string => $state->color())
+                    ->formatStateUsing(fn(WorkReportStatus $state): string => $state->label())
+                    ->color(fn(WorkReportStatus $state): string => $state->color())
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize([
+                        Count::make()
+                    ]),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

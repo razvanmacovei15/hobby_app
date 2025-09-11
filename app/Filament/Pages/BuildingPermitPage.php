@@ -42,6 +42,7 @@ class BuildingPermitPage extends Page implements HasInfolists
             ->record($this->record)
             ->components([
                 Tabs::make('Building Permit Details')
+                    ->vertical()
                     ->tabs([
                         Tabs\Tab::make('Basic Information')
                             ->schema([

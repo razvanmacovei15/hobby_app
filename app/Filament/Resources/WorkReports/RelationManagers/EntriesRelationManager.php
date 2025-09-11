@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -49,6 +50,7 @@ class EntriesRelationManager extends RelationManager
             })
             ->recordTitleAttribute('order')
             ->defaultSort('order')
+            ->striped(true)
             ->columns([
                 // If all entries point to ContractedService, this “just works”:
                 TextColumn::make('service.name')
@@ -69,7 +71,10 @@ class EntriesRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('total')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize([
+                        Sum::make('quantity'),
+                    ]),
 
                 TextColumn::make('created_at')
                     ->dateTime()
