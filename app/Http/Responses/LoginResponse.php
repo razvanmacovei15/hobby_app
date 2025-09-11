@@ -2,8 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Filament\Facades\Filament;
 use Filament\Auth\Http\Responses\LoginResponse as LoginResponseContract;
+use Filament\Facades\Filament;
 use Illuminate\Http\RedirectResponse;
 use Livewire\Features\SupportRedirects\Redirector;
 
@@ -15,8 +15,7 @@ class LoginResponse extends LoginResponseContract
         $panel = Filament::getCurrentPanel();
 
         // Check if user has a default tenant
-        $defaultTenant = $user->getDefaultTenant($panel);
-
+        $defaultTenant = $user->getDefaultTenant();
 
         if ($defaultTenant) {
             // Redirect to the default workspace

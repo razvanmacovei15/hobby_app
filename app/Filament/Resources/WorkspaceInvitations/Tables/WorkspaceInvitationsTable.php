@@ -92,7 +92,7 @@ class WorkspaceInvitationsTable
                     }),
             ])
             ->recordActions([
-                ViewAction::make(),
+//                ViewAction::make(),
 
                 Action::make('resend')
                     ->label('Resend')

@@ -34,10 +34,18 @@
                     </svg>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">
-                    Complete Your Registration
+                    @if($isExistingUser)
+                        Welcome Back!
+                    @else
+                        Complete Your Registration
+                    @endif
                 </h2>
                 <p class="text-sm text-gray-600">
-                    You've been invited to join
+                    @if($isExistingUser)
+                        Please sign in to join
+                    @else
+                        You've been invited to join
+                    @endif
                     <span class="font-semibold text-gray-900">{{ $invitation->workspace->name }}</span>
                 </p>
                 <p class="text-xs text-gray-500 mt-1">
@@ -59,7 +67,11 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-blue-700">
-                                Your account information has been pre-filled. You only need to set your password to complete registration.
+                                @if($isExistingUser)
+                                    We found an existing account with this email address. Please enter your password to sign in and join the workspace.
+                                @else
+                                    Your account information has been pre-filled. You only need to set your password to complete registration.
+                                @endif
                             </p>
                         </div>
                     </div>
@@ -135,7 +147,13 @@
 
                     <!-- Password Fields -->
                     <div class="space-y-4">
-                        <h3 class="text-sm font-medium text-gray-700">Set Your Password</h3>
+                        <h3 class="text-sm font-medium text-gray-700">
+                            @if($isExistingUser)
+                                Enter Your Password
+                            @else
+                                Set Your Password
+                            @endif
+                        </h3>
 
                         <!-- Password -->
                         <div>
@@ -163,7 +181,8 @@
                             @enderror
                         </div>
 
-                        <!-- Confirm Password -->
+                        <!-- Confirm Password (only for new users) -->
+                        @if(!$isExistingUser)
                         <div>
                             <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
                                 Confirm Password
@@ -185,9 +204,11 @@
                                 </button>
                             </div>
                         </div>
+                        @endif
                     </div>
 
-                    <!-- Password Requirements -->
+                    <!-- Password Requirements (only for new users) -->
+                    @if(!$isExistingUser)
                     <div class="bg-gray-50 rounded-lg p-4">
                         <p class="text-xs font-medium text-gray-700 mb-2">Password requirements:</p>
                         <ul class="text-xs text-gray-600 space-y-1">
@@ -201,15 +222,24 @@
                             </li>
                         </ul>
                     </div>
+                    @endif
 
                     <!-- Submit Button -->
                     <div>
                         <button type="submit"
                                 class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition duration-150 ease-in-out">
                             <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                @if($isExistingUser)
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                @else
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                @endif
                             </svg>
-                            Complete Registration
+                            @if($isExistingUser)
+                                Sign In & Join Workspace
+                            @else
+                                Complete Registration
+                            @endif
                         </button>
                     </div>
                 </form>
@@ -251,16 +281,19 @@
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('password_confirmation');
 
-            function validatePasswords() {
-                if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Passwords do not match');
-                } else {
-                    confirmPassword.setCustomValidity('');
+            // Only add validation if confirm password field exists (for new users)
+            if (confirmPassword) {
+                function validatePasswords() {
+                    if (confirmPassword.value && password.value !== confirmPassword.value) {
+                        confirmPassword.setCustomValidity('Passwords do not match');
+                    } else {
+                        confirmPassword.setCustomValidity('');
+                    }
                 }
-            }
 
-            password.addEventListener('input', validatePasswords);
-            confirmPassword.addEventListener('input', validatePasswords);
+                password.addEventListener('input', validatePasswords);
+                confirmPassword.addEventListener('input', validatePasswords);
+            }
         });
     </script>
 </body>

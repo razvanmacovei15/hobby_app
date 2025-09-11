@@ -16,26 +16,30 @@ use App\Policies\ContractedServicePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkReportPolicy;
 use App\Policies\WorkspaceExecutorPolicy;
-use App\Services\ICompanyEmployeeService;
-use App\Services\IExecutorService;
-use App\Services\Implementations\CompanyEmployeeService;
-use App\Services\Implementations\ExecutorService;
 use App\Services\IAddressService;
 use App\Services\IBuildingPermitService;
+use App\Services\ICompanyEmployeeService;
 use App\Services\ICompanyService;
-use App\Services\Implementations\WorkReportService;
-use App\Services\Implementations\WorkspaceInvitationService;
-use App\Services\IRoleService;
-use App\Services\IUserService;
-use App\Services\IUserRegistrationService;
+use App\Services\IExecutorService;
 use App\Services\Implementations\AddressService;
 use App\Services\Implementations\BuildingPermitService;
+use App\Services\Implementations\CompanyEmployeeService;
 use App\Services\Implementations\CompanyService;
+use App\Services\Implementations\ExecutorService;
 use App\Services\Implementations\RoleService;
-use App\Services\Implementations\UserService;
 use App\Services\Implementations\UserRegistrationService;
+use App\Services\Implementations\UserService;
+use App\Services\Implementations\WorkReportService;
+use App\Services\Implementations\WorkspaceInvitationService;
+use App\Services\Implementations\WorkspaceRedirectService;
+use App\Services\Implementations\WorkspaceUserService;
+use App\Services\IRoleService;
+use App\Services\IUserRegistrationService;
+use App\Services\IUserService;
 use App\Services\IWorkReportService;
 use App\Services\IWorkspaceInvitationService;
+use App\Services\IWorkspaceRedirectService;
+use App\Services\IWorkspaceUserService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -56,6 +60,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IWorkReportService::class, WorkReportService::class);
         $this->app->bind(ICompanyEmployeeService::class, CompanyEmployeeService::class);
         $this->app->bind(IWorkspaceInvitationService::class, WorkspaceInvitationService::class);
+        $this->app->bind(IWorkspaceRedirectService::class, WorkspaceRedirectService::class);
+        $this->app->bind(IWorkspaceUserService::class, WorkspaceUserService::class);
 
     }
 

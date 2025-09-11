@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 
 class UserService implements IUserService
 {
-
     public function getUserByEmail($email)
     {
         return User::query()->firstWhere('email', $email);
@@ -19,11 +18,11 @@ class UserService implements IUserService
         // Resolve existing user either by explicit id or by unique email
         $user = null;
 
-        if (!empty($representativeData['id'])) {
+        if (! empty($representativeData['id'])) {
             $user = User::query()->find($representativeData['id']);
         }
 
-        if (!$user && !empty($representativeData['email'])) {
+        if (! $user && ! empty($representativeData['email'])) {
             $user = User::query()->firstWhere('email', $representativeData['email']);
         }
 
@@ -32,12 +31,24 @@ class UserService implements IUserService
         if ($user) {
             $user->fill(Arr::only($representativeData, $fillableFields));
             $user->save();
+
             return $user;
         }
 
-        $user = new User();
+        $user = new User;
         $user->fill(Arr::only($representativeData, $fillableFields));
         $user->save();
+
         return $user;
+    }
+
+    public function checkExistingUserByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    public function hasActivePassword(User $user): bool
+    {
+        return ! empty($user->password);
     }
 }

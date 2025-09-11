@@ -11,7 +11,6 @@ use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -20,10 +19,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements HasName, FilamentUser, HasTenants
+class User extends Authenticatable implements FilamentUser, HasName, HasTenants
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -66,7 +65,6 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
             ->withTimestamps();
     }
 
-
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
@@ -87,7 +85,7 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
         return $this->workspaces()->get();
     }
 
-    public function getDefaultTenant(Panel $panel): ?Model
+    public function getDefaultTenant(): ?Model
     {
         // Get the default workspace for this user
         return $this->workspaces()
@@ -123,59 +121,62 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
         \Log::info('User::canInWorkspace called', [
             'user_id' => $this->id,
             'user_email' => $this->email,
-            'permission' => $permission
+            'permission' => $permission,
         ]);
 
         try {
             // Try to get current workspace from Filament tenant
             $workspace = \Filament\Facades\Filament::getTenant();
-            
+
             if ($workspace instanceof Workspace) {
                 \Log::info('Found Filament tenant workspace', [
                     'workspace_id' => $workspace->id,
-                    'workspace_name' => $workspace->name
+                    'workspace_name' => $workspace->name,
                 ]);
                 $result = $this->hasWorkspacePermission($workspace, $permission);
                 \Log::info('Workspace permission check result', [
                     'workspace_id' => $workspace->id,
                     'permission' => $permission,
-                    'result' => $result
+                    'result' => $result,
                 ]);
+
                 return $result;
             }
         } catch (\Exception $e) {
             \Log::info('Filament tenant not available, using fallback', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
-        
+
         // Fallback: check if user has permission in any of their workspaces
         \Log::info('Using fallback: checking all user workspaces', [
-            'workspaces_count' => $this->workspaces->count()
+            'workspaces_count' => $this->workspaces->count(),
         ]);
-        
+
         foreach ($this->workspaces as $workspace) {
             $hasPermission = $this->hasWorkspacePermission($workspace, $permission);
             \Log::info('Checking workspace permission (fallback)', [
                 'workspace_id' => $workspace->id,
                 'workspace_name' => $workspace->name,
                 'permission' => $permission,
-                'has_permission' => $hasPermission
+                'has_permission' => $hasPermission,
             ]);
-            
+
             if ($hasPermission) {
                 \Log::info('Found permission in workspace (fallback)', [
                     'workspace_id' => $workspace->id,
-                    'permission' => $permission
+                    'permission' => $permission,
                 ]);
+
                 return true;
             }
         }
-        
+
         \Log::info('Permission not found in any workspace', [
             'permission' => $permission,
-            'result' => false
+            'result' => false,
         ]);
+
         return false;
     }
 
@@ -263,8 +264,8 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     public function getCurrentWorkspaceAttribute(): Workspace
     {
         $currentTenant = Filament::getTenant();
-        
-        if (!$currentTenant instanceof Workspace) {
+
+        if (! $currentTenant instanceof Workspace) {
             throw new \RuntimeException('No workspace context available. User must be operating within a workspace.');
         }
 
