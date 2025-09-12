@@ -9,6 +9,9 @@ enum ExecutorType: string
     case PLUMBING = 'plumbing';
     case FACADES = 'facades';
     case FINISHES = 'finishes';
+    case STRUCTURAL = 'structural';
+    case DEMOLITION = 'demolition';
+    case INSULATION = 'insulation';
 
     public function label(): string
     {
@@ -18,6 +21,9 @@ enum ExecutorType: string
             self::PLUMBING => 'Plumbing Works',
             self::FACADES => 'Facades Works',
             self::FINISHES => 'Finishes Works',
+            self::STRUCTURAL => 'Structural Works',
+            self::DEMOLITION => 'Demolition Works',
+            self::INSULATION => 'Insulation Works',
         };
     }
 

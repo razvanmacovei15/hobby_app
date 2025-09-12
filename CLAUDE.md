@@ -29,6 +29,14 @@
 - `./vendor/bin/sail artisan migrate:fresh --seed` - Fresh migration with seeders
 - `./vendor/bin/sail artisan db:seed` - Run database seeders
 
+### Seeder Development Guidelines
+When working with seeders, ALWAYS follow this process:
+1. **Check DatabaseSeeder.php** - Review the seeder execution order to understand dependencies
+2. **Review preceding seeders** - Examine all seeders that run before the current one to understand what data already exists
+3. **Use existing entity IDs** - Only reference entities (users, addresses, etc.) that have actually been created by previous seeders
+4. **Respect foreign key constraints** - Ensure all referenced IDs exist in the database based on seeder execution order
+5. **Count available entities** - Don't exceed the number of entities created by dependent seeders (e.g., if UserSeeder creates 15 users, don't reference user ID 16)
+
 ### Code Quality
 - `./vendor/bin/sail composer pint` - Run Laravel Pint code formatter
 

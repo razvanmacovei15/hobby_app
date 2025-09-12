@@ -17,15 +17,10 @@ class UserSeeder extends Seeder
                 'email' => 'support@macocoding.com',
                 'password' => Hash::make('password'),
             ],[
-                'first_name' => 'dan',
-                'last_name' => 'boitos',
-                'email' => 'dan@email.com',
+                'first_name' => 'Dan',
+                'last_name' => 'Boitos',
+                'email' => 'dan@example.com',
                 'password' => Hash::make('password'),
-            ],[
-                'first_name' => 'razvan',
-                'last_name' => 'macovei',
-                'email' => 'razvanmc15@gmail.com',
-                'password' => Hash::make('Cj159550285/'),
             ],[
                 'first_name' => 'Alice',
                 'last_name' => 'Johnson',
@@ -45,6 +40,61 @@ class UserSeeder extends Seeder
                 'first_name' => 'David',
                 'last_name' => 'Wilson',
                 'email' => 'david@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Elena',
+                'last_name' => 'Rodriguez',
+                'email' => 'elena@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Frank',
+                'last_name' => 'Miller',
+                'email' => 'frank@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Grace',
+                'last_name' => 'Taylor',
+                'email' => 'grace@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Henry',
+                'last_name' => 'Anderson',
+                'email' => 'henry@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Isabella',
+                'last_name' => 'Brown',
+                'email' => 'isabella@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Jack',
+                'last_name' => 'Thompson',
+                'email' => 'jack@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Katherine',
+                'last_name' => 'White',
+                'email' => 'katherine@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Liam',
+                'last_name' => 'Garcia',
+                'email' => 'liam@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Maya',
+                'last_name' => 'Martinez',
+                'email' => 'maya@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Nathan',
+                'last_name' => 'Lee',
+                'email' => 'nathan@example.com',
+                'password' => Hash::make('password'),
+            ],[
+                'first_name' => 'Olivia',
+                'last_name' => 'Clark',
+                'email' => 'olivia@example.com',
                 'password' => Hash::make('password'),
             ],
         ]);

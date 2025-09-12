@@ -18,24 +18,24 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AddressSeeder::class,
-            LocationSeeder::class,
+//            LocationSeeder::class,
             CompanySeeder::class,
             WorkspaceSeeder::class,
             WorkspaceUserSeeder::class,
             BuildingPermitSeeder::class,
-            ConstructionSiteSeeder::class,
-            BuildingSeeder::class,
+//            ConstructionSiteSeeder::class,
+//            BuildingSeeder::class,
             ContractSeeder::class,
             ContractAnnexSeeder::class,
             ContractedServiceSeeder::class,
+            WorkspaceExecutorSeeder::class,
             WorkReportSeeder::class,
-            ContractExtraServiceSeeder::class,
+//            ContractExtraServiceSeeder::class,
             WorkReportEntrySeeder::class,
-            StaircaseSeeder::class,
-            FloorSeeder::class,
-            ApartmentSeeder::class,
-            PermissionSeeder::class,
-            RoleSeeder::class,
+//            StaircaseSeeder::class,
+//            FloorSeeder::class,
+//            ApartmentSeeder::class,
+            AuthorizationSeeder::class
         ]);
     }
 }
