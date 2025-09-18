@@ -9,6 +9,7 @@ use App\Models\CompanyEmployee;
 use App\Models\Contract;
 use App\Models\ContractAnnex;
 use App\Models\ContractedService;
+use App\Models\Permission\Role;
 use App\Models\User;
 use App\Models\WorkReport;
 use App\Models\Workspace;
@@ -22,6 +23,7 @@ use App\Policies\CompanyPolicy;
 use App\Policies\ContractAnnexPolicy;
 use App\Policies\ContractedServicePolicy;
 use App\Policies\ContractPolicy;
+use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkReportPolicy;
 use App\Policies\WorkspaceExecutorPolicy;
@@ -44,8 +46,10 @@ use App\Services\Implementations\UserService;
 use App\Services\Implementations\WorkReportService;
 use App\Services\Implementations\WorkspaceInvitationService;
 use App\Services\Implementations\WorkspaceRedirectService;
+use App\Services\Implementations\RoleTemplateService;
 use App\Services\Implementations\WorkspaceUserService;
 use App\Services\IRoleService;
+use App\Services\IRoleTemplateService;
 use App\Services\IUserRegistrationService;
 use App\Services\IUserService;
 use App\Services\IWorkReportService;
@@ -74,6 +78,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IWorkspaceInvitationService::class, WorkspaceInvitationService::class);
         $this->app->bind(IWorkspaceRedirectService::class, WorkspaceRedirectService::class);
         $this->app->bind(IWorkspaceUserService::class, WorkspaceUserService::class);
+        $this->app->bind(IRoleTemplateService::class, RoleTemplateService::class);
 
     }
 
@@ -89,6 +94,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Contract::class, ContractPolicy::class);
         Gate::policy(ContractAnnex::class, ContractAnnexPolicy::class);
         Gate::policy(ContractedService::class, ContractedServicePolicy::class);
+        Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(WorkReport::class, WorkReportPolicy::class);
         Gate::policy(Workspace::class, WorkspacePolicy::class);

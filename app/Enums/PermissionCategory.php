@@ -17,6 +17,7 @@ enum PermissionCategory: string
     case WORKSPACE_USERS = 'workspace-users';
     case WORKSPACE_INVITATIONS = 'workspace-invitations';
     case BUILDING_PERMITS = 'building-permits';
+    case ROLES = 'roles';
 
     public function label(): string
     {
@@ -34,6 +35,7 @@ enum PermissionCategory: string
             self::WORKSPACE_USERS => 'Workspace Users',
             self::WORKSPACE_INVITATIONS => 'Workspace Invitations',
             self::BUILDING_PERMITS => 'Building Permits',
+            self::ROLES => 'Roles',
         };
     }
 
@@ -53,6 +55,7 @@ enum PermissionCategory: string
             self::WORKSPACE_USERS => 'Workspace user management permissions',
             self::WORKSPACE_INVITATIONS => 'Workspace invitation management permissions',
             self::BUILDING_PERMITS => 'Building permit management permissions',
+            self::ROLES => 'Role management permissions',
         };
     }
 
