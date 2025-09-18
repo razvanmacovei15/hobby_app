@@ -13,6 +13,10 @@ enum PermissionCategory: string
     case CONTRACTED_SERVICES = 'contracted-services';
     case COMPANIES = 'companies';
     case ADDRESSES = 'addresses';
+    case CONTRACT_ANNEXES = 'contract-annexes';
+    case WORKSPACE_USERS = 'workspace-users';
+    case WORKSPACE_INVITATIONS = 'workspace-invitations';
+    case BUILDING_PERMITS = 'building-permits';
 
     public function label(): string
     {
@@ -26,6 +30,10 @@ enum PermissionCategory: string
             self::CONTRACTED_SERVICES => 'Contracted Services',
             self::COMPANIES => 'Companies',
             self::ADDRESSES => 'Addresses',
+            self::CONTRACT_ANNEXES => 'Contract Annexes',
+            self::WORKSPACE_USERS => 'Workspace Users',
+            self::WORKSPACE_INVITATIONS => 'Workspace Invitations',
+            self::BUILDING_PERMITS => 'Building Permits',
         };
     }
 
@@ -41,6 +49,10 @@ enum PermissionCategory: string
             self::CONTRACTED_SERVICES => 'Contracted services management permissions',
             self::COMPANIES => 'Company management permissions',
             self::ADDRESSES => 'Address management permissions',
+            self::CONTRACT_ANNEXES => 'Contract annex management permissions',
+            self::WORKSPACE_USERS => 'Workspace user management permissions',
+            self::WORKSPACE_INVITATIONS => 'Workspace invitation management permissions',
+            self::BUILDING_PERMITS => 'Building permit management permissions',
         };
     }
 

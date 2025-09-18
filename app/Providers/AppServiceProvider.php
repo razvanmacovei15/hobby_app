@@ -3,19 +3,31 @@
 namespace App\Providers;
 
 use App\Models\Address;
+use App\Models\BuildingPermit;
 use App\Models\Company;
 use App\Models\CompanyEmployee;
+use App\Models\Contract;
+use App\Models\ContractAnnex;
 use App\Models\ContractedService;
 use App\Models\User;
 use App\Models\WorkReport;
+use App\Models\Workspace;
 use App\Models\WorkspaceExecutor;
+use App\Models\WorkspaceInvitation;
+use App\Models\WorkspaceUser;
 use App\Policies\AddressPolicy;
+use App\Policies\BuildingPermitPolicy;
 use App\Policies\CompanyEmployeePolicy;
 use App\Policies\CompanyPolicy;
+use App\Policies\ContractAnnexPolicy;
 use App\Policies\ContractedServicePolicy;
+use App\Policies\ContractPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkReportPolicy;
 use App\Policies\WorkspaceExecutorPolicy;
+use App\Policies\WorkspaceInvitationPolicy;
+use App\Policies\WorkspacePolicy;
+use App\Policies\WorkspaceUserPolicy;
 use App\Services\IAddressService;
 use App\Services\IBuildingPermitService;
 use App\Services\ICompanyEmployeeService;
@@ -70,12 +82,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::policy(WorkReport::class, WorkReportPolicy::class);
-        Gate::policy(ContractedService::class, ContractedServicePolicy::class);
-        Gate::policy(WorkspaceExecutor::class, WorkspaceExecutorPolicy::class);
-        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Address::class, AddressPolicy::class);
+        Gate::policy(BuildingPermit::class, BuildingPermitPolicy::class);
         Gate::policy(Company::class, CompanyPolicy::class);
         Gate::policy(CompanyEmployee::class, CompanyEmployeePolicy::class);
-        Gate::policy(Address::class, AddressPolicy::class);
+        Gate::policy(Contract::class, ContractPolicy::class);
+        Gate::policy(ContractAnnex::class, ContractAnnexPolicy::class);
+        Gate::policy(ContractedService::class, ContractedServicePolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(WorkReport::class, WorkReportPolicy::class);
+        Gate::policy(Workspace::class, WorkspacePolicy::class);
+        Gate::policy(WorkspaceExecutor::class, WorkspaceExecutorPolicy::class);
+        Gate::policy(WorkspaceInvitation::class, WorkspaceInvitationPolicy::class);
+        Gate::policy(WorkspaceUser::class, WorkspaceUserPolicy::class);
     }
 }

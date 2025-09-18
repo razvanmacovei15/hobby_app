@@ -52,6 +52,42 @@ class PermissionSeeder extends Seeder
                 'companies.edit' => 'Edit existing companies',
                 'companies.delete' => 'Delete existing companies',
             ],
+            PermissionCategory::CONTRACTS->value => [
+                'contracts.view' => 'View contracts',
+                'contracts.create' => 'Create new contracts',
+                'contracts.edit' => 'Edit existing contracts',
+                'contracts.delete' => 'Delete existing contracts',
+            ],
+            PermissionCategory::CONTRACT_ANNEXES->value => [
+                'contract-annexes.view' => 'View contract annexes',
+                'contract-annexes.create' => 'Create new contract annexes',
+                'contract-annexes.edit' => 'Edit existing contract annexes',
+                'contract-annexes.delete' => 'Delete existing contract annexes',
+            ],
+            PermissionCategory::WORKSPACE->value => [
+                'workspace.view' => 'View workspace details',
+                'workspace.edit' => 'Edit workspace information',
+                'workspace.delete' => 'Delete workspace',
+                'workspace.manage' => 'Full workspace management',
+            ],
+            PermissionCategory::WORKSPACE_USERS->value => [
+                'workspace-users.view' => 'View workspace users',
+                'workspace-users.create' => 'Add users to workspace',
+                'workspace-users.edit' => 'Edit workspace user roles',
+                'workspace-users.delete' => 'Remove users from workspace',
+            ],
+            PermissionCategory::WORKSPACE_INVITATIONS->value => [
+                'workspace-invitations.view' => 'View workspace invitations',
+                'workspace-invitations.create' => 'Send workspace invitations',
+                'workspace-invitations.edit' => 'Edit pending invitations',
+                'workspace-invitations.delete' => 'Cancel workspace invitations',
+            ],
+            PermissionCategory::BUILDING_PERMITS->value => [
+                'building-permits.view' => 'View building permits',
+                'building-permits.create' => 'Create new building permits',
+                'building-permits.edit' => 'Edit existing building permits',
+                'building-permits.delete' => 'Delete existing building permits',
+            ],
             PermissionCategory::ADDRESSES->value => [
                 'addresses.view' => 'View addresses',
                 'addresses.create' => 'Create new addresses',
