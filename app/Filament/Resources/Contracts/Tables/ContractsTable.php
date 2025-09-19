@@ -17,9 +17,9 @@ class ContractsTable
             ->columns([
                 TextColumn::make('registration_key')
                     ->searchable(),
-                TextColumn::make('beneficiary.name')
-                    ->numeric()
-                    ->sortable(),
+//                TextColumn::make('beneficiary.name')
+//                    ->numeric()
+//                    ->sortable(),
                 TextColumn::make('executor.name')
                     ->numeric()
                     ->sortable(),
@@ -31,7 +31,8 @@ class ContractsTable
                     ->sortable(),
                 TextColumn::make('sign_date')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

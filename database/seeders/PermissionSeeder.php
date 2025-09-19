@@ -99,6 +99,12 @@ class PermissionSeeder extends Seeder
                 'roles.create' => 'Create new roles',
                 'roles.edit' => 'Edit existing roles',
                 'roles.delete' => 'Delete existing roles',
+            ],
+            PermissionCategory::PERMISSIONS->value => [
+                'permissions.view' => 'View permissions',
+                'permissions.create' => 'Create new permissions',
+                'permissions.edit' => 'Edit existing permissions',
+                'permissions.delete' => 'Delete existing permissions',
             ]
         ];
 
