@@ -59,18 +59,6 @@ class RoleSeeder extends Seeder
             } else {
                 echo "  Warning: No users found in workspace " . $workspace->id . "\n";
             }
-
-            // Also assign super-admin role to user 3 (razvanmc15@gmail.com) if they exist and have workspace access
-            $user3 = User::findOrFail(3);
-            if ($user3 && $workspace->users()->where('users.id', 3)->exists()) {
-                // Check if user already has this role to avoid duplicates
-                if (!$user3->hasRole($superAdminRole)) {
-                    $user3->assignRole($superAdminRole);
-                    echo "  Also assigned super-admin role to user: " . $user3->getFilamentName() . " (ID: " . $user3->id . ")\n";
-                } else {
-                    echo "  User " . $user3->getFilamentName() . " already has super-admin role in this workspace\n";
-                }
-            }
         }
 
         echo "\nRole setup complete for all workspaces!\n";
