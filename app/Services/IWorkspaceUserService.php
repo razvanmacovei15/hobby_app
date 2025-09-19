@@ -17,4 +17,12 @@ interface IWorkspaceUserService
     public function getUserWorkspaces(User $user);
 
     public function setDefaultWorkspace(User $user, Workspace $workspace): void;
+
+    public function assignRolesToUser(WorkspaceUser $workspaceUser, array $roleIds): void;
+
+    public function syncUserRoles(WorkspaceUser $workspaceUser, array $roleIds): void;
+
+    public function removeUserRoles(WorkspaceUser $workspaceUser, array $roleIds): void;
+
+    public function mutateFormDataBeforeSave(array $data, ?WorkspaceUser $record): array;
 }

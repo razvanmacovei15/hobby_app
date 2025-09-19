@@ -75,6 +75,7 @@ class PermissionSeeder extends Seeder
                 'workspace-users.create' => 'Add users to workspace',
                 'workspace-users.edit' => 'Edit workspace user roles',
                 'workspace-users.delete' => 'Remove users from workspace',
+                'workspace-users.assign-roles' => 'Assign roles to workspace users',
             ],
             PermissionCategory::WORKSPACE_INVITATIONS->value => [
                 'workspace-invitations.view' => 'View workspace invitations',
@@ -105,6 +106,9 @@ class PermissionSeeder extends Seeder
                 'permissions.create' => 'Create new permissions',
                 'permissions.edit' => 'Edit existing permissions',
                 'permissions.delete' => 'Delete existing permissions',
+            ],
+            PermissionCategory::INVITE_USERS_RESOURCE->value => [
+                'invite-users-resource.invite' => 'Invite users to workspace'
             ]
         ];
 

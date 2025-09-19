@@ -44,6 +44,8 @@ class WorkspaceUserResource extends Resource
     {
         return [
             'index' => ListWorkspaceUsers::route('/'),
+//            'edit' =>  EditWorkspaceUser::route('/{record}/edit'),
+//            'create' => CreateWorkspaceUser::route('/create'),
         ];
     }
     public static function getEloquentQuery(): Builder

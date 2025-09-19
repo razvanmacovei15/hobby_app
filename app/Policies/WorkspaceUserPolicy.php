@@ -63,4 +63,12 @@ class WorkspaceUserPolicy
     {
         return $user->canInWorkspace('workspace-users.delete');
     }
+
+    /**
+     * Determine whether the user can assign roles to workspace users.
+     */
+    public function assignRoles(User $user): bool
+    {
+        return $user->canInWorkspace('workspace-users.assign-roles');
+    }
 }

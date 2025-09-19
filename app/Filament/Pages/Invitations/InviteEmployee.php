@@ -187,8 +187,11 @@ class InviteEmployee extends Page implements HasForms
     // Add method to check if user can send invitations
     public static function canAccess(): bool
     {
-        // Add your permission logic here
-//        return auth()->user()->can('send_workspace_invitations');
-    return true;
+        return auth()->user()?->canInWorkspace('invite-users-resource.invite') ?? false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canAccess();
     }
 }
