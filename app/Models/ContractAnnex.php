@@ -54,4 +54,9 @@ class ContractAnnex extends Model
             });
         });
     }
+
+    public function getFilamentName(): string
+    {
+        return "Annex nr. " . $this->annex_number . ' - Contract ' . $this->contract->registration_key;
+    }
 }

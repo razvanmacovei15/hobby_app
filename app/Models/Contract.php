@@ -43,4 +43,9 @@ class Contract extends Model
     {
         return $this->hasMany(ContractAnnex::class);
     }
+
+    public function getFilamentName(): string
+    {
+        return $this->executor->name . ' - ' . $this->registration_key;
+    }
 }

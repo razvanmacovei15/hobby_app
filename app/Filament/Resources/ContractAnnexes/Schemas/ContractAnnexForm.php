@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ContractAnnexes\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -23,7 +24,8 @@ class ContractAnnexForm
                     ->required()
                     ->default(fn () => request()->integer('contract_id'))
                     ->disabled(fn () => request()->filled('contract_id')) // user can’t change it
-                    ->dehydrated(), // still saves when disabled
+                    ->dehydrated()->disabledOn('edit'), // still saves when disabled
+
                 DatePicker::make('sign_date')
                     ->required(),
                 Textarea::make('notes')
@@ -38,30 +40,24 @@ class ContractAnnexForm
                     ->columns(3)
                     ->reorderable(true)
                     ->orderColumn('sort_order')
+                    ->table([
+//                        TableColumn::make('Order')->width('10%'),
+                        TableColumn::make('Name')->width('60%'),
+                        TableColumn::make('Unit')->width('10%'),
+                        TableColumn::make('Price')->width('20%'),
+                    ])
                     ->schema([
-                        TextInput::make('sort_order')
-                            ->hidden()
-                            ->dehydrated(),
-
+//                        TextInput::make('sort_order')
+//                            ->hidden()
+//                            ->dehydrated(),
                         TextInput::make('name')->label('Name')->required()->columns(1),
                         TextInput::make('unit_of_measure')->label('Unit')->placeholder('pcs, h, m²')->columnSpan(1),
-//                        TextInput::make('quantity')
-//                            ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(3)
-//                            ->live()
-//                            ->afterStateUpdated(function (Set $set, Get $get) {
-//                                $set('line_total', (float)$get('quantity') * (float)$get('unit_price'));
-//                            }),
                         TextInput::make('price_per_unit_of_measure')
                             ->numeric()->minValue(0)->step('0.01')->required()->columnSpan(1)
                             ->suffix('RON')
-//                            ->live()
                             ->afterStateUpdated(function (Set $set, Get $get) {
                                 $set('line_total', (float)$get('quantity') * (float)$get('price_per_unit_of_measure'));
                             }),
-//                        TextInput::make('line_total')
-//                            ->numeric()->prefix('€')->disabled()
-//                            ->dehydrated(false) // display-only
-//                            ->columnSpan(3),
                     ])
                     ->collapsed(false),
             ]);

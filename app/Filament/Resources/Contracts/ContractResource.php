@@ -11,12 +11,14 @@ use App\Filament\Resources\Contracts\Schemas\ContractInfolist;
 use App\Filament\Resources\Contracts\RelationManagers\ContractAnnexesRelationManager;
 use App\Filament\Resources\Contracts\Tables\ContractsTable;
 use App\Models\Contract;
+use App\Models\WorkspaceExecutor;
 use BackedEnum;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Phpactor\LanguageServer\Core\Workspace\Workspace;
 use UnitEnum;
 
 class ContractResource extends Resource

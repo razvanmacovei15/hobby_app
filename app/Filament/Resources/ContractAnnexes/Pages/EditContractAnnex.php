@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 
 class EditContractAnnex extends EditRecord
 {
@@ -40,5 +41,10 @@ class EditContractAnnex extends EditRecord
             ->extraAttributes([
                 'style' => 'color: black;',
             ]); // or any other color like 'primary', 'warning', etc.
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return "Edit " . "{$this->record->getFilamentName()}";
     }
 }

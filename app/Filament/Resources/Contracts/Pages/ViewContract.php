@@ -6,6 +6,7 @@ use App\Filament\Resources\Contracts\ContractResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ViewContract extends ViewRecord
 {
@@ -20,5 +21,10 @@ class ViewContract extends ViewRecord
                 ->color('edit')
 //                ->extraAttributes(['style' => 'color: white']),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return "{$this->record->getFilamentName()}";
     }
 }

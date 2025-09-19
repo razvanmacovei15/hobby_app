@@ -11,9 +11,6 @@ class ContractInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('registration_key'),
-                TextEntry::make('executor.name')
-                    ->numeric(),
                 TextEntry::make('start_date')
                     ->date(),
                 TextEntry::make('end_date')

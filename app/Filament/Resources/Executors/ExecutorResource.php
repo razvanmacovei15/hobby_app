@@ -9,6 +9,7 @@ use App\Filament\Resources\Executors\Pages\ViewExecutor;
 use App\Filament\Resources\Executors\Schemas\ExecutorForm;
 use App\Filament\Resources\Executors\Schemas\ExecutorInfolist;
 use App\Filament\Resources\Executors\Tables\ExecutorsTable;
+use App\Models\Contract;
 use App\Models\WorkspaceExecutor;
 use App\Services\IExecutorService;
 use BackedEnum;
