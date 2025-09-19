@@ -246,4 +246,9 @@ class EditBuildingPermitPage extends Page
         // Back to read-only page
         $this->redirect(BuildingPermitPage::getUrl());
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->canInWorkspace('building-permit-pages.edit') ?? false;
+    }
 }

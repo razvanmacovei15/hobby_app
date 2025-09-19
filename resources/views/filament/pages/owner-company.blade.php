@@ -16,9 +16,11 @@
                     </div>
 
                     {{-- optional top-right edit (keep this OR header action, not both) --}}
-                    <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Company Details">
-                        Edit Company Details
-                    </x-filament::button>
+                    @if(auth()->user()?->canInWorkspace('owner-company.edit'))
+                        <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Company Details">
+                            Edit Company Details
+                        </x-filament::button>
+                    @endif
                 </div>
 
                 {{-- Infolist content --}}
@@ -40,9 +42,11 @@
                     </p>
 
                     <div class="mt-6 flex items-center justify-center gap-3">
-                        <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-plus">
-                            Create company
-                        </x-filament::button>
+                        @if(auth()->user()?->canInWorkspace('owner-company.edit'))
+                            <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-plus">
+                                Create company
+                            </x-filament::button>
+                        @endif
                     </div>
                 </div>
             </div>

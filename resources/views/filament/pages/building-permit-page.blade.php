@@ -15,9 +15,11 @@
                     </div>
 
                     {{-- optional top-right edit (keep this OR header action, not both) --}}
-                    <x-filament::button tag="a" :href="EditBuildingPermitPage::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Permit Details">
-                        Edit Permit Details
-                    </x-filament::button>
+                    @if(auth()->user()?->canInWorkspace('building-permit-pages.edit'))
+                        <x-filament::button tag="a" :href="EditBuildingPermitPage::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Permit Details">
+                            Edit Permit Details
+                        </x-filament::button>
+                    @endif
                 </div>
 
                 {{-- Infolist content --}}
@@ -39,9 +41,11 @@
                     </p>
 
                     <div class="mt-6 flex items-center justify-center gap-3">
-                        <x-filament::button tag="a" :href="EditBuildingPermitPage::getUrl()" icon="heroicon-o-plus">
-                            Create permit
-                        </x-filament::button>
+                        @if(auth()->user()?->canInWorkspace('building-permit-pages.edit'))
+                            <x-filament::button tag="a" :href="EditBuildingPermitPage::getUrl()" icon="heroicon-o-plus">
+                                Create permit
+                            </x-filament::button>
+                        @endif
                     </div>
                 </div>
             </div>

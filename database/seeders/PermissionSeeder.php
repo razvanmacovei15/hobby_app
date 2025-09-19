@@ -109,6 +109,14 @@ class PermissionSeeder extends Seeder
             ],
             PermissionCategory::INVITE_USERS_RESOURCE->value => [
                 'invite-users-resource.invite' => 'Invite users to workspace'
+            ],
+            PermissionCategory::OWNER_COMPANY->value => [
+                'owner-company.view' => 'View owner company details',
+                'owner-company.edit' => 'Edit or create owner company'
+            ],
+            PermissionCategory::BUILDING_PERMIT_PAGES->value => [
+                'building-permit-pages.view' => 'View building permit details',
+                'building-permit-pages.edit' => 'Edit or create building permit'
             ]
         ];
 

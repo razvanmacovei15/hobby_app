@@ -180,4 +180,9 @@ class EditOwnerCompany extends Page
         // Back to read-only page
         $this->redirect(\App\Filament\Pages\OwnerCompany::getUrl());
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->canInWorkspace('owner-company.edit') ?? false;
+    }
 }

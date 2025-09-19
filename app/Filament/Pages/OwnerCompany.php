@@ -31,7 +31,7 @@ class OwnerCompany extends Page implements HasInfolists
         $workspace = Filament::getTenant();
         // If no owner yet, just keep $record = null.
         if ($workspace?->owner_id) {
-            $this->record = Company::find($workspace->owner_id);
+            $this->record = Company::findOrFail($workspace->owner_id);
         }
     }
 
@@ -74,12 +74,13 @@ class OwnerCompany extends Page implements HasInfolists
             ->columns(1);
     }
 
-    protected function getHeaderActions(): array
+    public static function canAccess(): bool
     {
-        if (! $this->record) {
-            return [];
-        }
+        return auth()->user()?->canInWorkspace('owner-company.view') ?? false;
+    }
 
-        return [];
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canAccess();
     }
 }

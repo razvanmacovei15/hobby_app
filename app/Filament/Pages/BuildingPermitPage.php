@@ -166,13 +166,13 @@ class BuildingPermitPage extends Page implements HasInfolists
             ->columns(1);
     }
 
-    protected function getHeaderActions(): array
+    public static function canAccess(): bool
     {
-        return [
-//            Action::make('edit')
-//                ->label($this->record ? 'Edit Permit' : 'Create Permit')
-//                ->icon('heroicon-o-pencil')
-//                ->url(fn () => EditBuildingPermitPage::getUrl()),
-        ];
+        return auth()->user()?->canInWorkspace('building-permit-pages.view') ?? false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canAccess();
     }
 }
