@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\Permissions\BuildingPermitPagePermission;
 use App\Enums\PermitStatus;
 use App\Models\BuildingPermit;
 use Filament\Actions\Action;
@@ -168,7 +169,7 @@ class BuildingPermitPage extends Page implements HasInfolists
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('building-permit-page.view') ?? false;
+        return auth()->user()?->canInWorkspace(BuildingPermitPagePermission::VIEW->value) ?? false;
     }
 
     public static function shouldRegisterNavigation(): bool

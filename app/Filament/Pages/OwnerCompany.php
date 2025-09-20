@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\Permissions\OwnerCompanyPermission;
 use App\Models\Company;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
@@ -76,7 +77,7 @@ class OwnerCompany extends Page implements HasInfolists
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('owner-company-page.view') ?? false;
+        return auth()->user()?->canInWorkspace(OwnerCompanyPermission::VIEW->value) ?? false;
     }
 
     public static function shouldRegisterNavigation(): bool
