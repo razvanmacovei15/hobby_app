@@ -22,6 +22,7 @@ class InviteEmployee extends Page implements HasForms
 {
     use InteractsWithForms;
 
+
     protected static ?string $title = 'Invite Employee To Workspace';
     protected static ?string $navigationLabel = 'Invite Employee';
     protected static string|null|\UnitEnum $navigationGroup = 'Workspace';
