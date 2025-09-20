@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\RolePermission;
 use App\Models\Permission\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('roles.view');
+        return $user->canInWorkspace(RolePermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->canInWorkspace('roles.view');
+        return $user->canInWorkspace(RolePermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('roles.create');
+        return $user->canInWorkspace(RolePermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->canInWorkspace('roles.edit');
+        return $user->canInWorkspace(RolePermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        return $user->canInWorkspace('roles.delete');
+        return $user->canInWorkspace(RolePermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        return $user->canInWorkspace('roles.edit');
+        return $user->canInWorkspace(RolePermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        return $user->canInWorkspace('roles.delete');
+        return $user->canInWorkspace(RolePermission::DELETE->value);
     }
 }

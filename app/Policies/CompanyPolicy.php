@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\CompanyPermission;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class CompanyPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('companies.view');
+        return $user->canInWorkspace(CompanyPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company): bool
     {
-        return $user->canInWorkspace('companies.view');
+        return $user->canInWorkspace(CompanyPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class CompanyPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('companies.create');
+        return $user->canInWorkspace(CompanyPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company): bool
     {
-        return $user->canInWorkspace('companies.edit');
+        return $user->canInWorkspace(CompanyPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company): bool
     {
-        return $user->canInWorkspace('companies.delete');
+        return $user->canInWorkspace(CompanyPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class CompanyPolicy
      */
     public function restore(User $user, Company $company): bool
     {
-        return $user->canInWorkspace('companies.edit');
+        return $user->canInWorkspace(CompanyPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class CompanyPolicy
      */
     public function forceDelete(User $user, Company $company): bool
     {
-        return $user->canInWorkspace('companies.delete');
+        return $user->canInWorkspace(CompanyPermission::DELETE->value);
     }
 }

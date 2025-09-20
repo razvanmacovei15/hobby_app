@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\BuildingPermitPermission;
 use App\Models\BuildingPermit;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class BuildingPermitPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('building-permits.view');
+        return $user->canInWorkspace(BuildingPermitPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class BuildingPermitPolicy
      */
     public function view(User $user, BuildingPermit $buildingPermit): bool
     {
-        return $user->canInWorkspace('building-permits.view');
+        return $user->canInWorkspace(BuildingPermitPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class BuildingPermitPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('building-permits.create');
+        return $user->canInWorkspace(BuildingPermitPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class BuildingPermitPolicy
      */
     public function update(User $user, BuildingPermit $buildingPermit): bool
     {
-        return $user->canInWorkspace('building-permits.edit');
+        return $user->canInWorkspace(BuildingPermitPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class BuildingPermitPolicy
      */
     public function delete(User $user, BuildingPermit $buildingPermit): bool
     {
-        return $user->canInWorkspace('building-permits.delete');
+        return $user->canInWorkspace(BuildingPermitPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class BuildingPermitPolicy
      */
     public function restore(User $user, BuildingPermit $buildingPermit): bool
     {
-        return $user->canInWorkspace('building-permits.edit');
+        return $user->canInWorkspace(BuildingPermitPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class BuildingPermitPolicy
      */
     public function forceDelete(User $user, BuildingPermit $buildingPermit): bool
     {
-        return $user->canInWorkspace('building-permits.delete');
+        return $user->canInWorkspace(BuildingPermitPermission::DELETE->value);
     }
 }

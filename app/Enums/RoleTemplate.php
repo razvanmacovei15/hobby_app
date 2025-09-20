@@ -2,7 +2,20 @@
 
 namespace App\Enums;
 
-use App\Constants\PermissionConstants;
+use App\Enums\Permissions\UserPermission;
+use App\Enums\Permissions\EmployeePermission;
+use App\Enums\Permissions\WorkReportPermission;
+use App\Enums\Permissions\WorkspaceExecutorPermission;
+use App\Enums\Permissions\ContractedServicePermission;
+use App\Enums\Permissions\CompanyPermission;
+use App\Enums\Permissions\ContractPermission;
+use App\Enums\Permissions\ContractAnnexPermission;
+use App\Enums\Permissions\WorkspacePermission;
+use App\Enums\Permissions\WorkspaceUserPermission;
+use App\Enums\Permissions\WorkspaceInvitationPermission;
+use App\Enums\Permissions\BuildingPermitPermission;
+use App\Enums\Permissions\AddressPermission;
+use App\Enums\Permissions\RolePermission;
 
 enum RoleTemplate: string
 {
@@ -42,102 +55,102 @@ enum RoleTemplate: string
         return match ($this) {
             self::CEO => [
                 // Full permissions - Users
-                PermissionConstants::USERS_VIEW,
-                PermissionConstants::USERS_CREATE,
-                PermissionConstants::USERS_EDIT,
-                PermissionConstants::USERS_DELETE,
+                UserPermission::VIEW->value,
+                UserPermission::CREATE->value,
+                UserPermission::EDIT->value,
+                UserPermission::DELETE->value,
 
                 // Full permissions - Employees
-                PermissionConstants::EMPLOYEES_VIEW,
-                PermissionConstants::EMPLOYEES_CREATE,
-                PermissionConstants::EMPLOYEES_EDIT,
-                PermissionConstants::EMPLOYEES_DELETE,
+                EmployeePermission::VIEW->value,
+                EmployeePermission::CREATE->value,
+                EmployeePermission::EDIT->value,
+                EmployeePermission::DELETE->value,
 
                 // Limited permissions - Work Reports (view + approve only)
-                PermissionConstants::WORK_REPORTS_VIEW,
-                PermissionConstants::WORK_REPORTS_APPROVE,
+                WorkReportPermission::VIEW->value,
+                WorkReportPermission::APPROVE->value,
 
                 // View only - Workspace Executors
-                PermissionConstants::WORKSPACE_EXECUTORS_VIEW,
+                WorkspaceExecutorPermission::VIEW->value,
 
                 // View only - Contracted Services
-                PermissionConstants::CONTRACTED_SERVICES_VIEW,
+                ContractedServicePermission::VIEW->value,
 
                 // View only - Companies
-                PermissionConstants::COMPANIES_VIEW,
+                CompanyPermission::VIEW->value,
 
                 // Full permissions - Contracts
-                PermissionConstants::CONTRACTS_VIEW,
-                PermissionConstants::CONTRACTS_CREATE,
-                PermissionConstants::CONTRACTS_EDIT,
-                PermissionConstants::CONTRACTS_DELETE,
+                ContractPermission::VIEW->value,
+                ContractPermission::CREATE->value,
+                ContractPermission::EDIT->value,
+                ContractPermission::DELETE->value,
 
                 // Full permissions - Contract Annexes
-                PermissionConstants::CONTRACT_ANNEXES_VIEW,
-                PermissionConstants::CONTRACT_ANNEXES_CREATE,
-                PermissionConstants::CONTRACT_ANNEXES_EDIT,
-                PermissionConstants::CONTRACT_ANNEXES_DELETE,
+                ContractAnnexPermission::VIEW->value,
+                ContractAnnexPermission::CREATE->value,
+                ContractAnnexPermission::EDIT->value,
+                ContractAnnexPermission::DELETE->value,
 
                 // Full permissions - Workspace
-                PermissionConstants::WORKSPACE_VIEW,
-                PermissionConstants::WORKSPACE_EDIT,
-                PermissionConstants::WORKSPACE_DELETE,
-                PermissionConstants::WORKSPACE_MANAGE,
+                WorkspacePermission::VIEW->value,
+                WorkspacePermission::EDIT->value,
+                WorkspacePermission::DELETE->value,
+                WorkspacePermission::MANAGE->value,
 
                 // Full permissions - Workspace Users
-                PermissionConstants::WORKSPACE_USERS_VIEW,
-                PermissionConstants::WORKSPACE_USERS_CREATE,
-                PermissionConstants::WORKSPACE_USERS_EDIT,
-                PermissionConstants::WORKSPACE_USERS_DELETE,
+                WorkspaceUserPermission::VIEW->value,
+                WorkspaceUserPermission::CREATE->value,
+                WorkspaceUserPermission::EDIT->value,
+                WorkspaceUserPermission::DELETE->value,
 
                 // Full permissions - Workspace Invitations
-                PermissionConstants::WORKSPACE_INVITATIONS_VIEW,
-                PermissionConstants::WORKSPACE_INVITATIONS_CREATE,
-                PermissionConstants::WORKSPACE_INVITATIONS_EDIT,
-                PermissionConstants::WORKSPACE_INVITATIONS_DELETE,
+                WorkspaceInvitationPermission::VIEW->value,
+                WorkspaceInvitationPermission::CREATE->value,
+                WorkspaceInvitationPermission::EDIT->value,
+                WorkspaceInvitationPermission::DELETE->value,
 
                 // Full permissions - Building Permits
-                PermissionConstants::BUILDING_PERMITS_VIEW,
-                PermissionConstants::BUILDING_PERMITS_CREATE,
-                PermissionConstants::BUILDING_PERMITS_EDIT,
-                PermissionConstants::BUILDING_PERMITS_DELETE,
+                BuildingPermitPermission::VIEW->value,
+                BuildingPermitPermission::CREATE->value,
+                BuildingPermitPermission::EDIT->value,
+                BuildingPermitPermission::DELETE->value,
 
                 // Full permissions - Addresses
-                PermissionConstants::ADDRESSES_VIEW,
-                PermissionConstants::ADDRESSES_CREATE,
-                PermissionConstants::ADDRESSES_EDIT,
-                PermissionConstants::ADDRESSES_DELETE,
+                AddressPermission::VIEW->value,
+                AddressPermission::CREATE->value,
+                AddressPermission::EDIT->value,
+                AddressPermission::DELETE->value,
 
                 // Full permissions - Roles
-                PermissionConstants::ROLES_VIEW,
-                PermissionConstants::ROLES_CREATE,
-                PermissionConstants::ROLES_EDIT,
-                PermissionConstants::ROLES_DELETE,
+                RolePermission::VIEW->value,
+                RolePermission::CREATE->value,
+                RolePermission::EDIT->value,
+                RolePermission::DELETE->value,
             ],
 
             self::SITE_DIRECTOR => [
                 // To be defined based on requirements
-                PermissionConstants::WORK_REPORTS_VIEW,
-                PermissionConstants::WORK_REPORTS_CREATE,
-                PermissionConstants::WORK_REPORTS_EDIT,
+                WorkReportPermission::VIEW->value,
+                WorkReportPermission::CREATE->value,
+                WorkReportPermission::EDIT->value,
             ],
 
             self::ADMINISTRATOR_ENGINEER => [
                 // To be defined based on requirements
-                PermissionConstants::CONTRACTS_VIEW,
-                PermissionConstants::BUILDING_PERMITS_VIEW,
+                ContractPermission::VIEW->value,
+                BuildingPermitPermission::VIEW->value,
             ],
 
             self::ORDERS_ENGINEER => [
                 // To be defined based on requirements
-                PermissionConstants::CONTRACTED_SERVICES_VIEW,
-                PermissionConstants::CONTRACTED_SERVICES_CREATE,
+                ContractedServicePermission::VIEW->value,
+                ContractedServicePermission::CREATE->value,
             ],
 
             self::GENERAL_ENGINEER => [
                 // To be defined based on requirements
-                PermissionConstants::WORK_REPORTS_VIEW,
-                PermissionConstants::BUILDING_PERMITS_VIEW,
+                WorkReportPermission::VIEW->value,
+                BuildingPermitPermission::VIEW->value,
             ],
 
             self::ADMIN => $this->getAllPermissions(),
@@ -146,11 +159,36 @@ enum RoleTemplate: string
 
     private function getAllPermissions(): array
     {
-        $allPermissions = [];
-        foreach (PermissionConstants::getAllPermissions() as $categoryPermissions) {
-            $allPermissions = array_merge($allPermissions, $categoryPermissions);
-        }
-        return $allPermissions;
+        return [
+            // User permissions
+            ...array_map(fn($case) => $case->value, UserPermission::cases()),
+            // Employee permissions
+            ...array_map(fn($case) => $case->value, EmployeePermission::cases()),
+            // Work Report permissions
+            ...array_map(fn($case) => $case->value, WorkReportPermission::cases()),
+            // Workspace Executor permissions
+            ...array_map(fn($case) => $case->value, WorkspaceExecutorPermission::cases()),
+            // Contracted Service permissions
+            ...array_map(fn($case) => $case->value, ContractedServicePermission::cases()),
+            // Company permissions
+            ...array_map(fn($case) => $case->value, CompanyPermission::cases()),
+            // Contract permissions
+            ...array_map(fn($case) => $case->value, ContractPermission::cases()),
+            // Contract Annex permissions
+            ...array_map(fn($case) => $case->value, ContractAnnexPermission::cases()),
+            // Workspace permissions
+            ...array_map(fn($case) => $case->value, WorkspacePermission::cases()),
+            // Workspace User permissions
+            ...array_map(fn($case) => $case->value, WorkspaceUserPermission::cases()),
+            // Workspace Invitation permissions
+            ...array_map(fn($case) => $case->value, WorkspaceInvitationPermission::cases()),
+            // Building Permit permissions
+            ...array_map(fn($case) => $case->value, BuildingPermitPermission::cases()),
+            // Address permissions
+            ...array_map(fn($case) => $case->value, AddressPermission::cases()),
+            // Role permissions
+            ...array_map(fn($case) => $case->value, RolePermission::cases()),
+        ];
     }
 
     public static function options(): array

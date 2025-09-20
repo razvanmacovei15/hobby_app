@@ -20,8 +20,8 @@ enum PermissionCategory: string
     case ROLES = 'roles';
     case PERMISSIONS = 'permissions';
     case INVITE_USERS_RESOURCE = 'invite-users-resource';
-    case OWNER_COMPANY = 'owner-company';
-    case BUILDING_PERMIT_PAGES = 'building-permit-pages';
+    case OWNER_COMPANY_PAGE = 'owner-company-page';
+    case BUILDING_PERMIT_PAGE = 'building-permit-page';
 
     public function label(): string
     {
@@ -42,8 +42,8 @@ enum PermissionCategory: string
             self::ROLES => 'Roles',
             self::PERMISSIONS => 'Permissions',
             self::INVITE_USERS_RESOURCE => 'Invite Users Resource',
-            self::OWNER_COMPANY => 'Owner Company',
-            self::BUILDING_PERMIT_PAGES => 'Building Permit Pages',
+            self::OWNER_COMPANY_PAGE => 'Owner Company',
+            self::BUILDING_PERMIT_PAGE => 'Building Permit Pages',
         };
     }
 
@@ -66,8 +66,8 @@ enum PermissionCategory: string
             self::ROLES => 'Role management permissions',
             self::PERMISSIONS => 'Permission management permissions',
             self::INVITE_USERS_RESOURCE => 'Invite Users Resource management permissions',
-            self::OWNER_COMPANY => 'Owner company management permissions',
-            self::BUILDING_PERMIT_PAGES => 'Building permit page access permissions',
+            self::OWNER_COMPANY_PAGE => 'Owner company management permissions',
+            self::BUILDING_PERMIT_PAGE => 'Building permit page access permissions',
         };
     }
 

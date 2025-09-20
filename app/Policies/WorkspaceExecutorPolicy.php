@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\WorkspaceExecutorPermission;
 use App\Models\User;
 use App\Models\WorkspaceExecutor;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class WorkspaceExecutorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('workspace-executors.view');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class WorkspaceExecutorPolicy
      */
     public function view(User $user, WorkspaceExecutor $workspaceExecutor): bool
     {
-        return $user->canInWorkspace('workspace-executors.view');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class WorkspaceExecutorPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('workspace-executors.create');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class WorkspaceExecutorPolicy
      */
     public function update(User $user, WorkspaceExecutor $workspaceExecutor): bool
     {
-        return $user->canInWorkspace('workspace-executors.edit');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class WorkspaceExecutorPolicy
      */
     public function delete(User $user, WorkspaceExecutor $workspaceExecutor): bool
     {
-        return $user->canInWorkspace('workspace-executors.delete');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class WorkspaceExecutorPolicy
      */
     public function restore(User $user, WorkspaceExecutor $workspaceExecutor): bool
     {
-        return $user->canInWorkspace('workspace-executors.edit');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class WorkspaceExecutorPolicy
      */
     public function forceDelete(User $user, WorkspaceExecutor $workspaceExecutor): bool
     {
-        return $user->canInWorkspace('workspace-executors.delete');
+        return $user->canInWorkspace(WorkspaceExecutorPermission::DELETE->value);
     }
 }

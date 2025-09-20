@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\EmployeePermission;
 use App\Models\CompanyEmployee;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class CompanyEmployeePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('employees.view');
+        return $user->canInWorkspace(EmployeePermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class CompanyEmployeePolicy
      */
     public function view(User $user, CompanyEmployee $companyEmployee): bool
     {
-        return $user->canInWorkspace('employees.view');
+        return $user->canInWorkspace(EmployeePermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class CompanyEmployeePolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('employees.create');
+        return $user->canInWorkspace(EmployeePermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class CompanyEmployeePolicy
      */
     public function update(User $user, CompanyEmployee $companyEmployee): bool
     {
-        return $user->canInWorkspace('employees.edit');
+        return $user->canInWorkspace(EmployeePermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class CompanyEmployeePolicy
      */
     public function delete(User $user, CompanyEmployee $companyEmployee): bool
     {
-        return $user->canInWorkspace('employees.delete');
+        return $user->canInWorkspace(EmployeePermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class CompanyEmployeePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->canInWorkspace('employees.delete');
+        return $user->canInWorkspace(EmployeePermission::DELETE->value);
     }
 
     /**
@@ -61,7 +62,7 @@ class CompanyEmployeePolicy
      */
     public function restore(User $user, CompanyEmployee $companyEmployee): bool
     {
-        return $user->canInWorkspace('employees.edit');
+        return $user->canInWorkspace(EmployeePermission::EDIT->value);
     }
 
     /**
@@ -69,7 +70,7 @@ class CompanyEmployeePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->canInWorkspace('employees.edit');
+        return $user->canInWorkspace(EmployeePermission::EDIT->value);
     }
 
     /**
@@ -77,7 +78,7 @@ class CompanyEmployeePolicy
      */
     public function forceDelete(User $user, CompanyEmployee $companyEmployee): bool
     {
-        return $user->canInWorkspace('employees.delete');
+        return $user->canInWorkspace(EmployeePermission::DELETE->value);
     }
 
     /**
@@ -85,6 +86,6 @@ class CompanyEmployeePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->canInWorkspace('employees.delete');
+        return $user->canInWorkspace(EmployeePermission::DELETE->value);
     }
 }

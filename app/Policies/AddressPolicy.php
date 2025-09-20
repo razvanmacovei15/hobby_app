@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\AddressPermission;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class AddressPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('addresses.view');
+        return $user->canInWorkspace(AddressPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class AddressPolicy
      */
     public function view(User $user, Address $address): bool
     {
-        return $user->canInWorkspace('addresses.view');
+        return $user->canInWorkspace(AddressPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class AddressPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('addresses.create');
+        return $user->canInWorkspace(AddressPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class AddressPolicy
      */
     public function update(User $user, Address $address): bool
     {
-        return $user->canInWorkspace('addresses.edit');
+        return $user->canInWorkspace(AddressPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class AddressPolicy
      */
     public function delete(User $user, Address $address): bool
     {
-        return $user->canInWorkspace('addresses.delete');
+        return $user->canInWorkspace(AddressPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class AddressPolicy
      */
     public function restore(User $user, Address $address): bool
     {
-        return $user->canInWorkspace('addresses.edit');
+        return $user->canInWorkspace(AddressPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class AddressPolicy
      */
     public function forceDelete(User $user, Address $address): bool
     {
-        return $user->canInWorkspace('addresses.delete');
+        return $user->canInWorkspace(AddressPermission::DELETE->value);
     }
 }

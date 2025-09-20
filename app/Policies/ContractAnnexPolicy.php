@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\ContractAnnexPermission;
 use App\Models\ContractAnnex;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class ContractAnnexPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('contract-annexes.view');
+        return $user->canInWorkspace(ContractAnnexPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class ContractAnnexPolicy
      */
     public function view(User $user, ContractAnnex $contractAnnex): bool
     {
-        return $user->canInWorkspace('contract-annexes.view');
+        return $user->canInWorkspace(ContractAnnexPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class ContractAnnexPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('contract-annexes.create');
+        return $user->canInWorkspace(ContractAnnexPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class ContractAnnexPolicy
      */
     public function update(User $user, ContractAnnex $contractAnnex): bool
     {
-        return $user->canInWorkspace('contract-annexes.edit');
+        return $user->canInWorkspace(ContractAnnexPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class ContractAnnexPolicy
      */
     public function delete(User $user, ContractAnnex $contractAnnex): bool
     {
-        return $user->canInWorkspace('contract-annexes.delete');
+        return $user->canInWorkspace(ContractAnnexPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class ContractAnnexPolicy
      */
     public function restore(User $user, ContractAnnex $contractAnnex): bool
     {
-        return $user->canInWorkspace('contract-annexes.edit');
+        return $user->canInWorkspace(ContractAnnexPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class ContractAnnexPolicy
      */
     public function forceDelete(User $user, ContractAnnex $contractAnnex): bool
     {
-        return $user->canInWorkspace('contract-annexes.delete');
+        return $user->canInWorkspace(ContractAnnexPermission::DELETE->value);
     }
 }

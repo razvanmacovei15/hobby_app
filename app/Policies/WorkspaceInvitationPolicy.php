@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\WorkspaceInvitationPermission;
 use App\Models\User;
 use App\Models\WorkspaceInvitation;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class WorkspaceInvitationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('workspace-invitations.view');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class WorkspaceInvitationPolicy
      */
     public function view(User $user, WorkspaceInvitation $workspaceInvitation): bool
     {
-        return $user->canInWorkspace('workspace-invitations.view');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class WorkspaceInvitationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('workspace-invitations.create');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class WorkspaceInvitationPolicy
      */
     public function update(User $user, WorkspaceInvitation $workspaceInvitation): bool
     {
-        return $user->canInWorkspace('workspace-invitations.edit');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class WorkspaceInvitationPolicy
      */
     public function delete(User $user, WorkspaceInvitation $workspaceInvitation): bool
     {
-        return $user->canInWorkspace('workspace-invitations.delete');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class WorkspaceInvitationPolicy
      */
     public function restore(User $user, WorkspaceInvitation $workspaceInvitation): bool
     {
-        return $user->canInWorkspace('workspace-invitations.edit');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class WorkspaceInvitationPolicy
      */
     public function forceDelete(User $user, WorkspaceInvitation $workspaceInvitation): bool
     {
-        return $user->canInWorkspace('workspace-invitations.delete');
+        return $user->canInWorkspace(WorkspaceInvitationPermission::DELETE->value);
     }
 }

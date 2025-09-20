@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\PermissionPermission;
 use App\Models\Permission\Permission;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('permissions.view');
+        return $user->canInWorkspace(PermissionPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        return $user->canInWorkspace('permissions.view');
+        return $user->canInWorkspace(PermissionPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class PermissionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('permissions.create');
+        return $user->canInWorkspace(PermissionPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission): bool
     {
-        return $user->canInWorkspace('permissions.edit');
+        return $user->canInWorkspace(PermissionPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->canInWorkspace('permissions.delete');
+        return $user->canInWorkspace(PermissionPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class PermissionPolicy
      */
     public function restore(User $user, Permission $permission): bool
     {
-        return $user->canInWorkspace('permissions.edit');
+        return $user->canInWorkspace(PermissionPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class PermissionPolicy
      */
     public function forceDelete(User $user, Permission $permission): bool
     {
-        return $user->canInWorkspace('permissions.delete');
+        return $user->canInWorkspace(PermissionPermission::DELETE->value);
     }
 }

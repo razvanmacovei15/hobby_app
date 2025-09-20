@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\ContractedServicePermission;
 use App\Models\ContractedService;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class ContractedServicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('contracted-services.view');
+        return $user->canInWorkspace(ContractedServicePermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class ContractedServicePolicy
      */
     public function view(User $user, ContractedService $contractedService): bool
     {
-        return $user->canInWorkspace('contracted-services.view');
+        return $user->canInWorkspace(ContractedServicePermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class ContractedServicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('contracted-services.create');
+        return $user->canInWorkspace(ContractedServicePermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class ContractedServicePolicy
      */
     public function update(User $user, ContractedService $contractedService): bool
     {
-        return $user->canInWorkspace('contracted-services.edit');
+        return $user->canInWorkspace(ContractedServicePermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class ContractedServicePolicy
      */
     public function delete(User $user, ContractedService $contractedService): bool
     {
-        return $user->canInWorkspace('contracted-services.delete');
+        return $user->canInWorkspace(ContractedServicePermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class ContractedServicePolicy
      */
     public function restore(User $user, ContractedService $contractedService): bool
     {
-        return $user->canInWorkspace('contracted-services.edit');
+        return $user->canInWorkspace(ContractedServicePermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class ContractedServicePolicy
      */
     public function forceDelete(User $user, ContractedService $contractedService): bool
     {
-        return $user->canInWorkspace('contracted-services.delete');
+        return $user->canInWorkspace(ContractedServicePermission::DELETE->value);
     }
 }

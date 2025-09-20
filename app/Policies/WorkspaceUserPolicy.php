@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\WorkspaceUserPermission;
 use App\Models\User;
 use App\Models\WorkspaceUser;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class WorkspaceUserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('workspace-users.view');
+        return $user->canInWorkspace(WorkspaceUserPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class WorkspaceUserPolicy
      */
     public function view(User $user, WorkspaceUser $workspaceUser): bool
     {
-        return $user->canInWorkspace('workspace-users.view');
+        return $user->canInWorkspace(WorkspaceUserPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class WorkspaceUserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('workspace-users.create');
+        return $user->canInWorkspace(WorkspaceUserPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class WorkspaceUserPolicy
      */
     public function update(User $user, WorkspaceUser $workspaceUser): bool
     {
-        return $user->canInWorkspace('workspace-users.edit');
+        return $user->canInWorkspace(WorkspaceUserPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class WorkspaceUserPolicy
      */
     public function delete(User $user, WorkspaceUser $workspaceUser): bool
     {
-        return $user->canInWorkspace('workspace-users.delete');
+        return $user->canInWorkspace(WorkspaceUserPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class WorkspaceUserPolicy
      */
     public function restore(User $user, WorkspaceUser $workspaceUser): bool
     {
-        return $user->canInWorkspace('workspace-users.edit');
+        return $user->canInWorkspace(WorkspaceUserPermission::EDIT->value);
     }
 
     /**
@@ -61,7 +62,7 @@ class WorkspaceUserPolicy
      */
     public function forceDelete(User $user, WorkspaceUser $workspaceUser): bool
     {
-        return $user->canInWorkspace('workspace-users.delete');
+        return $user->canInWorkspace(WorkspaceUserPermission::DELETE->value);
     }
 
     /**
@@ -69,6 +70,6 @@ class WorkspaceUserPolicy
      */
     public function assignRoles(User $user): bool
     {
-        return $user->canInWorkspace('workspace-users.assign-roles');
+        return $user->canInWorkspace(WorkspaceUserPermission::ASSIGN_ROLES->value);
     }
 }

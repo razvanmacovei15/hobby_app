@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\ContractPermission;
 use App\Models\Contract;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class ContractPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('contracts.view');
+        return $user->canInWorkspace(ContractPermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class ContractPolicy
      */
     public function view(User $user, Contract $contract): bool
     {
-        return $user->canInWorkspace('contracts.view');
+        return $user->canInWorkspace(ContractPermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class ContractPolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('contracts.create');
+        return $user->canInWorkspace(ContractPermission::CREATE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class ContractPolicy
      */
     public function update(User $user, Contract $contract): bool
     {
-        return $user->canInWorkspace('contracts.edit');
+        return $user->canInWorkspace(ContractPermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class ContractPolicy
      */
     public function delete(User $user, Contract $contract): bool
     {
-        return $user->canInWorkspace('contracts.delete');
+        return $user->canInWorkspace(ContractPermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class ContractPolicy
      */
     public function restore(User $user, Contract $contract): bool
     {
-        return $user->canInWorkspace('contracts.edit');
+        return $user->canInWorkspace(ContractPermission::EDIT->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class ContractPolicy
      */
     public function forceDelete(User $user, Contract $contract): bool
     {
-        return $user->canInWorkspace('contracts.delete');
+        return $user->canInWorkspace(ContractPermission::DELETE->value);
     }
 }

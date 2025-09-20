@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\WorkspacePermission;
 use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class WorkspacePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->canInWorkspace('workspace.view');
+        return $user->canInWorkspace(WorkspacePermission::VIEW->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class WorkspacePolicy
      */
     public function view(User $user, Workspace $workspace): bool
     {
-        return $user->canInWorkspace('workspace.view');
+        return $user->canInWorkspace(WorkspacePermission::VIEW->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class WorkspacePolicy
      */
     public function create(User $user): bool
     {
-        return $user->canInWorkspace('workspace.manage');
+        return $user->canInWorkspace(WorkspacePermission::MANAGE->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class WorkspacePolicy
      */
     public function update(User $user, Workspace $workspace): bool
     {
-        return $user->canInWorkspace('workspace.edit');
+        return $user->canInWorkspace(WorkspacePermission::EDIT->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class WorkspacePolicy
      */
     public function delete(User $user, Workspace $workspace): bool
     {
-        return $user->canInWorkspace('workspace.delete');
+        return $user->canInWorkspace(WorkspacePermission::DELETE->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class WorkspacePolicy
      */
     public function restore(User $user, Workspace $workspace): bool
     {
-        return $user->canInWorkspace('workspace.manage');
+        return $user->canInWorkspace(WorkspacePermission::MANAGE->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class WorkspacePolicy
      */
     public function forceDelete(User $user, Workspace $workspace): bool
     {
-        return $user->canInWorkspace('workspace.delete');
+        return $user->canInWorkspace(WorkspacePermission::DELETE->value);
     }
 }

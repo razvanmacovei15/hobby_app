@@ -168,7 +168,7 @@ class BuildingPermitPage extends Page implements HasInfolists
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('building-permit-pages.view') ?? false;
+        return auth()->user()?->canInWorkspace('building-permit-page.view') ?? false;
     }
 
     public static function shouldRegisterNavigation(): bool

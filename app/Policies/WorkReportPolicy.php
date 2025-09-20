@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\WorkReportPermission;
 use App\Enums\WorkReportStatus;
 use App\Models\User;
 use App\Models\WorkReport;
@@ -14,11 +15,11 @@ class WorkReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        $result = $user->canInWorkspace('work-reports.view');
+        $result = $user->canInWorkspace(WorkReportPermission::VIEW->value);
         Log::info('WorkReportPolicy::viewAny', [
             'user_id' => $user->id,
             'user_email' => $user->email,
-            'permission' => 'work-reports.view',
+            'permission' => WorkReportPermission::VIEW->value,
             'result' => $result
         ]);
         return $result;
@@ -29,12 +30,12 @@ class WorkReportPolicy
      */
     public function view(User $user, WorkReport $workReport): bool
     {
-        $result = $user->canInWorkspace('work-reports.view');
+        $result = $user->canInWorkspace(WorkReportPermission::VIEW->value);
         Log::info('WorkReportPolicy::view', [
             'user_id' => $user->id,
             'user_email' => $user->email,
             'work_report_id' => $workReport->id,
-            'permission' => 'work-reports.view',
+            'permission' => WorkReportPermission::VIEW->value,
             'result' => $result
         ]);
         return $result;
@@ -45,11 +46,11 @@ class WorkReportPolicy
      */
     public function create(User $user): bool
     {
-        $result = $user->canInWorkspace('work-reports.create');
+        $result = $user->canInWorkspace(WorkReportPermission::CREATE->value);
         Log::info('WorkReportPolicy::create', [
             'user_id' => $user->id,
             'user_email' => $user->email,
-            'permission' => 'work-reports.create',
+            'permission' => WorkReportPermission::CREATE->value,
             'result' => $result
         ]);
         return $result;
@@ -71,12 +72,12 @@ class WorkReportPolicy
             return false;
         }
 
-        $result = $user->canInWorkspace('work-reports.edit');
+        $result = $user->canInWorkspace(WorkReportPermission::EDIT->value);
         Log::info('WorkReportPolicy::update', [
             'user_id' => $user->id,
             'user_email' => $user->email,
             'work_report_id' => $workReport->id,
-            'permission' => 'work-reports.edit',
+            'permission' => WorkReportPermission::EDIT->value,
             'result' => $result
         ]);
         return $result;
@@ -87,12 +88,12 @@ class WorkReportPolicy
      */
     public function delete(User $user, WorkReport $workReport): bool
     {
-        $result = $user->canInWorkspace('work-reports.delete');
+        $result = $user->canInWorkspace(WorkReportPermission::DELETE->value);
         Log::info('WorkReportPolicy::delete', [
             'user_id' => $user->id,
             'user_email' => $user->email,
             'work_report_id' => $workReport->id,
-            'permission' => 'work-reports.delete',
+            'permission' => WorkReportPermission::DELETE->value,
             'result' => $result
         ]);
         return $result;
@@ -119,12 +120,12 @@ class WorkReportPolicy
      */
     public function approve(User $user, WorkReport $workReport): bool
     {
-        $result = $user->canInWorkspace('work-reports.approve');
+        $result = $user->canInWorkspace(WorkReportPermission::APPROVE->value);
         Log::info('WorkReportPolicy::approve', [
             'user_id' => $user->id,
             'user_email' => $user->email,
             'work_report_id' => $workReport->id,
-            'permission' => 'work-reports.approve',
+            'permission' => WorkReportPermission::APPROVE->value,
             'result' => $result
         ]);
         return $result;

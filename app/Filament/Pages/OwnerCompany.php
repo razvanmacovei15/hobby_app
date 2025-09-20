@@ -76,7 +76,7 @@ class OwnerCompany extends Page implements HasInfolists
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('owner-company.view') ?? false;
+        return auth()->user()?->canInWorkspace('owner-company-page.view') ?? false;
     }
 
     public static function shouldRegisterNavigation(): bool
