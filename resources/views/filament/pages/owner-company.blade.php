@@ -1,5 +1,6 @@
 @php
     use App\Filament\Pages\EditOwnerCompany;
+    use App\Enums\Permissions\OwnerCompanyPermission;
 @endphp
 
 <x-filament::page>
