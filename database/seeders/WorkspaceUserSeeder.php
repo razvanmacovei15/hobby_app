@@ -22,12 +22,6 @@ class WorkspaceUserSeeder extends Seeder
                 'is_default' => true,
                 'created_at' => now()->subDays(30),
                 'updated_at' => now()->subDays(30),
-            ],[
-                'user_id' => 1, // admin user
-                'workspace_id' => 2,
-                'is_default' => true,
-                'created_at' => now()->subDays(30),
-                'updated_at' => now()->subDays(30),
             ],
             [
                 'user_id' => 2,
@@ -65,6 +59,13 @@ class WorkspaceUserSeeder extends Seeder
                 'updated_at' => now()->subDays(20),
             ],
             // Workspace 2 users with is_default = false
+            [
+                'user_id' => 1, // admin user
+                'workspace_id' => 2,
+                'is_default' => true,
+                'created_at' => now()->subDays(30),
+                'updated_at' => now()->subDays(30),
+            ],
             [
                 'user_id' => 3,
                 'workspace_id' => 2,

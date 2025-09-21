@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\ExecutorType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\WorkspaceExecutor;
+use Database\Factories\WorkspaceExecutorEngineerFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -119,5 +120,46 @@ class WorkspaceExecutorSeeder extends Seeder
                 'updated_at' => now()->subDays(12),
             ],
         ], ['workspace_id', 'executor_id'], ['executor_type', 'is_active', 'has_contract', 'updated_at']);
+
+        // Assign engineers to workspace executors
+        $this->assignEngineersToExecutors();
+    }
+
+    private function assignEngineersToExecutors(): void
+    {
+        $factory = new WorkspaceExecutorEngineerFactory;
+
+        // Get all workspace executors with their workspace relationships
+        $executors = WorkspaceExecutor::with('workspace.users')->get();
+
+        foreach ($executors as $executor) {
+            $workspaceUsers = $executor->workspace->users;
+
+            if ($workspaceUsers->count() === 0) {
+                continue;
+            }
+
+            // Assign 1-3 random engineers to each executor
+            $numberOfEngineers = fake()->numberBetween(1, min(3, $workspaceUsers->count()));
+            $selectedUsers = $workspaceUsers->random($numberOfEngineers);
+
+            foreach ($selectedUsers as $user) {
+                // Check if this assignment already exists
+                $exists = DB::table('workspace_executor_engineers')
+                    ->where('workspace_executor_id', $executor->id)
+                    ->where('user_id', $user->id)
+                    ->exists();
+
+                if (! $exists) {
+                    DB::table('workspace_executor_engineers')->insert([
+                        'workspace_executor_id' => $executor->id,
+                        'user_id' => $user->id,
+                        'assigned_at' => fake()->dateTimeBetween('-1 month', 'now'),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        }
     }
 }

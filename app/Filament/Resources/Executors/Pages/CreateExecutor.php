@@ -4,12 +4,9 @@ namespace App\Filament\Resources\Executors\Pages;
 
 use App\Filament\Resources\Executors\ExecutorResource;
 use App\Filament\Resources\Executors\Schemas\ExecutorForm;
-use App\Models\Address;
-use App\Models\Company;
 use App\Models\User;
 use App\Services\IExecutorService;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
@@ -22,14 +19,15 @@ class CreateExecutor extends CreateRecord
     public function mount(): void
     {
         // Check if user has required permissions before allowing access
-        if (!$this->canCreateWorkspaceExecutor()) {
+        if (! $this->canCreateWorkspaceExecutor()) {
             Notification::make()
                 ->title('Access Denied')
                 ->body('You need create permissions for companies, addresses, users (all or none), and workspace executors to create a workspace executor.')
                 ->danger()
                 ->send();
-            
+
             $this->redirect($this->getResource()::getUrl('index'));
+
             return;
         }
 
@@ -40,7 +38,7 @@ class CreateExecutor extends CreateRecord
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -54,7 +52,7 @@ class CreateExecutor extends CreateRecord
         $hasAllPermissions = count(array_filter($allPermissions)) === 3;
         $hasNoPermissions = count(array_filter($allPermissions)) === 0;
 
-        if (!($hasAllPermissions || $hasNoPermissions)) {
+        if (! ($hasAllPermissions || $hasNoPermissions)) {
             // User has partial permissions, which is not allowed
             return false;
         }
@@ -68,11 +66,11 @@ class CreateExecutor extends CreateRecord
         return 'Register executor';
     }
 
-    /** In your Edit/Create page class */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         /** @var IExecutorService $svc */
         $svc = app(IExecutorService::class);
+
         return $svc->mutateFormDataBeforeSave($data, null);
     }
 

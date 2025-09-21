@@ -65,7 +65,6 @@ class ExecutorResource extends Resource
     {
         /** @var IExecutorService $svc */
         $svc = app(IExecutorService::class);
-
         // You can pass true/false to onlyActive if you want to force a filter here.
         return $svc->queryForCurrentWorkspace();
     }

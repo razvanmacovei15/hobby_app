@@ -13,6 +13,17 @@ class ExecutorInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
+            Section::make('Workspace')->schema([
+                TextEntry::make('executor_type')->label('Service Type')->badge(),
+                IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
+                TextEntry::make('engineers')
+                    ->label('Assigned Engineers')
+                    ->state(fn($record) => $record->engineers->isNotEmpty()
+                        ? $record->engineers->map(fn($engineer) => $engineer->getFilamentName())->join(' | ')
+                        : 'No engineers assigned'
+                    ),
+            ])->columns(3),
+
             Section::make('Company Details')->schema([
                 TextEntry::make('executor.name')->label('Company Name'),
                 TextEntry::make('executor.cui')->label('CUI'),
@@ -36,17 +47,14 @@ class ExecutorInfolist
             Section::make('Representative')->schema([
                 TextEntry::make('representative_name')
                     ->label('Name')
-                    ->state(fn ($record) => $record?->executor?->representative
+                    ->state(fn($record) => $record?->executor?->representative
                         ? $record->executor->representative->getFilamentName()
                         : '—'),
 
                 TextEntry::make('executor.representative.email')->label('Email')
             ])->columns(2),
 
-            Section::make('Workspace')->schema([
-                TextEntry::make('executor_type')->label('Service Type')->badge(),
-                IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
-            ])->columns(4),
+
         ])
             ->columns(1);
     }

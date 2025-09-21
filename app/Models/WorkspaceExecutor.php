@@ -6,6 +6,7 @@ use Database\Factories\WorkspaceExecutorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class WorkspaceExecutor extends Model
 {
@@ -29,6 +30,13 @@ class WorkspaceExecutor extends Model
     public function workspace(): BelongsTo
     {
         return $this->belongsTo(Workspace::class, 'workspace_id');
+    }
+
+    public function engineers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'workspace_executor_engineers')
+            ->withPivot('assigned_at')
+            ->withTimestamps();
     }
 
     public function getFilamentName(): string

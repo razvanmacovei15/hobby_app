@@ -65,6 +65,13 @@ class User extends Authenticatable implements FilamentUser, HasName, HasTenants
             ->withTimestamps();
     }
 
+    public function assignedExecutors(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkspaceExecutor::class, 'workspace_executor_engineers')
+            ->withPivot('assigned_at')
+            ->withTimestamps();
+    }
+
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
@@ -268,6 +275,7 @@ class User extends Authenticatable implements FilamentUser, HasName, HasTenants
         if (! $currentTenant instanceof Workspace) {
             throw new \RuntimeException('No workspace context available. User must be operating within a workspace.');
         }
+
 
         return $currentTenant;
     }

@@ -23,18 +23,6 @@ class WorkspaceUserForm
                     ->required()
                     ->disabledOn('edit'),
 
-//                Select::make('workspace_id')
-//                    ->relationship('workspace', 'name')
-//                    ->default(fn() => Filament::getTenant()?->id)
-//                    ->disabled()
-//                    ->dehydrated()
-//                    ->required(),
-
-//                Toggle::make('is_default')
-//                    ->label('Set as Default Workspace')
-//                    ->helperText('Make this the user\'s default workspace')
-//                    ->default(false),
-
                 Section::make('Role Assignment')
                     ->description('Assign roles to this user in the workspace')
                     ->schema([
