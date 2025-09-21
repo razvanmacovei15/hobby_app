@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Company;
 use App\Models\WorkspaceExecutor;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 interface IExecutorService
 {
@@ -22,4 +21,9 @@ interface IExecutorService
     public function findForView(int $workspaceExecutorId): WorkspaceExecutor;
 
     public function mutateFormDataBeforeSave(array $data, ?Company $currentExecutor = null): array;
+
+    /**
+     * Get executors by responsible engineer in current workspace
+     */
+    public function queryByResponsibleEngineer(int $userId): Builder;
 }

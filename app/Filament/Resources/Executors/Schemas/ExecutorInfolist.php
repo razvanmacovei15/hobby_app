@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Executors\Schemas;
 
-use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -40,13 +39,18 @@ class ExecutorInfolist
                         ? $record->executor->representative->getFilamentName()
                         : '—'),
 
-                TextEntry::make('executor.representative.email')->label('Email')
+                TextEntry::make('executor.representative.email')->label('Email'),
             ])->columns(2),
 
             Section::make('Workspace')->schema([
                 TextEntry::make('executor_type')->label('Service Type')->badge(),
                 IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
-            ])->columns(4),
+                TextEntry::make('responsible_engineer_name')
+                    ->label('Responsible Engineer')
+                    ->state(fn ($record) => $record?->responsibleEngineer
+                        ? $record->responsibleEngineer->getFilamentName()
+                        : 'Not assigned'),
+            ])->columns(3),
         ])
             ->columns(1);
     }

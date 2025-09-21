@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\ExecutorType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +18,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 2, // Building Solutions Ltd as executor
+                'responsible_engineer_id' => 2, // Dan Boitos as responsible engineer
                 'executor_type' => ExecutorType::ELECTRICAL->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -29,6 +29,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 2,
                 'executor_id' => 3, // ElectricTech Solutions SRL
+                'responsible_engineer_id' => 3, // Alice Johnson as responsible engineer
                 'executor_type' => ExecutorType::ELECTRICAL->value,
                 'is_active' => false,
                 'has_contract' => true,
@@ -38,6 +39,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 2,
                 'executor_id' => 4, // Plumbing Masters SRL
+                'responsible_engineer_id' => null, // No responsible engineer assigned
                 'executor_type' => ExecutorType::PLUMBING->value,
                 'is_active' => false,
                 'has_contract' => false,
@@ -47,6 +49,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 2,
                 'executor_id' => 5, // Interior Design Pro SRL
+                'responsible_engineer_id' => 4, // Bob Smith as responsible engineer
                 'executor_type' => ExecutorType::FINISHES->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -57,6 +60,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 6, // Roofing Specialists SRL
+                'responsible_engineer_id' => 5, // Carol Davis as responsible engineer
                 'executor_type' => ExecutorType::STRUCTURAL->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -66,6 +70,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 7, // Demolition Experts SRL
+                'responsible_engineer_id' => 6, // David Wilson as responsible engineer
                 'executor_type' => ExecutorType::DEMOLITION->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -75,6 +80,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 1,
                 'executor_id' => 8, // Concrete Works SRL
+                'responsible_engineer_id' => 2, // Dan Boitos (same engineer for multiple executors)
                 'executor_type' => ExecutorType::STRUCTURAL->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -85,6 +91,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 3,
                 'executor_id' => 9, // Steel Structures SRL
+                'responsible_engineer_id' => null, // No responsible engineer assigned
                 'executor_type' => ExecutorType::STRUCTURAL->value,
                 'is_active' => false,
                 'has_contract' => false,
@@ -94,6 +101,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 3,
                 'executor_id' => 10, // Insulation Masters SRL
+                'responsible_engineer_id' => 7, // Elena Rodriguez as responsible engineer
                 'executor_type' => ExecutorType::INSULATION->value,
                 'is_active' => false,
                 'has_contract' => false,
@@ -103,6 +111,7 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 3,
                 'executor_id' => 3, // ElectricTech Solutions SRL
+                'responsible_engineer_id' => 8, // Frank Miller as responsible engineer
                 'executor_type' => ExecutorType::ELECTRICAL->value,
                 'is_active' => true,
                 'has_contract' => true,
@@ -112,12 +121,13 @@ class WorkspaceExecutorSeeder extends Seeder
             [
                 'workspace_id' => 3,
                 'executor_id' => 4, // Plumbing Masters SRL
+                'responsible_engineer_id' => 9, // Grace Taylor as responsible engineer
                 'executor_type' => ExecutorType::PLUMBING->value,
                 'is_active' => true,
                 'has_contract' => true,
                 'created_at' => now()->subDays(12),
                 'updated_at' => now()->subDays(12),
             ],
-        ], ['workspace_id', 'executor_id'], ['executor_type', 'is_active', 'has_contract', 'updated_at']);
+        ], ['workspace_id', 'executor_id'], ['executor_type', 'is_active', 'has_contract', 'responsible_engineer_id', 'updated_at']);
     }
 }

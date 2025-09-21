@@ -15,6 +15,7 @@ class WorkspaceExecutor extends Model
     protected $fillable = [
         'workspace_id',
         'executor_id',
+        'responsible_engineer_id',
 
         'is_active',
         'executor_type',
@@ -29,6 +30,11 @@ class WorkspaceExecutor extends Model
     public function workspace(): BelongsTo
     {
         return $this->belongsTo(Workspace::class, 'workspace_id');
+    }
+
+    public function responsibleEngineer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsible_engineer_id');
     }
 
     public function getFilamentName(): string

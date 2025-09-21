@@ -259,6 +259,14 @@ class User extends Authenticatable implements FilamentUser, HasName, HasTenants
     }
 
     /**
+     * Get executors for which this user is the responsible engineer
+     */
+    public function responsibleForExecutors(): HasMany
+    {
+        return $this->hasMany(WorkspaceExecutor::class, 'responsible_engineer_id');
+    }
+
+    /**
      * Get the current workspace for this user
      */
     public function getCurrentWorkspaceAttribute(): Workspace

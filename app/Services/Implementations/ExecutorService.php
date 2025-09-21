@@ -10,31 +10,24 @@ use App\Models\WorkspaceExecutor;
 use App\Services\IExecutorService;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use RectorPrefix202507\React\Dns\Query\ExecutorInterface;
 use RuntimeException;
 
 class ExecutorService implements IExecutorService
 {
-
     public function queryForCurrentWorkspace(?bool $onlyActive = null): Builder
     {
         $tenant = Filament::getTenant();
 
         // Defensive: if no tenant selected, return an empty query to avoid leakage.
         $q = WorkspaceExecutor::query()
-            ->with(['executor', 'workspace'])
-            ->when($tenant, fn($q) => $q->where('workspace_id', $tenant->id))
-            ->when(!$tenant, fn($q) => $q->whereRaw('1 = 0'));
+            ->with(['executor', 'workspace', 'responsibleEngineer'])
+            ->when($tenant, fn ($q) => $q->where('workspace_id', $tenant->id))
+            ->when(! $tenant, fn ($q) => $q->whereRaw('1 = 0'));
 
-        if (!is_null($onlyActive)) {
+        if (! is_null($onlyActive)) {
             $q->where('is_active', $onlyActive);
         }
-
 
         return $q;
     }
@@ -50,6 +43,7 @@ class ExecutorService implements IExecutorService
             ->with([
                 'executor',                 // Company
                 'workspace',                // Workspace
+                'responsibleEngineer',      // User
             ])
             ->where('workspace_id', $tenant->id)
             ->findOrFail($workspaceExecutorId);
@@ -59,11 +53,11 @@ class ExecutorService implements IExecutorService
     {
         // --- pull nested executor payload from form state ---
         $executorData = Arr::pull($data, 'executor', []);
-        $addressData  = Arr::pull($executorData, 'address', []);
-        $repData      = Arr::pull($executorData, 'representative', []);
+        $addressData = Arr::pull($executorData, 'address', []);
+        $repData = Arr::pull($executorData, 'representative', []);
 
         // --- load or create the executor company ---
-        $executor = $currentExecutor ?? new Company();
+        $executor = $currentExecutor ?? new Company;
 
         $executor->fill(Arr::only($executorData, [
             'name', 'cui', 'j', 'place_of_registration', 'iban',
@@ -74,7 +68,7 @@ class ExecutorService implements IExecutorService
 
         // --- address upsert + associate (inline section from previous step) ---
         if (! empty($addressData)) {
-            $address = $executor->address ?? new Address();
+            $address = $executor->address ?? new Address;
             $address->fill($addressData)->save();
 
             if (! $executor->address || $executor->address_id !== $address->id) {
@@ -98,7 +92,7 @@ class ExecutorService implements IExecutorService
                 $user = $resolved;
             } else {
                 // Create a new user with a random password (hashed by cast)
-                $user = new User();
+                $user = new User;
                 $user->fill(Arr::only($repData, ['first_name', 'last_name', 'email']));
                 $user->save();
             }
@@ -112,8 +106,18 @@ class ExecutorService implements IExecutorService
         // If your main record needs an executor_id, put it back so Filament can continue its save
         $data['executor_id'] = $executor->id;
         $data['is_active'] = true;
+
         return $data;
     }
 
+    public function queryByResponsibleEngineer(int $userId): Builder
+    {
+        $tenant = Filament::getTenant();
 
+        return WorkspaceExecutor::query()
+            ->with(['executor', 'workspace', 'responsibleEngineer'])
+            ->where('responsible_engineer_id', $userId)
+            ->when($tenant, fn ($q) => $q->where('workspace_id', $tenant->id))
+            ->when(! $tenant, fn ($q) => $q->whereRaw('1 = 0'));
+    }
 }
