@@ -276,6 +276,7 @@ class User extends Authenticatable implements FilamentUser, HasName, HasTenants
             throw new \RuntimeException('No workspace context available. User must be operating within a workspace.');
         }
 
+
         return $currentTenant;
     }
 }
