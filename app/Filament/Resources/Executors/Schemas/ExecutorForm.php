@@ -118,8 +118,27 @@ class ExecutorForm
                         ->options(ExecutorType::options())
                         ->required(),
 
-                    Select::make('responsible_engineer_id')
-                        ->label('Responsible Engineer')
+                    //                    Select::make('responsible_engineer_id')
+                    //                        ->label('Responsible Engineer (Legacy)')
+                    //                        ->options(function () {
+                    //                            $currentWorkspace = \Filament\Facades\Filament::getTenant();
+                    //                            if (! $currentWorkspace) {
+                    //                                return [];
+                    //                            }
+                    //
+                    //                            return \App\Models\User::whereHas('workspaces', function ($q) use ($currentWorkspace) {
+                    //                                $q->where('workspaces.id', $currentWorkspace->id);
+                    //                            })->get()->mapWithKeys(function ($user) {
+                    //                                return [$user->id => $user->getFilamentName()];
+                    //                            });
+                    //                        })
+                    //                        ->searchable()
+                    //                        ->preload()
+                    //                        ->placeholder('Select an engineer (legacy single)'),
+
+                    Select::make('responsible_engineers')
+                        ->label('Responsible Engineers')
+                        ->multiple()
                         ->options(function () {
                             $currentWorkspace = \Filament\Facades\Filament::getTenant();
                             if (! $currentWorkspace) {
@@ -134,7 +153,10 @@ class ExecutorForm
                         })
                         ->searchable()
                         ->preload()
-                        ->placeholder('Select an engineer'),
+                        ->placeholder('Select multiple engineers')
+                        ->helperText('Select multiple engineers responsible for this executor')
+                        ->dehydrated(false) // Don't include in form data for save
+                        ->live(onBlur: true), // Make it reactive but only on blur to avoid conflicts
 
                 ])->columns(2),
             ])

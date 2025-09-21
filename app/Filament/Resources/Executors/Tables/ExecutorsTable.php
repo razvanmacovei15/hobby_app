@@ -48,7 +48,7 @@ class ExecutorsTable
                 TextColumn::make('executor_type')->label('Service Type')->badge(),
 
                 Tables\Columns\TextColumn::make('responsibleEngineer.first_name')
-                    ->label('Responsible Engineer')
+                    ->label('Responsible Engineer (Legacy)')
                     ->formatStateUsing(fn ($record) => $record->responsibleEngineer?->getFilamentName() ?? 'Not assigned')
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->whereHas('responsibleEngineer', function ($q) use ($search) {
@@ -61,6 +61,37 @@ class ExecutorsTable
                             ->orderBy('responsible_engineer.first_name', $direction)
                             ->select('workspace_executors.*');
                     })
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('responsible_engineers')
+                    ->label('Responsible Engineers')
+                    ->formatStateUsing(function ($record) {
+                        $engineers = $record->responsibleEngineers;
+                        if ($engineers->isEmpty()) {
+                            return 'Not assigned';
+                        }
+
+                        if ($engineers->count() === 1) {
+                            return $engineers->first()->getFilamentName();
+                        }
+
+                        return $engineers->map(fn ($engineer) => $engineer->getFilamentName())->join(', ');
+                    })
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->whereHas('responsibleEngineers', function ($q) use ($search) {
+                            $q->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%");
+                        });
+                    })
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->leftJoin('workspace_executor_engineers', 'workspace_executors.id', '=', 'workspace_executor_engineers.workspace_executor_id')
+                            ->leftJoin('users as engineers', 'workspace_executor_engineers.user_id', '=', 'engineers.id')
+                            ->orderBy('engineers.first_name', $direction)
+                            ->select('workspace_executors.*')
+                            ->distinct();
+                    })
+                    ->badge()
+                    ->separator(',')
                     ->toggleable(),
 
                 Tables\Columns\IconColumn::make('is_active')

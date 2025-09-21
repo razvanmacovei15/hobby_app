@@ -259,11 +259,30 @@ class User extends Authenticatable implements FilamentUser, HasName, HasTenants
     }
 
     /**
-     * Get executors for which this user is the responsible engineer
+     * Get executors for which this user is the responsible engineer (legacy single relationship)
      */
     public function responsibleForExecutors(): HasMany
     {
         return $this->hasMany(WorkspaceExecutor::class, 'responsible_engineer_id');
+    }
+
+    /**
+     * Get executors for which this user is a responsible engineer (many-to-many relationship)
+     */
+    public function assignedExecutors(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkspaceExecutor::class, 'workspace_executor_engineers')
+            ->using(WorkspaceExecutorEngineer::class)
+            ->withPivot(['role', 'assigned_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get executors where this user is the primary engineer
+     */
+    public function primaryExecutors(): BelongsToMany
+    {
+        return $this->assignedExecutors()->wherePivot('role', 'primary');
     }
 
     /**

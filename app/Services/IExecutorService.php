@@ -23,7 +23,22 @@ interface IExecutorService
     public function mutateFormDataBeforeSave(array $data, ?Company $currentExecutor = null): array;
 
     /**
-     * Get executors by responsible engineer in current workspace
+     * Get executors by responsible engineer in current workspace (legacy single relationship)
      */
     public function queryByResponsibleEngineer(int $userId): Builder;
+
+    /**
+     * Get executors by assigned engineers in current workspace (many-to-many relationship)
+     */
+    public function queryByAssignedEngineers(array $userIds): Builder;
+
+    /**
+     * Assign multiple engineers to an executor
+     */
+    public function assignEngineers(WorkspaceExecutor $executor, array $engineerData): void;
+
+    /**
+     * Sync engineers for an executor (replace all existing assignments)
+     */
+    public function syncEngineers(WorkspaceExecutor $executor, array $engineerData): void;
 }

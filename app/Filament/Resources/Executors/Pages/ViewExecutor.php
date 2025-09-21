@@ -2,20 +2,19 @@
 
 namespace App\Filament\Resources\Executors\Pages;
 
-use App\Filament\Resources\Executors\ExecutorResource;
 use App\Filament\Resources\Contracts\ContractResource;
+use App\Filament\Resources\Executors\ExecutorResource;
+use App\Filament\Resources\Executors\Schemas\ExecutorForm;
 use App\Models\Contract;
 use App\Services\IContractService;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
-use Filament\Notifications\Notification;
-use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Facades\App;
-use App\Filament\Resources\Executors\Schemas\ExecutorForm;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class ViewExecutor extends ViewRecord
 {
@@ -28,9 +27,7 @@ class ViewExecutor extends ViewRecord
 
     protected ?IContractService $contractService = null;
 
-    protected function initServices(): void
-    {
-    }
+    protected function initServices(): void {}
 
     public function mount($record): void
     {
@@ -40,9 +37,10 @@ class ViewExecutor extends ViewRecord
 
     protected function getContractService(): IContractService
     {
-        if (!$this->contractService) {
+        if (! $this->contractService) {
             $this->initServices();
         }
+
         return $this->contractService;
     }
 
@@ -73,6 +71,7 @@ class ViewExecutor extends ViewRecord
 
                         if ($contract) {
                             $this->redirect(ContractResource::getUrl('view', ['record' => $contract]));
+
                             return;
                         }
                     }

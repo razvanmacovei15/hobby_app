@@ -46,10 +46,41 @@ class ExecutorInfolist
                 TextEntry::make('executor_type')->label('Service Type')->badge(),
                 IconEntry::make('has_contract')->label('Does Executor Have A Contract')->boolean(),
                 TextEntry::make('responsible_engineer_name')
-                    ->label('Responsible Engineer')
+                    ->label('Responsible Engineer (Legacy)')
                     ->state(fn ($record) => $record?->responsibleEngineer
                         ? $record->responsibleEngineer->getFilamentName()
                         : 'Not assigned'),
+            ])->columns(3),
+
+            Section::make('Responsible Engineers')->schema([
+                TextEntry::make('responsible_engineers_list')
+                    ->label('Engineers')
+                    ->state(function ($record) {
+                        $engineers = $record?->responsibleEngineers;
+                        if (! $engineers || $engineers->isEmpty()) {
+                            return 'No engineers assigned';
+                        }
+
+                        return $engineers->map(function ($engineer) {
+                            $role = $engineer->pivot->role ?? 'engineer';
+
+                            return $engineer->getFilamentName().' ('.ucfirst($role).')';
+                        })->join(', ');
+                    })
+                    ->badge()
+                    ->separator(','),
+
+                TextEntry::make('engineers_count')
+                    ->label('Total Engineers')
+                    ->state(fn ($record) => $record?->responsibleEngineers->count() ?? 0),
+
+                TextEntry::make('primary_engineer')
+                    ->label('Primary Engineer')
+                    ->state(function ($record) {
+                        $primaryEngineer = $record?->getPrimaryEngineer();
+
+                        return $primaryEngineer ? $primaryEngineer->getFilamentName() : 'No primary engineer assigned';
+                    }),
             ])->columns(3),
         ])
             ->columns(1);

@@ -11,11 +11,13 @@ use Filament\Schemas\Schema;
 class ListExecutors extends ListRecords
 {
     protected static string $resource = ExecutorResource::class;
+
     public function form(Schema $schema): Schema
     {
         return ExecutorForm::configure($schema)
             ->record($this->record); // 👈 v4: bind the model for editing
     }
+
     protected function getHeaderActions(): array
     {
         return [

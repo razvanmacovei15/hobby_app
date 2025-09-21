@@ -21,7 +21,7 @@ class ExecutorService implements IExecutorService
 
         // Defensive: if no tenant selected, return an empty query to avoid leakage.
         $q = WorkspaceExecutor::query()
-            ->with(['executor', 'workspace', 'responsibleEngineer'])
+            ->with(['executor', 'workspace', 'responsibleEngineer', 'responsibleEngineers'])
             ->when($tenant, fn ($q) => $q->where('workspace_id', $tenant->id))
             ->when(! $tenant, fn ($q) => $q->whereRaw('1 = 0'));
 
@@ -43,7 +43,8 @@ class ExecutorService implements IExecutorService
             ->with([
                 'executor',                 // Company
                 'workspace',                // Workspace
-                'responsibleEngineer',      // User
+                'responsibleEngineer',      // User (legacy)
+                'responsibleEngineers',     // Users (new many-to-many)
             ])
             ->where('workspace_id', $tenant->id)
             ->findOrFail($workspaceExecutorId);
@@ -119,5 +120,38 @@ class ExecutorService implements IExecutorService
             ->where('responsible_engineer_id', $userId)
             ->when($tenant, fn ($q) => $q->where('workspace_id', $tenant->id))
             ->when(! $tenant, fn ($q) => $q->whereRaw('1 = 0'));
+    }
+
+    public function queryByAssignedEngineers(array $userIds): Builder
+    {
+        $tenant = Filament::getTenant();
+
+        return WorkspaceExecutor::query()
+            ->with(['executor', 'workspace', 'responsibleEngineers'])
+            ->whereHas('responsibleEngineers', function ($query) use ($userIds) {
+                $query->whereIn('user_id', $userIds);
+            })
+            ->when($tenant, fn ($q) => $q->where('workspace_id', $tenant->id))
+            ->when(! $tenant, fn ($q) => $q->whereRaw('1 = 0'));
+    }
+
+    public function assignEngineers(WorkspaceExecutor $executor, array $engineerData): void
+    {
+        foreach ($engineerData as $userId => $role) {
+            $executor->addEngineer(User::find($userId), $role);
+        }
+    }
+
+    public function syncEngineers(WorkspaceExecutor $executor, array $engineerData): void
+    {
+        $syncData = [];
+        foreach ($engineerData as $userId => $role) {
+            $syncData[$userId] = [
+                'role' => $role,
+                'assigned_at' => now(),
+            ];
+        }
+
+        $executor->syncEngineers($syncData);
     }
 }

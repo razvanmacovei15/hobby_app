@@ -4,16 +4,12 @@ namespace App\Filament\Resources\Executors\Pages;
 
 use App\Filament\Resources\Executors\ExecutorResource;
 use App\Filament\Resources\Executors\Schemas\ExecutorForm;
-use App\Models\Address;
-use App\Models\Company;
 use App\Models\User;
 use App\Services\IExecutorService;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Arr;
 
 class CreateExecutor extends CreateRecord
 {
@@ -22,14 +18,15 @@ class CreateExecutor extends CreateRecord
     public function mount(): void
     {
         // Check if user has required permissions before allowing access
-        if (!$this->canCreateWorkspaceExecutor()) {
+        if (! $this->canCreateWorkspaceExecutor()) {
             Notification::make()
                 ->title('Access Denied')
                 ->body('You need create permissions for companies, addresses, users (all or none), and workspace executors to create a workspace executor.')
                 ->danger()
                 ->send();
-            
+
             $this->redirect($this->getResource()::getUrl('index'));
+
             return;
         }
 
@@ -40,7 +37,7 @@ class CreateExecutor extends CreateRecord
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -54,7 +51,7 @@ class CreateExecutor extends CreateRecord
         $hasAllPermissions = count(array_filter($allPermissions)) === 3;
         $hasNoPermissions = count(array_filter($allPermissions)) === 0;
 
-        if (!($hasAllPermissions || $hasNoPermissions)) {
+        if (! ($hasAllPermissions || $hasNoPermissions)) {
             // User has partial permissions, which is not allowed
             return false;
         }
@@ -73,7 +70,25 @@ class CreateExecutor extends CreateRecord
     {
         /** @var IExecutorService $svc */
         $svc = app(IExecutorService::class);
+
         return $svc->mutateFormDataBeforeSave($data, null);
+    }
+
+    protected function afterCreate(): void
+    {
+        // Handle the many-to-many engineer assignments after the main record is created
+        $data = $this->form->getRawState(); // Use getRawState() to get dehydrated fields
+
+        if (! empty($data['responsible_engineers'])) {
+            $engineerData = [];
+            foreach ($data['responsible_engineers'] as $userId) {
+                $engineerData[$userId] = 'engineer'; // Default role
+            }
+
+            /** @var IExecutorService $svc */
+            $svc = app(IExecutorService::class);
+            $svc->assignEngineers($this->record, $engineerData);
+        }
     }
 
     public function form(Schema $schema): Schema

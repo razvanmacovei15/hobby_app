@@ -69,4 +69,28 @@ class WorkspaceExecutorFactory extends Factory
             'has_contract' => true,
         ]);
     }
+
+    /**
+     * Configure to add multiple engineers after creation
+     */
+    public function withMultipleEngineers(int $count = 3): static
+    {
+        return $this->afterCreating(function (WorkspaceExecutor $executor) use ($count) {
+            // Create engineers for this executor
+            $engineers = User::factory()->count($count)->create();
+
+            $roles = ['primary', 'secondary', 'supervisor', 'engineer'];
+
+            foreach ($engineers as $index => $engineer) {
+                $role = $index === 0 ? 'primary' : $roles[array_rand($roles)];
+
+                \App\Models\WorkspaceExecutorEngineer::create([
+                    'workspace_executor_id' => $executor->id,
+                    'user_id' => $engineer->id,
+                    'role' => $role,
+                    'assigned_at' => now()->subDays(rand(1, 30)),
+                ]);
+            }
+        });
+    }
 }
