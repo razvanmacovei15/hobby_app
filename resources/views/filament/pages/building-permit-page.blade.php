@@ -1,5 +1,6 @@
 @php
     use App\Filament\Pages\EditBuildingPermitPage;
+    use App\Enums\Permissions\BuildingPermitPagePermission;
 @endphp
 
 <x-filament::page>
