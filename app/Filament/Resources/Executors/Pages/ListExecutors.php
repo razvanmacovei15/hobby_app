@@ -14,7 +14,7 @@ class ListExecutors extends ListRecords
     public function form(Schema $schema): Schema
     {
         return ExecutorForm::configure($schema)
-            ->record($this->record); // 👈 v4: bind the model for editing
+            ->record($this->record);
     }
     protected function getHeaderActions(): array
     {

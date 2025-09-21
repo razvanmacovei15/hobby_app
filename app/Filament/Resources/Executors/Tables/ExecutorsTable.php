@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Executors\Tables;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 
 class ExecutorsTable
@@ -24,7 +24,7 @@ class ExecutorsTable
 
                 Tables\Columns\TextColumn::make('executor.representative_id')
                     ->label('Representative')
-                    ->formatStateUsing(fn($record) => $record->executor?->representative?->getFilamentName())
+                    ->formatStateUsing(fn ($record) => $record->executor?->representative?->getFilamentName())
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         // Optional: search by name method parts
                         return $query->whereHas('executor.representative', function ($q) use ($search) {
@@ -58,16 +58,39 @@ class ExecutorsTable
                     ->sortable()
                     ->boolean(),
 
+                Tables\Columns\TextColumn::make('engineers')
+                    ->label('Assigned Engineers')
+                    ->getStateUsing(function ($record) {
+                        $engineers = $record->engineers;
+                        $count = $engineers->count();
+
+                        if ($count === 0) {
+                            return 'None assigned';
+                        }
+
+                        $names = $engineers->take(2)->map(fn ($engineer) => $engineer->getFilamentName())->toArray();
+
+                        if ($count > 2) {
+                            $names[] = '+ '.($count - 2).' more';
+                        }
+
+                        return $names;
+                    })
+                    ->listWithLineBreaks()
+                    ->searchable(false)
+                    ->sortable(false)
+                    ->wrap(),
+
             ])
             ->recordAction(ViewAction::class)
             ->filters([
                 SelectFilter::make('is_active')
-                ->label('Activity')
-                ->options([
-                    1 => 'Active',
-                    0 => 'Inactive',
-                ])
-                ->default(true)
+                    ->label('Activity')
+                    ->options([
+                        1 => 'Active',
+                        0 => 'Inactive',
+                    ])
+                    ->default(true),
             ])
             ->recordActions([
                 ViewAction::make(),

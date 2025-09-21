@@ -32,6 +32,7 @@ use App\Policies\WorkspaceExecutorPolicy;
 use App\Policies\WorkspaceInvitationPolicy;
 use App\Policies\WorkspacePolicy;
 use App\Policies\WorkspaceUserPolicy;
+use App\Services\ExecutorQueryContext;
 use App\Services\IAddressService;
 use App\Services\IBuildingPermitService;
 use App\Services\ICompanyEmployeeService;
@@ -43,12 +44,12 @@ use App\Services\Implementations\CompanyEmployeeService;
 use App\Services\Implementations\CompanyService;
 use App\Services\Implementations\ExecutorService;
 use App\Services\Implementations\RoleService;
+use App\Services\Implementations\RoleTemplateService;
 use App\Services\Implementations\UserRegistrationService;
 use App\Services\Implementations\UserService;
 use App\Services\Implementations\WorkReportService;
 use App\Services\Implementations\WorkspaceInvitationService;
 use App\Services\Implementations\WorkspaceRedirectService;
-use App\Services\Implementations\RoleTemplateService;
 use App\Services\Implementations\WorkspaceUserService;
 use App\Services\IRoleService;
 use App\Services\IRoleTemplateService;
@@ -58,6 +59,8 @@ use App\Services\IWorkReportService;
 use App\Services\IWorkspaceInvitationService;
 use App\Services\IWorkspaceRedirectService;
 use App\Services\IWorkspaceUserService;
+use App\Services\Strategies\AllExecutorsStrategy;
+use App\Services\Strategies\OwnExecutorsStrategy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -81,6 +84,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IWorkspaceRedirectService::class, WorkspaceRedirectService::class);
         $this->app->bind(IWorkspaceUserService::class, WorkspaceUserService::class);
         $this->app->bind(IRoleTemplateService::class, RoleTemplateService::class);
+
+        // Register strategy pattern dependencies
+        $this->app->singleton(AllExecutorsStrategy::class);
+        $this->app->singleton(OwnExecutorsStrategy::class);
+        $this->app->singleton(ExecutorQueryContext::class);
 
     }
 

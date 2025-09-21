@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\PermissionCategory;
 use App\Models\Permission\Permission;
-use App\Models\Workspace;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
@@ -39,6 +38,10 @@ class PermissionSeeder extends Seeder
                 'workspace-executors.create' => 'Create new workspace executors',
                 'workspace-executors.edit' => 'Edit existing workspace executors',
                 'workspace-executors.delete' => 'Delete existing workspace executors',
+                'own-workspace-executors.view' => 'View only assigned workspace executors',
+                'own-workspace-executors.edit' => 'Edit only assigned workspace executors',
+                'own-workspace-executors.assign' => 'Assign engineers to own workspace executors',
+                'own-workspace-executors.unassign' => 'Unassign engineers from own workspace executors',
             ],
             PermissionCategory::CONTRACTED_SERVICES->value => [
                 'contracted-services.view' => 'View contracted services',
@@ -108,16 +111,16 @@ class PermissionSeeder extends Seeder
                 'permissions.delete' => 'Delete existing permissions',
             ],
             PermissionCategory::INVITE_USERS_RESOURCE->value => [
-                'invite-users-resource.invite' => 'Invite users to workspace'
+                'invite-users-resource.invite' => 'Invite users to workspace',
             ],
             PermissionCategory::OWNER_COMPANY_PAGE->value => [
                 'owner-company-page.view' => 'View owner company details',
-                'owner-company-page.edit' => 'Edit or create owner company'
+                'owner-company-page.edit' => 'Edit or create owner company',
             ],
             PermissionCategory::BUILDING_PERMIT_PAGE->value => [
                 'building-permit-page.view' => 'View building permit details',
-                'building-permit-page.edit' => 'Edit or create building permit'
-            ]
+                'building-permit-page.edit' => 'Edit or create building permit',
+            ],
         ];
 
         // Create permissions once (application-wide)

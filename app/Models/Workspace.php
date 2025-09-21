@@ -41,6 +41,11 @@ class Workspace extends Model
             ->wherePivot('has_contract', true);
     }
 
+    public function workspaceUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'workspace_users', 'workspace_id', 'user_id')->withTimestamps();
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'workspace_users', 'workspace_id', 'user_id')
