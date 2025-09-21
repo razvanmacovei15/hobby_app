@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\Permissions\OwnerCompanyPermission;
 use App\Models\Company;
 use App\Services\ICompanyService;
 use Filament\Facades\Filament;
@@ -183,6 +184,6 @@ class EditOwnerCompany extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('owner-company.edit') ?? false;
+        return auth()->user()?->canInWorkspace(OwnerCompanyPermission::EDIT->value) ?? false;
     }
 }

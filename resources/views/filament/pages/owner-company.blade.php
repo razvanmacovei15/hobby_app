@@ -16,7 +16,7 @@
                     </div>
 
                     {{-- optional top-right edit (keep this OR header action, not both) --}}
-                    @if(auth()->user()?->canInWorkspace('owner-company.edit'))
+                    @if(auth()->user()?->canInWorkspace(OwnerCompanyPermission::EDIT->value))
                         <x-filament::button tag="a" :href="EditOwnerCompany::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Company Details">
                             Edit Company Details
                         </x-filament::button>

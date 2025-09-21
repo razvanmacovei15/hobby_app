@@ -15,7 +15,7 @@
                     </div>
 
                     {{-- optional top-right edit (keep this OR header action, not both) --}}
-                    @if(auth()->user()?->canInWorkspace('building-permit-pages.edit'))
+                    @if(auth()->user()?->canInWorkspace(BuildingPermitPagePermission::EDIT->value))
                         <x-filament::button tag="a" :href="EditBuildingPermitPage::getUrl()" icon="heroicon-o-pencil" size="sm" color="edit" label="Edit Permit Details">
                             Edit Permit Details
                         </x-filament::button>

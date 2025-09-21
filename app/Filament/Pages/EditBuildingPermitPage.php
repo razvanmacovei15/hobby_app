@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\Permissions\BuildingPermitPagePermission;
 use App\Enums\PermitType;
 use App\Enums\PermitStatus;
 use App\Models\BuildingPermit;
@@ -11,12 +12,12 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class EditBuildingPermitPage extends Page
@@ -37,13 +38,13 @@ class EditBuildingPermitPage extends Page
         if ($workspace?->buildingPermit) {
             // Editing existing
             $this->record = $workspace->buildingPermit->load('address');
-            
+
             // Flatten the data to include address fields
             $data = $this->record->attributesToArray();
             if ($this->record->address) {
                 $data['address'] = $this->record->address->attributesToArray();
             }
-            
+
             $this->form->fill($data);
             static::$title = 'Edit building permit';
         } else {
@@ -249,6 +250,6 @@ class EditBuildingPermitPage extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->canInWorkspace('building-permit-pages.edit') ?? false;
+        return auth()->user()?->canInWorkspace(BuildingPermitPagePermission::EDIT->value) ?? false;
     }
 }
